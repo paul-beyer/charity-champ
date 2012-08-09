@@ -13,7 +13,7 @@ class DonationTests {
 
     void testSomething() {
       // fail "Implement me"
-		
+		//Random comment to make sure I can commit
 		//we still need to test something, but I need the test to pass. Right now, I'm just creating the app shell
 		assert true == true
     }
