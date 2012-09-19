@@ -35,6 +35,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
+	
     }
 
     plugins {
@@ -52,6 +53,8 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.1"
 
         compile ':cache:1.0.0'
+		compile ':joda-time:1.4'
+			
 	
     }
 }

@@ -1,17 +1,22 @@
 package com.charitychamp
 
+
 class Activity {
 
 	String name
 	BigDecimal amountCollected
-	Person leader
+	String leaderName
 	String comments
 	Date depositDate
+	
+	Date dateCreated
+	Date lastUpdated
+	
 	
     static constraints = {
 		name blank:false
 		amountCollected min : 1 as BigDecimal
-		leader nullable : true
+		leaderName nullable : true
 		comments nullable : true
 		depositDate blank : false
     }
