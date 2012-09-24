@@ -31,7 +31,7 @@ class CompanySpec extends ConstraintUnitSpec{
         'blank'                | 'name'             | ''
         'nullable'             | 'name'             | null
 		'nullable'             | 'ceo'              | null
-		'valid'                | 'offices'          | null
+		'valid'                | 'businesses'       | null
 		'valid'                | 'globalSettings'   | null
 		
 			

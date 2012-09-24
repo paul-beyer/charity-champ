@@ -31,8 +31,10 @@ class BusinessSpec extends ConstraintUnitSpec{
         'blank'                | 'name'             | ''
         'nullable'             | 'name'             | null
 		'nullable'             | 'executive'        | null
-		'nullable'             | 'charityCaptain'   | null
-		'valid'                | 'departments'      | null
+		'nullable'             | 'charityLeader'    | null
+		'valid'                | 'offices'          | null
+		'blank'                | 'teamNumber'       | ''
+		'nullable'             | 'teamNumber'       | null
 		
 			
     }

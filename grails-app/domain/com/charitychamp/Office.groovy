@@ -4,14 +4,14 @@ class Office {
 
 	String name
 	Person officer
-	Person charityLeader
-	String teamNumber
+	Person charityCaptain
 	
-	static hasMany = [businesses: Business]
+	
+	static hasMany = [departments: Department]
 	
     static constraints = {
 		name blank:false
-		businesses nullable : true
-		teamNumber blank : false
+		departments nullable : true
+		
     }
 }
