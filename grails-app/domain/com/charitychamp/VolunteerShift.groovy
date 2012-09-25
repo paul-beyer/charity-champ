@@ -16,6 +16,8 @@
 
 package com.charitychamp
 
+import java.util.Date;
+
 class VolunteerShift {
 	
 	Date dateOfShift
@@ -23,6 +25,9 @@ class VolunteerShift {
 	String comments
 	Person leader
 	BigDecimal mealFactor
+	
+	Date dateCreated
+	Date lastUpdated
 	
 
     static constraints = {

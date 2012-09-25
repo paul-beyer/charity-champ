@@ -16,6 +16,8 @@
 
 package com.charitychamp
 
+import java.util.Date;
+
 class Department {
 	
 	String name
@@ -23,6 +25,9 @@ class Department {
 	Person charityLieutenant
 	int numberOfEmployees
 	Date dateOfEmployeeCount
+	
+	Date dateCreated
+	Date lastUpdated
 	
 	static hasMany = [groups: Group]
 	

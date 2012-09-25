@@ -16,16 +16,21 @@
 
 package com.charitychamp
 
+import java.util.Date;
+
 class Company {
 
 	String name
 	Person ceo
 	
-	static hasMany = [offices : Office, globalSettings : GlobalNumericSetting]
+	Date dateCreated
+	Date lastUpdated
+	
+	static hasMany = [businesses : Business, globalSettings : GlobalNumericSetting]
 	
     static constraints = {
 		name blank : false
-		offices nullable : true
+		businesses nullable : true
 		globalSettings nullable : true
     }
 }

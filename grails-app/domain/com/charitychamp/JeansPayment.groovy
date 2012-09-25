@@ -16,6 +16,8 @@
 
 package com.charitychamp
 
+import java.util.Date;
+
 class JeansPayment {
 	
 	String employeeUserId
@@ -25,6 +27,9 @@ class JeansPayment {
 	String payerEmail
 	BigDecimal amtPaid
 	Date dateOfPayment
+	
+	Date dateCreated
+	Date lastUpdated
 	
     static constraints = {
 		employeeUserId blank : false

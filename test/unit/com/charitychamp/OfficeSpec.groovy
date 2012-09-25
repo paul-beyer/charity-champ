@@ -43,14 +43,12 @@ class OfficeSpec extends ConstraintUnitSpec{
         validateConstraints(obj, field, error)
 
         where:
-        error                  | field           | val
-        'blank'                | 'name'          | ''
-        'nullable'             | 'name'          | null
-		'nullable'             | 'officer'       | null
-		'nullable'             | 'charityLeader' | null
-		'blank'                | 'teamNumber'    | ''
-		'nullable'             | 'teamNumber'    | null
-		'valid'                | 'businesses'    | null
+        error                  | field            | val
+        'blank'                | 'name'           | ''
+        'nullable'             | 'name'           | null
+		'nullable'             | 'officer'        | null
+		'nullable'             | 'charityCaptain' | null
+		'valid'                | 'departments'        | null
 					
     }
 
