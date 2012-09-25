@@ -1,5 +1,7 @@
 package com.charitychamp
 
+import java.util.Date;
+
 class Person {
 	
 	String userId
@@ -9,6 +11,9 @@ class Person {
 	String phoneNumber
 	String altPhoneNumber
 	String email
+	
+	Date dateCreated
+	Date lastUpdated
 	
 
     static constraints = {
