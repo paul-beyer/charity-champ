@@ -35,6 +35,7 @@ class Department {
 		name blank : false
 		numberOfEmployees nullable : true
 		dateOfEmployeeCount nullable : true
+		groups nullable : true
 		
     }
 }
