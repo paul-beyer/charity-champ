@@ -14,7 +14,7 @@
 
 
 
-<!-- BEGIN MY LEAGUES SECTION -->
+
 	<div id="mainArea">
 		
 		
@@ -22,7 +22,7 @@
 
 		<div id="userOptions">
 			<div><h1 class="">What do you want to do?</h1></div>
-				<form id="leagueManagement"> 
+				<form id="opFeedManagement"> 
 				<br/>
 					<fieldset> 
 						<input type="submit" value="View Progress" />
