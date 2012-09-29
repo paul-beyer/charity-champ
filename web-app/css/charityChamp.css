@@ -84,8 +84,8 @@ body {
 	position: absolute;
 	top: 8px;
 	float: left;
-	width: 230px;
-	height: 152px;
+	width: 190px;
+	height: 140px;
 	background: url(../images/OpFeedlogo.jpg) no-repeat;
 	opacity: .80;
 }
@@ -93,10 +93,10 @@ body {
 #title {
 	position: absolute;
 	top: 8px;
-	left: 150px;
+	left: 200px;
 	width: 700px;
 	height: 140px;
-	background: url(../images/charityChampLogo.png) repeat;
+	background: url(../images/charityChampLogo.png) no-repeat;
 	opacity: .80;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
