@@ -31,8 +31,8 @@
 <!-- BEGIN NAVIGATION -->		
 			<div id="primaryNav">
 				<ul>
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Admin</a></li>
+					<li><a href="${createLink(uri: '/')}">Home</a></li>
+					<li><a href="${createLink(controller: 'admin', action: 'admin')}">Admin</a></li>
 					
 				</ul>
 			</div>
