@@ -28,6 +28,7 @@ class Business {
 	Date dateCreated
 	Date lastUpdated
 	
+	static belongsTo = [company: Company]
 	static hasMany = [offices: Office]
 	
     static constraints = {
@@ -37,4 +38,8 @@ class Business {
 		offices nullable : true
 		
     }
+	
+	String toString(){
+		return "${name}"
+	}
 }

@@ -14,6 +14,8 @@
 		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'charityChamp.css')}" type="text/css">
 		
+		
+		
 		<g:layoutHead/>
 		<r:layoutResources />
 	</head>
@@ -32,7 +34,7 @@
 			<div id="primaryNav">
 				<ul>
 					<li><a href="${createLink(uri: '/')}">Home</a></li>
-					<li><a href="${createLink(controller: 'admin', action: 'admin')}">Admin</a></li>
+					<li><a href="${createLink(controller: 'admin', action: 'admin')}">Manage</a></li>
 					
 				</ul>
 			</div>

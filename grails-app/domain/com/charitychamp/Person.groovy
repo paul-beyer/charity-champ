@@ -23,7 +23,7 @@ class Person {
 	String userId
 	String firstName
 	String lastName
-	String title
+	String personTitle
 	String phoneNumber
 	String altPhoneNumber
 	String email
@@ -39,6 +39,12 @@ class Person {
 		phoneNumber nullable:true
 		altPhoneNumber nullable:true
 		email email:true, nullable:true
-		title nullable:true
+		personTitle nullable:true
     }
+	
+	String toString(){
+		return "${firstName} ${lastName}"
+	}
+	
+	
 }

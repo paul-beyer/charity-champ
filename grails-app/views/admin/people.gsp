@@ -7,16 +7,14 @@
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
 	</head>
 	<body>
-	<!-- BEGIN CONFIGURATION LINKS -->	
-			<div class="manageChampLayout">	
-				<g:render template="manageLinks" />
-				
-				<div class="manageChampRightPanel" >
-					This is the main admin screen				
-				</div>
-			</div>
+	<!-- BEGIN CONFIGURATION LINKS -->		
+	<div class="manageChampLayout">	
+		<g:render template="manageLinks" />
+		
+		<div class="manageChampRightPanel">
+			Hi this is the people edit screen				
+		</div>
+	</div>
 <!-- END CONFIGURATION LINKS -->	
 </body>
 </html>
-
-	

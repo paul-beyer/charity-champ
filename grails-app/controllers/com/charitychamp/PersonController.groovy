@@ -43,7 +43,7 @@ class PersonController {
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'person.label', default: 'Person'), personInstance.id])
-        redirect(action: "show", id: personInstance.id)
+		redirect(action: "show", id: personInstance.id)
     }
 
     def show(Long id) {
@@ -54,7 +54,7 @@ class PersonController {
             return
         }
 
-        [personInstance: personInstance]
+        [personInstance : personInstance]
     }
 
     def edit(Long id) {

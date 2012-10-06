@@ -33,4 +33,8 @@ class Company {
 		businesses nullable : true
 		globalSettings nullable : true
     }
+	
+	String toString(){
+		return "${name}"
+	}
 }

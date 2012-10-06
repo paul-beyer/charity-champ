@@ -27,7 +27,7 @@ class Office {
 	Date dateCreated
 	Date lastUpdated
 	
-	
+	static belongsTo = [business: Business]
 	static hasMany = [departments: Department]
 	
     static constraints = {

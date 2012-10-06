@@ -8,15 +8,13 @@
 	</head>
 	<body>
 	<!-- BEGIN CONFIGURATION LINKS -->	
-			<div class="manageChampLayout">	
-				<g:render template="manageLinks" />
-				
-				<div class="manageChampRightPanel" >
-					This is the main admin screen				
-				</div>
-			</div>
+	<div class="manageChampLayout">	
+		<g:render template="/shared/setupLinks" />
+		
+		<div class="manageChampRightPanel">
+			This is the set up screen				
+		</div>
+	</div>
 <!-- END CONFIGURATION LINKS -->	
 </body>
 </html>
-
-	
