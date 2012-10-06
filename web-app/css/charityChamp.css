@@ -54,7 +54,8 @@ body {
 	float: left;
 	width: 190px;
 	height: 140px;
-	opacity: .80;
+	opacity: .75;
+	padding: 0 0 0 10px;
 }
 
 #title {
@@ -165,6 +166,7 @@ color: #006600;
 	-moz-transition: all .3s ease-in-out;
 	-o-transition: all .3s ease-in-out;
 	transition: all .3s ease-in-out;
+	 text-decoration: none;
 }
 
 #primaryNav li a:hover {

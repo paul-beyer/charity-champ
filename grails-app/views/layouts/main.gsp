@@ -24,7 +24,7 @@
 		<div id="wrap">
 <!-- BEGIN HEADER -->
 			<div id="main">
-				<a href="#" id="opfeed"><g:img dir="images" file="opFeedLogo.jpg"/></a>
+				<a href="#" id="opfeed"><g:img dir="images" file="rsz_mid-ohio-food-bank.png"/></a>
 				<a href="#" id="title"></a>
 				
 			</div>	
