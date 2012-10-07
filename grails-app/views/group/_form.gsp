@@ -15,30 +15,15 @@
 		<g:message code="group.leader.label" default="Leader" />
 		
 	</label>
-	<g:select id="leader" name="leader.id" from="${com.charitychamp.Person.list()}" optionKey="id" value="${groupInstance?.leader?.id}" class="many-to-one" noSelection="['null': '']"/>
+	<g:select id="leader" name="leader.id" from="${com.charitychamp.Person.list()}" optionKey="id" value="${groupInstance?.leader?.id}" class="many-to-one" noSelection="['':'-Choose-']"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: groupInstance, field: 'activities', 'error')} ">
-	<label for="activities">
-		<g:message code="group.activities.label" default="Activities" />
-		
-	</label>
-	<g:select name="activities" from="${com.charitychamp.Activity.list()}" multiple="multiple" optionKey="id" size="5" value="${groupInstance?.activities*.id}" class="many-to-many"/>
-</div>
 
-<div class="fieldcontain ${hasErrors(bean: groupInstance, field: 'volunteerShifts', 'error')} ">
-	<label for="volunteerShifts">
-		<g:message code="group.volunteerShifts.label" default="Volunteer Shifts" />
-		
+<div class="fieldcontain ${hasErrors(bean: groupInstance, field: 'department', 'error')} required">
+	<label for="department">
+		<g:message code="group.department.label" default="Department" />
+		<span class="required-indicator">*</span>
 	</label>
-	<g:select name="volunteerShifts" from="${com.charitychamp.VolunteerShift.list()}" multiple="multiple" optionKey="id" size="5" value="${groupInstance?.volunteerShifts*.id}" class="many-to-many"/>
-</div>
-
-<div class="fieldcontain ${hasErrors(bean: groupInstance, field: 'jeansPayments', 'error')} ">
-	<label for="jeansPayments">
-		<g:message code="group.jeansPayments.label" default="Jeans Payments" />
-		
-	</label>
-	<g:select name="jeansPayments" from="${com.charitychamp.JeansPayment.list()}" multiple="multiple" optionKey="id" size="5" value="${groupInstance?.jeansPayments*.id}" class="many-to-many"/>
+	<g:select id="department" name="department.id" from="${com.charitychamp.Department.list()}" optionKey="id" required="" value="${groupInstance?.department?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 

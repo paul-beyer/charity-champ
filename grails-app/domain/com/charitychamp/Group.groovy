@@ -26,6 +26,7 @@ class Group {
 	Date dateCreated
 	Date lastUpdated
 	
+	static belongsTo = [department: Department]
 	static hasMany = [activities: Activity, volunteerShifts : VolunteerShift, jeansPayments : JeansPayment]
 	
     static constraints = {
@@ -35,4 +36,6 @@ class Group {
 		volunteerShifts nullable : true
 		jeansPayments nullable : true
     }
+	
+	static mapping = { table 'work_group' }
 }

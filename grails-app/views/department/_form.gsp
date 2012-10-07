@@ -15,7 +15,7 @@
 		<g:message code="department.numberOfEmployees.label" default="Number Of Employees" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="numberOfEmployees" type="number" value="${departmentInstance.numberOfEmployees}" required=""/>
+	<g:field type="number" name="numberOfEmployees" required="" value="${fieldValue(bean: departmentInstance, field: 'numberOfEmployees')}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'dateOfEmployeeCount', 'error')} ">
@@ -31,7 +31,7 @@
 		<g:message code="department.charityLieutenant.label" default="Charity Lieutenant" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="charityLieutenant" name="charityLieutenant.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.charityLieutenant?.id}" class="many-to-one"/>
+	<g:select id="charityLieutenant" name="charityLieutenant.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.charityLieutenant?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'departmentHead', 'error')} required">
@@ -39,14 +39,14 @@
 		<g:message code="department.departmentHead.label" default="Department Head" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="departmentHead" name="departmentHead.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.departmentHead?.id}" class="many-to-one"/>
+	<g:select id="departmentHead" name="departmentHead.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.departmentHead?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'groups', 'error')} ">
-	<label for="groups">
-		<g:message code="department.groups.label" default="Groups" />
-		
+<div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'office', 'error')} required">
+	<label for="office">
+		<g:message code="department.office.label" default="Office" />
+		<span class="required-indicator">*</span>
 	</label>
-	<g:select name="groups" from="${com.charitychamp.Group.list()}" multiple="multiple" optionKey="id" size="5" value="${departmentInstance?.groups*.id}" class="many-to-many"/>
+	<g:select id="office" name="office.id" from="${com.charitychamp.Office.list()}" optionKey="id" required="" value="${departmentInstance?.office?.id}"  noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 

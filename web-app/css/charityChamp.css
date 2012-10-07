@@ -220,8 +220,28 @@ color: #006600;
 h1 {
 	text-transform: lowercase;
 	font-style: italic;
-	font: normal 25px "LeagueGothicRegular", Georgia, serif;
+	font: normal 20px "LeagueGothicRegular", Georgia, serif;
 	letter-spacing: 0;
+}
+
+#adminInstruction ul { 
+	list-style: url(../images/asterisk_orange.png);
+	font-style: italic;
+	font: normal 15px "LeagueGothicRegular", Georgia, serif;
+	letter-spacing: 0;
+	width: 500px;
+	padding-left: 50px;
+	
+}
+
+#setupInstruction ul { 
+	list-style: url(../images/asterisk_orange.png);
+	font-style: italic;
+	font: normal 15px "LeagueGothicRegular", Georgia, serif;
+	letter-spacing: 0;
+	width: 500px;
+	padding-left: 50px;
+	
 }
 
 
@@ -350,6 +370,7 @@ h1 {
 	background-repeat: no-repeat;
 	text-indent: 25px;
 }
+
 
 .nav a.home {
 	background-image: url(../images/skin/house.png);

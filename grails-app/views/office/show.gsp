@@ -8,76 +8,89 @@
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#show-office" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="show-office" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<ol class="property-list office">
-			
-				<g:if test="${officeInstance?.name}">
-				<li class="fieldcontain">
-					<span id="name-label" class="property-label"><g:message code="office.name.label" default="Name" /></span>
+		<div class="manageChampLayout">	
+				<g:render template="/shared/setupLinks" />
+		
+			<div class="manageChampRightPanel">
+				<div class="nav" role="navigation">
+					<ul>
 					
-						<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${officeInstance}" field="name"/></span>
+						<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+						<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
+					</ul>
+				</div>
+				<div id="show-office" class="content scaffold-show" role="main">
 					
-				</li>
-				</g:if>
-			
-				<g:if test="${officeInstance?.businesses}">
-				<li class="fieldcontain">
-					<span id="businesses-label" class="property-label"><g:message code="office.businesses.label" default="Businesses" /></span>
+					<g:if test="${flash.message}">
+					<div class="message" role="status">${flash.message}</div>
+					</g:if>
+					<ol class="property-list office">
 					
-						<g:each in="${officeInstance.businesses}" var="b">
-						<span class="property-value" aria-labelledby="businesses-label"><g:link controller="business" action="show" id="${b.id}">${b?.encodeAsHTML()}</g:link></span>
-						</g:each>
+						<g:if test="${officeInstance?.name}">
+						<li class="fieldcontain">
+							<span id="name-label" class="property-label"><g:message code="office.name.label" default="Name" /></span>
+							
+								<span class="property-value" aria-labelledby="name-label"><g:fieldValue bean="${officeInstance}" field="name"/></span>
+							
+						</li>
+						</g:if>
 					
-				</li>
-				</g:if>
-			
-				<g:if test="${officeInstance?.teamNumber}">
-				<li class="fieldcontain">
-					<span id="teamNumber-label" class="property-label"><g:message code="office.teamNumber.label" default="Team Number" /></span>
+								
+						<g:if test="${officeInstance?.business}">
+						<li class="fieldcontain">
+							<span id="business-label" class="property-label"><g:message code="office.business.label" default="Business" /></span>
+							
+								<span class="property-value" aria-labelledby="business-label"><g:link controller="business" action="show" id="${officeInstance?.business?.id}">${officeInstance?.business?.encodeAsHTML()}</g:link></span>
+							
+						</li>
+						</g:if>
 					
-						<span class="property-value" aria-labelledby="teamNumber-label"><g:fieldValue bean="${officeInstance}" field="teamNumber"/></span>
+						<g:if test="${officeInstance?.charityCaptain}">
+						<li class="fieldcontain">
+							<span id="charityCaptain-label" class="property-label"><g:message code="office.charityCaptain.label" default="Charity Captain" /></span>
+							
+								<span class="property-value" aria-labelledby="charityCaptain-label"><g:link controller="person" action="show" id="${officeInstance?.charityCaptain?.id}">${officeInstance?.charityCaptain?.encodeAsHTML()}</g:link></span>
+							
+						</li>
+						</g:if>
 					
-				</li>
-				</g:if>
-			
-				<g:if test="${officeInstance?.charityLeader}">
-				<li class="fieldcontain">
-					<span id="charityLeader-label" class="property-label"><g:message code="office.charityLeader.label" default="Charity Leader" /></span>
+						<g:if test="${officeInstance?.dateCreated}">
+						<li class="fieldcontain">
+							<span id="dateCreated-label" class="property-label"><g:message code="office.dateCreated.label" default="Date Created" /></span>
+							
+								<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${officeInstance?.dateCreated}" /></span>
+							
+						</li>
+						</g:if>
 					
-						<span class="property-value" aria-labelledby="charityLeader-label"><g:link controller="person" action="show" id="${officeInstance?.charityLeader?.id}">${officeInstance?.charityLeader?.encodeAsHTML()}</g:link></span>
+						<g:if test="${officeInstance?.lastUpdated}">
+						<li class="fieldcontain">
+							<span id="lastUpdated-label" class="property-label"><g:message code="office.lastUpdated.label" default="Last Updated" /></span>
+							
+								<span class="property-value" aria-labelledby="lastUpdated-label"><g:formatDate date="${officeInstance?.lastUpdated}" /></span>
+							
+						</li>
+						</g:if>
 					
-				</li>
-				</g:if>
-			
-				<g:if test="${officeInstance?.officer}">
-				<li class="fieldcontain">
-					<span id="officer-label" class="property-label"><g:message code="office.officer.label" default="Officer" /></span>
+						<g:if test="${officeInstance?.officer}">
+						<li class="fieldcontain">
+							<span id="officer-label" class="property-label"><g:message code="office.officer.label" default="Officer" /></span>
+							
+								<span class="property-value" aria-labelledby="officer-label"><g:link controller="person" action="show" id="${officeInstance?.officer?.id}">${officeInstance?.officer?.encodeAsHTML()}</g:link></span>
+							
+						</li>
+						</g:if>
 					
-						<span class="property-value" aria-labelledby="officer-label"><g:link controller="person" action="show" id="${officeInstance?.officer?.id}">${officeInstance?.officer?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-				</g:if>
-			
-			</ol>
-			<g:form>
-				<fieldset class="buttons">
-					<g:hiddenField name="id" value="${officeInstance?.id}" />
-					<g:link class="edit" action="edit" id="${officeInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-				</fieldset>
-			</g:form>
+					</ol>
+					<g:form>
+						<fieldset class="buttons">
+							<g:hiddenField name="id" value="${officeInstance?.id}" />
+							<g:link class="edit" action="edit" id="${officeInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+							<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.office.delete.confirm.message', default: 'Are you sure?')}');" />
+						</fieldset>
+					</g:form>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>

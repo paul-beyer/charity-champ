@@ -36,8 +36,10 @@ class BusinessController {
     }
 
     def save() {
+	
         def businessInstance = new Business(params)
         if (!businessInstance.save(flush: true)) {
+			
             render(view: "create", model: [businessInstance: businessInstance])
             return
         }

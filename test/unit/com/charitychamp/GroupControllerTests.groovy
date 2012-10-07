@@ -13,6 +13,7 @@ class GroupControllerTests {
         assert params != null
         params["name"] = 'SOA'
 		params["leader"] = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
+		params["department"] = new Department(name : "Billing")
 		
     }
 

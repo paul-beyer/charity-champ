@@ -44,17 +44,7 @@
 						</li>
 						</g:if>
 					
-						<g:if test="${businessInstance?.offices}">
-						<li class="fieldcontain">
-							<span id="offices-label" class="property-label"><g:message code="business.offices.label" default="Offices" /></span>
-							
-								<g:each in="${businessInstance.offices}" var="o">
-								<span class="property-value" aria-labelledby="offices-label"><g:link controller="office" action="show" id="${o.id}">${o?.encodeAsHTML()}</g:link></span>
-								</g:each>
-							
-						</li>
-						</g:if>
-					
+											
 						<g:if test="${businessInstance?.charityLeader}">
 						<li class="fieldcontain">
 							<span id="charityLeader-label" class="property-label"><g:message code="business.charityLeader.label" default="Charity Leader" /></span>

@@ -29,6 +29,7 @@ class Department {
 	Date dateCreated
 	Date lastUpdated
 	
+	static belongsTo = [office: Office]
 	static hasMany = [groups: Group]
 	
     static constraints = {
@@ -38,4 +39,8 @@ class Department {
 		groups nullable : true
 		
     }
+	
+	String toString(){
+		return "${name}"
+	}
 }

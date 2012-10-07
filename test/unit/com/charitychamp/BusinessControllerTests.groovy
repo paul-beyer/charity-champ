@@ -20,15 +20,19 @@ import org.junit.*
 import grails.test.mixin.*
 
 @TestFor(BusinessController)
-@Mock(Business)
+@Mock([Business, Company])
 class BusinessControllerTests {
 
     def populateValidParams(params) {
         assert params != null
+		def remy = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
+		def greg = new Person(userId:'biffle', firstName: "Greg", lastName: "Biffle")
+		def company = new Company(name: "ACME", ceo: greg)
         params["name"] = 'IT'
-		params["executive"] = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
-		params["charityLeader"] = new Person(userId:'biffle', firstName: "Greg", lastName: "Biffle")
+		params["executive"] = remy
+		params["charityLeader"] = greg
 		params["teamNumber"] = "1234"
+		params["company"] = company
 		
     }
 

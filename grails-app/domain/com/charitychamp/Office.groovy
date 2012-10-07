@@ -35,4 +35,8 @@ class Office {
 		departments nullable : true
 		
     }
+	
+	String toString(){
+		return "${name}"
+	}
 }
