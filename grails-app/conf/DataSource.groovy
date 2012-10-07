@@ -16,12 +16,12 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
-//			dbCreate = "create-drop"
-//			url = "jdbc:mysql://ec2-23-21-211-172.compute-1.amazonaws.com:3306/charity_champ_db"
-//			username = "charityChamp"
-//			password = "FoodBank12"
+//            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+//            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+			dbCreate = "create-drop"
+			url = "jdbc:mysql://ec2-23-21-211-172.compute-1.amazonaws.com:3306/charity_champ_db"
+			username = "charityChamp"
+			password = "FoodBank12"
         }
     }
     test {
