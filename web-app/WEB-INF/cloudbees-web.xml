@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<cloudbees-web-app xmlns="http://www.cloudbees.com/xml/webapp/1">
+	<appid>beyerp/charity-champ</appid>
+	
+	   <!-- refer to: https://wiki.cloudbees.com/bin/view/RUN/DatabaseGuide -->
+	<resource name="jdbc/charityChamp" auth="Container" type="javax.sql.DataSource">
+	<param name="username" value="charityChamp" />
+	<param name="password" value="FoodBank12" />
+	<param name="url" value="jdbc:cloudbees://charity_champ_db" />
+	
+	<!-- Apache DBCP connection pool settings -->
+	<param name="maxactive" value="5" />
+	<param name="maxidle" value="2" />
+	<param name="maxWait" value="10000" />
+	<param name="removeAbandoned" value="true" />
+	<param name="removeAbandonedTimeout" value="60" />
+	<param name="logAbandoned" value="true" />
+	
+	<!-- Avoid Database Idle Timeouts: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException -->
+	<param name="validationQuery" value="SELECT 1" />
+	<param name="testOnBorrow" value="true" />
+	</resource>
+
+</cloudbees-web-app>
