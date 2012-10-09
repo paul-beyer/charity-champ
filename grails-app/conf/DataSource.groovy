@@ -36,7 +36,7 @@ environments {
     production {
         dataSource {
             dbCreate = ""
-            jndiName = "java:comp/env/charityChamp"
+            jndiName = "java:/jdbc/charityChamp"
 			
         }
     }
