@@ -37,8 +37,7 @@ environments {
         dataSource {
             dbCreate = ""
             jndiName = "jdbc/charityChamp"
-			driverClassName = "com.mysql.jdbc.Driver"
-			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+			
         }
     }
 }
