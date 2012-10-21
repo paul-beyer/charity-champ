@@ -27,8 +27,9 @@ class BusinessController {
     }
 
     def list(Integer max) {
+		
         params.max = Math.min(max ?: 10, 100)
-        [businessInstanceList: Business.list(params), businessInstanceTotal: Business.count()]
+		[businessInstanceList: Business.list(params), businessInstanceTotal: Business.count()]
     }
 
     def create() {

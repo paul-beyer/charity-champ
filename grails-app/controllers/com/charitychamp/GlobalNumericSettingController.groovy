@@ -9,6 +9,14 @@ class GlobalNumericSettingController {
     def index() {
         redirect(action: "list", params: params)
     }
+	
+	def goalPerEmployee (){
+		
+		def settings = GlobalNumericSetting.findAllByName("Goal Amount Per Employee")
+		settings.sort{it.effectiveDate}
+		[globalNumericSettingInstanceList: settings, globalNumericSettingInstanceTotal: settings.size()]		
+		
+	}
 
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -18,7 +26,13 @@ class GlobalNumericSettingController {
     def create() {
         [globalNumericSettingInstance: new GlobalNumericSetting(params)]
     }
-
+	
+	def createEmployeeGoal() {
+				
+		render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : "Goal Amount Per Employee")])
+	}
+	
+	
     def save() {
 		
 		def value = 0

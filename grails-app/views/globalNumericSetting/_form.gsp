@@ -5,9 +5,9 @@
 <div class="fieldcontain ${hasErrors(bean: globalNumericSettingInstance, field: 'name', 'error')} required">
 	<label for="name">
 		<g:message code="globalNumericSetting.name.label" default="Name" />
-		<span class="required-indicator">*</span>
+		
 	</label>
-	<g:textField name="name" required="" value="${globalNumericSettingInstance?.name}"/>
+	<g:textField name="name" readonly="readonly" value="${globalNumericSettingInstance?.name}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: globalNumericSettingInstance, field: 'value', 'error')} required">

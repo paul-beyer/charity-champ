@@ -14,7 +14,7 @@
 				<div class="nav" role="navigation">
 					<ul>
 						
-						<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
+						<li><g:link class="list" action="goalPerEmployee"><g:message code="default.list.label" args="['Goal Per Employee']" /></g:link></li>
 					</ul>
 				</div>
 				<div id="create-globalNumericSetting" class="content scaffold-create" role="main">

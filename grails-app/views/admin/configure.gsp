@@ -9,7 +9,7 @@
 	<body>
 	<!-- BEGIN CONFIGURATION LINKS -->	
 		<div class="manageChampLayout">	
-			<g:render template="manageLinks" />
+			<g:render template="/shared/configureLinks" />
 			
 			<div class="manageChampRightPanel">
 				This is the configure screen			

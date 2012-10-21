@@ -31,4 +31,6 @@ class GlobalNumericSetting {
 		name blank : false
 		value min : 1 as BigDecimal
     }
+	
+	
 }

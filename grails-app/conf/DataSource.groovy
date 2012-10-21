@@ -10,17 +10,17 @@ hibernate {
 environments {
     development {
         dataSource {
-//            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-//            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
-//			driverClassName = "org.h2.Driver"
-//			username = "sa"
-//			password = ""
-			dbCreate = ""
-			url = "jdbc:mysql://ec2-23-21-211-172.compute-1.amazonaws.com:3306/charity_champ_db"
-			username = "charityChamp"
-			password = "FoodBank12"
-			driverClassName = "com.mysql.jdbc.Driver"
-			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+            dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
+            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+			driverClassName = "org.h2.Driver"
+			username = "sa"
+			password = ""
+//			dbCreate = ""
+//			url = "jdbc:mysql://ec2-23-21-211-172.compute-1.amazonaws.com:3306/charity_champ_db"
+//			username = "charityChamp"
+//			password = "FoodBank12"
+//			driverClassName = "com.mysql.jdbc.Driver"
+//			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
         }
     }
     test {
