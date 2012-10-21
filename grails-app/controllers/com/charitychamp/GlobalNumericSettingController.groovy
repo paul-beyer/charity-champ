@@ -2,6 +2,7 @@ package com.charitychamp
 
 import org.springframework.dao.DataIntegrityViolationException
 
+//test some commit action
 class GlobalNumericSettingController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
