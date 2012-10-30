@@ -225,7 +225,7 @@ h1 {
 }
 
 #adminInstruction ul { 
-	list-style: url(../images/asterisk_orange.png);
+	list-style: url(../images/note.png);
 	font-style: italic;
 	font: normal 15px "LeagueGothicRegular", Georgia, serif;
 	letter-spacing: 0;
@@ -235,7 +235,17 @@ h1 {
 }
 
 #setupInstruction ul { 
-	list-style: url(../images/asterisk_orange.png);
+	list-style: url(../images/note.png);
+	font-style: italic;
+	font: normal 15px "LeagueGothicRegular", Georgia, serif;
+	letter-spacing: 0;
+	width: 500px;
+	padding-left: 50px;
+	
+}
+
+#configureInstruction ul { 
+	list-style: url(../images/note.png);
 	font-style: italic;
 	font: normal 15px "LeagueGothicRegular", Georgia, serif;
 	letter-spacing: 0;
@@ -692,5 +702,10 @@ ul.one-to-many li.add {
 a.skip {
 	position: absolute;
 	left: -9999px;
+}
+
+.nonEditField {
+	
+	color: #888888;
 }
 

@@ -2,7 +2,6 @@ package com.charitychamp
 
 import org.springframework.dao.DataIntegrityViolationException
 
-//test some commit action
 class GlobalNumericSettingController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -14,9 +13,24 @@ class GlobalNumericSettingController {
 	def goalPerEmployee (){
 		
 		def settings = GlobalNumericSetting.findAllByName("Goal Amount Per Employee")
-		settings.sort{it.effectiveDate}
-		[globalNumericSettingInstanceList: settings, globalNumericSettingInstanceTotal: settings.size()]		
+		def goals = settings.sort{it.effectiveDate}.reverse()
+		[globalNumericSettingInstanceList: goals, globalNumericSettingInstanceTotal: goals.size()]		
 		
+	}
+	
+	def mofbShiftValue (){
+		
+		def settings = GlobalNumericSetting.findAllWhere(mofbShift: true)
+		def mofbValues = settings.sort{it.effectiveDate}.reverse()
+		[globalNumericSettingInstanceList: mofbValues, globalNumericSettingInstanceTotal: mofbValues.size()]
+		
+	}
+	
+	def mealsADollarBuys(){
+		
+		def settings = GlobalNumericSetting.findAllByName("Meals a Dollar Buys")
+		def goals = settings.sort{it.effectiveDate}.reverse()
+		[globalNumericSettingInstanceList: goals, globalNumericSettingInstanceTotal: goals.size()]
 	}
 
     def list(Integer max) {
@@ -33,9 +47,21 @@ class GlobalNumericSettingController {
 		render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : "Goal Amount Per Employee")])
 	}
 	
+	def createMofbShiftValue() {
+		render(view: "createMofbShiftValue", model: [globalNumericSettingInstance: new GlobalNumericSetting(params)])
+	}
+	
+	def createMealADollarBuys () {
+		render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : "Meals a Dollar Buys")])
+	}
+	
 	
     def save() {
-		
+				
+		def mofbShift = false
+		if(params.entryType == 'MOFB'){
+			mofbShift = true
+		}
 		def value = 0
 		
 		if(params.value){
@@ -44,9 +70,12 @@ class GlobalNumericSettingController {
 	
 			
         def globalNumericSettingInstance = new GlobalNumericSetting(params)
+		
 		globalNumericSettingInstance.value = value
+		globalNumericSettingInstance.mofbShift = mofbShift
 		
         if (!globalNumericSettingInstance.save(flush: true)) {
+			
             render(view: "create", model: [globalNumericSettingInstance: globalNumericSettingInstance])
             return
         }
@@ -119,14 +148,14 @@ class GlobalNumericSettingController {
         def globalNumericSettingInstance = GlobalNumericSetting.get(id)
         if (!globalNumericSettingInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-            redirect(action: "list")
+      //      redirect(action: "list")
             return
         }
 
         try {
             globalNumericSettingInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-            redirect(action: "list")
+          //  redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])

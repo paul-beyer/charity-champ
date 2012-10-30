@@ -5,8 +5,8 @@
 		<li><a href="${createLink(controller: 'business')}"><g:img dir="images" file="chart_organisation.png" /></a>&nbsp;<a href="${createLink(controller: 'business')}">Businesses</a></li><br/>
 		<li><a href="${createLink(controller: 'office')}"><g:img dir="images" file="chart_organisation.png" /></a>&nbsp;<a href="${createLink(controller: 'office')}">Offices</a></li><br/>
 		<li><a href="${createLink(controller: 'department')}"><g:img dir="images" file="chart_organisation.png" /></a>&nbsp;<a href="${createLink(controller: 'department')}">Departments</a></li><br/>
-		<li><a href="${createLink(controller: 'group')}"><g:img dir="images" file="coins.png" /></a>&nbsp;<a href="${createLink(controller: 'group')}">Groups</a></li><br/>
-		
+		<li><a href="${createLink(controller: 'group')}"><g:img dir="images" file="group.png" /></a>&nbsp;<a href="${createLink(controller: 'group')}">Groups</a></li><br/>
+		<li><a href="${createLink(controller: 'admin', action: 'configure')}"><g:img dir="images" file="hammer_screwdriver.png" /></a>&nbsp;<a href="${createLink(controller: 'admin', action: 'configure')}">Go to Configure</a></li><br/>
 											
 	</ul>
 </div>

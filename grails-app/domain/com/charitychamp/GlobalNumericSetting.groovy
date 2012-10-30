@@ -23,6 +23,7 @@ class GlobalNumericSetting {
 	String name
 	Date effectiveDate
 	BigDecimal value
+	Boolean mofbShift
 	
 	Date dateCreated
 	Date lastUpdated

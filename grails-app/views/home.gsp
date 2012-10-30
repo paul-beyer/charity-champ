@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="layout" content="main"/>
 <title>Welcome to Charity Champ</title>
-
+<r:require modules="home" />
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> 
 <![endif]-->
@@ -16,8 +16,8 @@
 
 
 	<div id="mainArea">
-		
-		
+
+
 	<!-- BEGIN USER OPTIONS SECTION -->
 
 		<div id="userOptions">
@@ -32,9 +32,10 @@
 						<input type="submit" value="Enter Data" />
 					</fieldset> 
 				</form>
-		
+
 		</div>
 	</div>
+
 
 
 

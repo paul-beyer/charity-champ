@@ -12,7 +12,22 @@
 			<g:render template="/shared/configureLinks" />
 			
 			<div class="manageChampRightPanel">
-				This is the configure screen			
+				<div id="configureInstruction" class="instruction">
+						<h1>
+							Configuration
+						</h1>
+						<br/>
+						<ul>
+							<li>
+								<p>
+									This areas allows you to configure global settings for your organization.
+								</p>
+							</li>
+							
+						
+						</ul>
+											
+					</div>
 			</div>
 		</div>
 <!-- END CONFIGURATION LINKS -->	
