@@ -1,4 +1,7 @@
+import org.joda.time.DateTime
+
 import com.charitychamp.Business
+import com.charitychamp.Campaign
 import com.charitychamp.Company
 import com.charitychamp.Department
 import com.charitychamp.Group
@@ -27,6 +30,19 @@ class BootStrap {
 	}	
   
 	def loadBootStrapData = {
+		
+		DateTime startDateOne = new DateTime(2011, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2011, 12 , 31, 0, 0)
+		
+		DateTime startDateTwo = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateTwo = new DateTime(2012, 12 , 31, 0, 0)
+		
+		DateTime startDateThree = new DateTime(2013, 1 , 1, 0, 0)
+		DateTime endDateThree = new DateTime(2013, 12 , 31, 0, 0)
+		
+		def campaign = new Campaign(name : "First Campaign", startDate : startDateOne.toDate(), endDate : endDateOne.toDate()).save(flush:true)
+		def campaign1 = new Campaign(name: 'Second Campaign', startDate : startDateTwo.toDate(), endDate : endDateTwo.toDate()).save()
+		def campaign2 = new Campaign(name: 'Third Campaign', startDate : startDateThree.toDate(), endDate : endDateThree.toDate()).save()
 		
 		def ceo = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save(flush:true)
 		def executive = new Person(userId : "whiter", firstName : "Roddy", lastName : "White", personTitle : "VP", email : "whitr@gmail.com").save(flush:true)

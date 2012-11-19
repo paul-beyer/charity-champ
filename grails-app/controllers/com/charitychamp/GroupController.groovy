@@ -1,5 +1,6 @@
 package com.charitychamp
 
+import org.joda.time.LocalDate
 import org.springframework.dao.DataIntegrityViolationException
 
 class GroupController {
@@ -38,9 +39,32 @@ class GroupController {
             return
         }
 
-        [groupInstance: groupInstance]
+        [groupInstance: groupInstance, secondGroupInstance : groupInstance]
     }
 
+	def overview(Long id) {
+		log.debug("Entering overview")
+		def groupInstance = Group.get(id)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
+			redirect(action: "list")
+			return
+		}
+		
+		def campaignString = "No campaign found for today's date (Setup Campaign in Configuration)" 
+		def currentCampaign = CharityChampUtils.currentCampaign(new LocalDate())
+		if(currentCampaign){
+			campaignString = currentCampaign.toString()
+		}
+	
+		[groupInstance: groupInstance, departmentName : groupInstance.department?.name, departmentId : groupInstance.department?.id
+		, officeId : groupInstance.department?.office?.id, officeName : groupInstance.department?.office?.name 
+		, businessId : groupInstance.department?.office?.business?.id, businessName : groupInstance.department?.office?.business?.name
+		, companyId :  groupInstance.department?.office?.business?.company?.id,  companyName :  groupInstance.department?.office?.business?.company?.name
+		, currentCampaign : campaignString]
+	}
+
+	
     def edit(Long id) {
         def groupInstance = Group.get(id)
         if (!groupInstance) {

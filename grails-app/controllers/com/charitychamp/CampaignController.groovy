@@ -1,5 +1,7 @@
 package com.charitychamp
 
+import org.joda.time.DateTime
+import org.joda.time.LocalDate
 import org.springframework.dao.DataIntegrityViolationException
 
 class CampaignController {
@@ -21,12 +23,37 @@ class CampaignController {
 
     def save() {
         def campaignInstance = new Campaign(params)
+		def newCampaignStartJoda = new LocalDate(campaignInstance?.startDate)
+		def newCampaignEndJoda = new LocalDate(campaignInstance?.endDate)
+		def newCampaignEndJodaMinusOneDay = newCampaignEndJoda.minusDays(1)
+	
+		if(newCampaignStartJoda.isAfter(newCampaignEndJodaMinusOneDay)){
+			flash.message = message(code: 'campaign.dates.reversed')
+			render(view: "create", model: [campaignInstance: campaignInstance])
+			return
+		}
+		def existingCampaigns = Campaign.findAll()
+		def campaignsOverlap = false
+		existingCampaigns.each {
+			def jodaEnd = new LocalDate(it.endDate)
+			def newCampaignStartJodaMinusOneDay = newCampaignStartJoda.minusDays(1)
+			if(newCampaignStartJodaMinusOneDay.isBefore(jodaEnd)){
+				campaignsOverlap = true
+				log.debug("Campaigns overlap")
+			}
+		}
+		if(campaignsOverlap == true){
+			flash.message = message(code: 'campaign.dates.overlap')
+			render(view: "create", model: [campaignInstance: campaignInstance])
+			return
+			
+		}
         if (!campaignInstance.save(flush: true)) {
             render(view: "create", model: [campaignInstance: campaignInstance])
             return
         }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'campaign.label', default: 'Campaign'), campaignInstance.id])
+		
+		flash.message = message(code: 'default.created.message', args: [message(code: 'campaign.label', default: 'Campaign'), campaignInstance.id])
         redirect(action: "show", id: campaignInstance.id)
     }
 

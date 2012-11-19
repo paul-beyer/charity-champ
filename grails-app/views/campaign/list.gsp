@@ -28,11 +28,11 @@
 							<tr>
 							
 								<g:sortableColumn property="name" title="${message(code: 'campaign.name.label', default: 'Name')}" />
-							
-								<g:sortableColumn property="endDate" title="${message(code: 'campaign.endDate.label', default: 'End Date')}" />
-							
+								
 								<g:sortableColumn property="startDate" title="${message(code: 'campaign.startDate.label', default: 'Start Date')}" />
 							
+								<g:sortableColumn property="endDate" title="${message(code: 'campaign.endDate.label', default: 'End Date')}" />
+																				
 							</tr>
 						</thead>
 						<tbody>
@@ -40,11 +40,11 @@
 							<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 							
 								<td><g:link action="show" id="${campaignInstance.id}">${fieldValue(bean: campaignInstance, field: "name")}</g:link></td>
-							
-								<td><g:formatDate date="${campaignInstance.endDate}" /></td>
-							
+								
 								<td><g:formatDate date="${campaignInstance.startDate}" /></td>
 							
+								<td><g:formatDate date="${campaignInstance.endDate}" /></td>
+													
 							</tr>
 						</g:each>
 						</tbody>

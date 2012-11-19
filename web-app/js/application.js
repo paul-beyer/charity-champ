@@ -8,3 +8,10 @@ if (typeof jQuery !== 'undefined') {
 	})(jQuery);
 }
 
+$(function () {
+	
+	$(".money").maskMoney();
+	
+	
+});
+

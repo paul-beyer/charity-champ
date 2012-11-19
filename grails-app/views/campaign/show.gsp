@@ -34,6 +34,15 @@
 							
 						</li>
 						</g:if>
+						
+						<g:if test="${campaignInstance?.startDate}">
+						<li class="fieldcontain">
+							<span id="startDate-label" class="property-label"><g:message code="campaign.startDate.label" default="Start Date" /></span>
+							
+								<span class="property-value" aria-labelledby="startDate-label"><g:formatDate date="${campaignInstance?.startDate}" /></span>
+							
+						</li>
+						</g:if>
 					
 						<g:if test="${campaignInstance?.endDate}">
 						<li class="fieldcontain">
@@ -44,14 +53,7 @@
 						</li>
 						</g:if>
 					
-						<g:if test="${campaignInstance?.startDate}">
-						<li class="fieldcontain">
-							<span id="startDate-label" class="property-label"><g:message code="campaign.startDate.label" default="Start Date" /></span>
-							
-								<span class="property-value" aria-labelledby="startDate-label"><g:formatDate date="${campaignInstance?.startDate}" /></span>
-							
-						</li>
-						</g:if>
+						
 					
 					</ol>
 					<g:form>

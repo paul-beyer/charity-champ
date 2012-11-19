@@ -125,6 +125,10 @@ color: #006600;
 	cursor: pointer;
 }
 
+#leftNavPane{
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+}
+
 #opFeedManagement input[type="submit"]:hover {
 	-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4); 
 	-moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
@@ -693,6 +697,7 @@ ul.one-to-many li.add {
 
 .buttons .edit {
 	background-image: url(../images/skin/database_edit.png);
+
 }
 
 .buttons .save {
@@ -707,5 +712,26 @@ a.skip {
 .nonEditField {
 	
 	color: #888888;
+}
+
+#breadCrumbs {
+	
+	padding-left: 25px;
+
+}
+
+#breadCrumbs ul li {
+	display: inline;
+	padding-left: 10px;
+
+}
+
+.overViewTitle h1 {
+	font-size: 2em;
+	padding: 0.2em 0.4em;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #006600;
+	
 }
 

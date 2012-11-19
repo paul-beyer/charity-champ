@@ -2,8 +2,10 @@ package com.charitychamp
 
 
 
-import org.junit.*
 import grails.test.mixin.*
+
+import org.joda.time.DateTime
+import org.junit.*
 
 @TestFor(CampaignController)
 @Mock(Campaign)
@@ -12,9 +14,11 @@ class CampaignControllerTests {
     def populateValidParams(params) {
         assert params != null
         // TODO: Populate valid properties like...
+		DateTime startDate = new DateTime(2013, 11 , 1, 0, 0)
+		DateTime endDate = new DateTime(2013, 11 , 2, 0, 0)
 		params["name"] = "2012"
-        params["startDate"] = new Date()
-		params["endDate"] = new Date()
+        params["startDate"] = startDate.toDate()
+		params["endDate"] = endDate.toDate()
     }
 
     void testIndex() {
@@ -51,6 +55,129 @@ class CampaignControllerTests {
         assert controller.flash.message != null
         assert Campaign.count() == 1
     }
+	
+	void testSaveWithStartAndEndDatesReversed() {
+		controller.save()
+
+		assert model.campaignInstance != null
+		assert view == '/campaign/create'
+
+		response.reset()
+
+		DateTime startDateThree = new DateTime(2013, 12 , 1, 0, 0)
+		DateTime endDateThree = new DateTime(2013, 11 , 30, 0, 0)
+		
+		populateValidParams(params)
+		params["startDate"] = startDateThree.toDate()
+		params["endDate"] = endDateThree.toDate()
+		controller.save()
+
+		assert view == '/campaign/create'
+		assert controller.flash.message == 'campaign.dates.reversed'
+		
+	}
+	
+	void testSaveWithStartAndEndDatesOnSameDay() {
+		controller.save()
+
+		assert model.campaignInstance != null
+		assert view == '/campaign/create'
+
+		response.reset()
+
+		DateTime startDateThree = new DateTime(2013, 12 , 1, 0, 0)
+		DateTime endDateThree = new DateTime(2013, 12 , 1, 0, 0)
+		
+		populateValidParams(params)
+		params["startDate"] = startDateThree.toDate()
+		params["endDate"] = endDateThree.toDate()
+		controller.save()
+
+		assert view == '/campaign/create'
+		assert controller.flash.message == 'campaign.dates.reversed'
+		
+	}
+	
+	void testSaveWithOverlappingDates() {
+		controller.save()
+
+		assert model.campaignInstance != null
+		assert view == '/campaign/create'
+
+		response.reset()
+		
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		
+		DateTime startDateThree = new DateTime(2012, 11 , 15, 0, 0)
+		DateTime endDateThree = new DateTime(2013, 12 , 31, 0, 0)
+		
+		populateValidParams(params)
+		params["startDate"] = startDateThree.toDate()
+		params["endDate"] = endDateThree.toDate()
+		controller.save()
+
+		assert view == '/campaign/create'
+		assert controller.flash.message == 'campaign.dates.overlap'
+		
+	}
+	
+	void testSaveWithOverlappingDatesOnSameDay() {
+		controller.save()
+
+		assert model.campaignInstance != null
+		assert view == '/campaign/create'
+
+		response.reset()
+		
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		
+		DateTime startDateThree = new DateTime(2012, 12 , 31, 0, 0)
+		DateTime endDateThree = new DateTime(2013, 12 , 31, 0, 0)
+		
+		populateValidParams(params)
+		params["startDate"] = startDateThree.toDate()
+		params["endDate"] = endDateThree.toDate()
+		controller.save()
+
+		assert view == '/campaign/create'
+		assert controller.flash.message == 'campaign.dates.overlap'
+		
+	}
+	
+	void testSaveWithImmediateNextDayStart() {
+		controller.save()
+
+		assert model.campaignInstance != null
+		assert view == '/campaign/create'
+
+		response.reset()
+		
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		
+		DateTime startDateThree = new DateTime(2013, 1 , 1, 0, 0)
+		DateTime endDateThree = new DateTime(2013, 12 , 31, 0, 0)
+		
+		populateValidParams(params)
+		params["startDate"] = startDateThree.toDate()
+		params["endDate"] = endDateThree.toDate()
+		controller.save()
+
+		assert response.redirectedUrl == '/campaign/show/2'
+        assert controller.flash.message != null
+		
+	}
 
     void testShow() {
         controller.show()
