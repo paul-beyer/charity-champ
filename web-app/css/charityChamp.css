@@ -105,7 +105,7 @@ color: #006600;
 }
 
 
-#opFeedManagement input[type="submit"] {
+.opFeedManagement input[type="submit"] {
 	
 	margin-right: 10px;
 	padding: 8px 15px;
@@ -129,7 +129,7 @@ color: #006600;
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
 }
 
-#opFeedManagement input[type="submit"]:hover {
+.opFeedManagement input[type="submit"]:hover {
 	-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4); 
 	-moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
 	box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
@@ -720,7 +720,7 @@ a.skip {
 
 }
 
-#breadCrumbs ul li {
+.breadCrumbs ul li {
 	display: inline;
 	padding-left: 10px;
 
@@ -733,5 +733,66 @@ a.skip {
 	font-weight: bold;
 	color: #006600;
 	
+}
+
+a.linkButton {
+  	margin-right: 10px;
+	padding: 8px 15px;
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+	text-transform: uppercase;
+	line-height: 1;
+	color: #009900;
+	text-shadow: 1px 1px 1px #fff;
+	border: none;
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#E2E2D9), to(#BDBDB5)); 
+	background-image: -moz-linear-gradient(19% 75% 90deg,#BDBDB5, #E2E2D9);
+	background-color: #e2e2d9;
+	-webkit-border-radius: 8px; 
+	-moz-border-radius: 8px; 
+	-o-border-radius: 8px; 
+	border-radius: 8px;
+	cursor: pointer;
+	text-decoration: none;
+   }
+   
+a.linkButton:hover {
+	-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4); 
+	-moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
+}
+
+.errors {
+	
+	font: bold !important;
+	color: #ff0000 !important;
+}
+.message {
+	
+	font-weight: bold;
+	color: #0000ff;
+}
+
+a.breadCrumbButton {
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #ff6600;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+   }
+   
+a.breadCrumbButton:hover {
+	-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4); 
+	-moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, .4);
+}
+
+.minorButtons{
+	 background-color: #EEEEEE;
+    color: #ff6600;
+      font: bold 12px Arial;
 }
 

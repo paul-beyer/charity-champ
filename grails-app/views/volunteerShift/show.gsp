@@ -59,11 +59,38 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${volunteerShiftInstance?.campaign}">
+				<li class="fieldcontain">
+					<span id="campaign-label" class="property-label"><g:message code="volunteerShift.campaign.label" default="Campaign" /></span>
+					
+						<span class="property-value" aria-labelledby="campaign-label"><g:link controller="campaign" action="show" id="${volunteerShiftInstance?.campaign?.id}">${volunteerShiftInstance?.campaign?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${volunteerShiftInstance?.dateCreated}">
+				<li class="fieldcontain">
+					<span id="dateCreated-label" class="property-label"><g:message code="volunteerShift.dateCreated.label" default="Date Created" /></span>
+					
+						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${volunteerShiftInstance?.dateCreated}" /></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${volunteerShiftInstance?.dateOfShift}">
 				<li class="fieldcontain">
 					<span id="dateOfShift-label" class="property-label"><g:message code="volunteerShift.dateOfShift.label" default="Date Of Shift" /></span>
 					
 						<span class="property-value" aria-labelledby="dateOfShift-label"><g:formatDate date="${volunteerShiftInstance?.dateOfShift}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${volunteerShiftInstance?.lastUpdated}">
+				<li class="fieldcontain">
+					<span id="lastUpdated-label" class="property-label"><g:message code="volunteerShift.lastUpdated.label" default="Last Updated" /></span>
+					
+						<span class="property-value" aria-labelledby="lastUpdated-label"><g:formatDate date="${volunteerShiftInstance?.lastUpdated}" /></span>
 					
 				</li>
 				</g:if>

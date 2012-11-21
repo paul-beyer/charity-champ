@@ -32,7 +32,9 @@
 					
 						<g:sortableColumn property="mealFactor" title="${message(code: 'volunteerShift.mealFactor.label', default: 'Meal Factor')}" />
 					
-						<g:sortableColumn property="dateOfShift" title="${message(code: 'volunteerShift.dateOfShift.label', default: 'Date Of Shift')}" />
+						<th><g:message code="volunteerShift.campaign.label" default="Campaign" /></th>
+					
+						<g:sortableColumn property="dateCreated" title="${message(code: 'volunteerShift.dateCreated.label', default: 'Date Created')}" />
 					
 					</tr>
 				</thead>
@@ -48,7 +50,9 @@
 					
 						<td>${fieldValue(bean: volunteerShiftInstance, field: "mealFactor")}</td>
 					
-						<td><g:formatDate date="${volunteerShiftInstance.dateOfShift}" /></td>
+						<td>${fieldValue(bean: volunteerShiftInstance, field: "campaign")}</td>
+					
+						<td><g:formatDate date="${volunteerShiftInstance.dateCreated}" /></td>
 					
 					</tr>
 				</g:each>

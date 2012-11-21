@@ -27,6 +27,7 @@ class JeansPayment {
 	String payerEmail
 	BigDecimal amtPaid
 	Date dateOfPayment
+	Campaign campaign
 	
 	Date dateCreated
 	Date lastUpdated

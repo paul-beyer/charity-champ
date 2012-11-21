@@ -23,26 +23,17 @@ class CampaignController {
 
     def save() {
         def campaignInstance = new Campaign(params)
-		def newCampaignStartJoda = new LocalDate(campaignInstance?.startDate)
-		def newCampaignEndJoda = new LocalDate(campaignInstance?.endDate)
-		def newCampaignEndJodaMinusOneDay = newCampaignEndJoda.minusDays(1)
+		def reversed = areCampaignDatesReversed(params.startDate, params.endDate)
 	
-		if(newCampaignStartJoda.isAfter(newCampaignEndJodaMinusOneDay)){
+		if(reversed){
 			flash.message = message(code: 'campaign.dates.reversed')
 			render(view: "create", model: [campaignInstance: campaignInstance])
 			return
 		}
-		def existingCampaigns = Campaign.findAll()
-		def campaignsOverlap = false
-		existingCampaigns.each {
-			def jodaEnd = new LocalDate(it.endDate)
-			def newCampaignStartJodaMinusOneDay = newCampaignStartJoda.minusDays(1)
-			if(newCampaignStartJodaMinusOneDay.isBefore(jodaEnd)){
-				campaignsOverlap = true
-				log.debug("Campaigns overlap")
-			}
-		}
-		if(campaignsOverlap == true){
+		
+		def campaignsOverlap = doCampaignsOverlap(null, params.startDate, params.endDate, false)
+		
+		if(campaignsOverlap){
 			flash.message = message(code: 'campaign.dates.overlap')
 			render(view: "create", model: [campaignInstance: campaignInstance])
 			return
@@ -96,14 +87,31 @@ class CampaignController {
                 return
             }
         }
-
-        campaignInstance.properties = params
-
-        if (!campaignInstance.save(flush: true)) {
-            render(view: "edit", model: [campaignInstance: campaignInstance])
-            return
-        }
-
+		
+		def reversed = areCampaignDatesReversed(params.startDate, params.endDate)
+			
+		if(reversed){
+			flash.message = message(code: 'campaign.dates.reversed')
+			render(view: "edit", model: [campaignInstance: campaignInstance])
+			return
+		}
+			
+		def campaignsOverlap = doCampaignsOverlap(id, params.startDate, params.endDate, true)
+			
+		if(campaignsOverlap){
+			flash.message = message(code: 'campaign.dates.overlap')
+			render(view: "edit", model: [campaignInstance: campaignInstance])
+			return
+			
+		}
+		
+		campaignInstance.properties = params
+		
+		if (!campaignInstance.save(flush: true)) {
+			render(view: "edit", model: [campaignInstance: campaignInstance])
+			return
+		}
+			
         flash.message = message(code: 'default.updated.message', args: [message(code: 'campaign.label', default: 'Campaign'), campaignInstance.id])
         redirect(action: "show", id: campaignInstance.id)
     }
@@ -126,4 +134,61 @@ class CampaignController {
             redirect(action: "show", id: id)
         }
     }
+	
+	private boolean areCampaignDatesReversed(Date startDate, Date endDate){
+		
+		def reversed = false
+		
+		def newCampaignStartJoda = new LocalDate(startDate)
+		def newCampaignEndJoda = new LocalDate(endDate)
+		def newCampaignEndJodaMinusOneDay = newCampaignEndJoda.minusDays(1)
+	
+		if(newCampaignStartJoda.isAfter(newCampaignEndJodaMinusOneDay)){
+			reversed = true
+		}
+		
+		return reversed
+	}
+	
+	private boolean doCampaignsOverlap(Long id, Date startDate, Date endDate,  boolean isUpdate){
+		
+		def newCampaignStartJoda = new LocalDate(startDate)
+		def newCampaignEndJoda = new LocalDate(endDate)
+		
+		def existingCampaigns
+		
+		//if Update, we need to remove the campaign we intend to update from the evaluation list
+		if(isUpdate){
+			def c = Campaign.createCriteria()
+			existingCampaigns = c.list {
+			    ne("id", id)
+			}
+		}else{ 		
+			existingCampaigns = Campaign.findAll()
+		}
+		
+		def campaignsOverlap = false
+		existingCampaigns.each {
+			def existingStart = new LocalDate(it.startDate)
+			def existingEnd = new LocalDate(it.endDate)
+			
+			def newCampaignStartPlusOneDay = newCampaignStartJoda.plusDays(1)
+			def newCampaignStartMinusOneDay = newCampaignStartJoda.minusDays(1)
+			
+			def newCampaignEndPlusOneDate = newCampaignEndJoda.plusDays(1)
+			def newCampaignEndMinusOneDate = newCampaignEndJoda.minusDays(1)
+			
+			if(newCampaignStartPlusOneDay.isAfter(existingStart) && newCampaignStartMinusOneDay.isBefore(existingEnd)){
+				campaignsOverlap = true
+				return campaignsOverlap
+			}
+			
+			if(newCampaignEndPlusOneDate.isAfter(existingStart) && newCampaignEndMinusOneDate.isBefore(existingEnd)){
+				campaignsOverlap = true
+				return campaignsOverlap
+			}
+		}
+	
+		return campaignsOverlap
+	}
 }

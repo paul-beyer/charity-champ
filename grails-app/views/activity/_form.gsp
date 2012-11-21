@@ -15,7 +15,7 @@
 		<g:message code="activity.amountCollected.label" default="Amount Collected" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field type="text" name="amountCollected" required="" value="${fieldValue(bean: activityInstance, field: 'amountCollected')}"/>
+	<g:field type="number" name="amountCollected" min="1" required="" value="${fieldValue(bean: activityInstance, field: 'amountCollected')}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'leaderName', 'error')} ">
@@ -32,6 +32,14 @@
 		
 	</label>
 	<g:textField name="comments" value="${activityInstance?.comments}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'campaign', 'error')} required">
+	<label for="campaign">
+		<g:message code="activity.campaign.label" default="Campaign" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="campaign" name="campaign.id" from="${com.charitychamp.Campaign.list()}" optionKey="id" required="" value="${activityInstance?.campaign?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'depositDate', 'error')} required">

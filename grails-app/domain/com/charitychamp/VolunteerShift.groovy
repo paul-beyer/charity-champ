@@ -25,6 +25,7 @@ class VolunteerShift {
 	String comments
 	Person leader
 	BigDecimal mealFactor
+	Campaign campaign
 	
 	Date dateCreated
 	Date lastUpdated

@@ -77,11 +77,38 @@
 				</li>
 				</g:if>
 			
+				<g:if test="${jeansPaymentInstance?.campaign}">
+				<li class="fieldcontain">
+					<span id="campaign-label" class="property-label"><g:message code="jeansPayment.campaign.label" default="Campaign" /></span>
+					
+						<span class="property-value" aria-labelledby="campaign-label"><g:link controller="campaign" action="show" id="${jeansPaymentInstance?.campaign?.id}">${jeansPaymentInstance?.campaign?.encodeAsHTML()}</g:link></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${jeansPaymentInstance?.dateCreated}">
+				<li class="fieldcontain">
+					<span id="dateCreated-label" class="property-label"><g:message code="jeansPayment.dateCreated.label" default="Date Created" /></span>
+					
+						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${jeansPaymentInstance?.dateCreated}" /></span>
+					
+				</li>
+				</g:if>
+			
 				<g:if test="${jeansPaymentInstance?.dateOfPayment}">
 				<li class="fieldcontain">
 					<span id="dateOfPayment-label" class="property-label"><g:message code="jeansPayment.dateOfPayment.label" default="Date Of Payment" /></span>
 					
 						<span class="property-value" aria-labelledby="dateOfPayment-label"><g:formatDate date="${jeansPaymentInstance?.dateOfPayment}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${jeansPaymentInstance?.lastUpdated}">
+				<li class="fieldcontain">
+					<span id="lastUpdated-label" class="property-label"><g:message code="jeansPayment.lastUpdated.label" default="Last Updated" /></span>
+					
+						<span class="property-value" aria-labelledby="lastUpdated-label"><g:formatDate date="${jeansPaymentInstance?.lastUpdated}" /></span>
 					
 				</li>
 				</g:if>

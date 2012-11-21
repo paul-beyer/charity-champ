@@ -51,11 +51,8 @@ class GroupController {
 			return
 		}
 		
-		def campaignString = "No campaign found for today's date (Setup Campaign in Configuration)" 
-		def currentCampaign = CharityChampUtils.currentCampaign(new LocalDate())
-		if(currentCampaign){
-			campaignString = currentCampaign.toString()
-		}
+		def campaignString = CharityChampUtils.campaignTitle(new LocalDate())
+		
 	
 		[groupInstance: groupInstance, departmentName : groupInstance.department?.name, departmentId : groupInstance.department?.id
 		, officeId : groupInstance.department?.office?.id, officeName : groupInstance.department?.office?.name 
@@ -123,4 +120,27 @@ class GroupController {
             redirect(action: "show", id: id)
         }
     }
+	
+	def activities() {
+		
+		def groupId = params.id.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(action: "overview", id: groupId)
+			return
+		}
+		
+		def activityList = groupInstance.activities
+		def campaignString = CharityChampUtils.campaignTitle(new LocalDate())
+		
+		[groupInstance: groupInstance, departmentName : groupInstance.department?.name, departmentId : groupInstance.department?.id
+			, officeId : groupInstance.department?.office?.id, officeName : groupInstance.department?.office?.name
+			, businessId : groupInstance.department?.office?.business?.id, businessName : groupInstance.department?.office?.business?.name
+			, companyId :  groupInstance.department?.office?.business?.company?.id,  companyName :  groupInstance.department?.office?.business?.company?.name
+			, currentCampaign : campaignString ,activityInstanceList: activityList, activityInstanceTotal: activityList.size()]
+     
+    }
+	
+	
 }

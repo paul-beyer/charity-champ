@@ -13,5 +13,26 @@ $(function () {
 	$(".money").maskMoney();
 	
 	
+	$("#addActivity").click(function() {
+//		  alert("Handler for .click() called.");
+		  $("#create-activity-dialog").dialog('open');
+		  
+		});
+	
+	 $("#create-activity-dialog").dialog({
+		  autoOpen: false,
+          width: 400,
+          modal: true,
+          resizable: false,
+          buttons: {
+              "Retry": function() {
+                 
+                  $(this).dialog("close");
+                  
+              }
+          }
+      });
+	
+	
 });
 

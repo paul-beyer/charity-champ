@@ -17,6 +17,7 @@ class JeansPaymentControllerTests {
 		params["payerLastName"] = 'Harvick'
 		params["amtPaid"] = '86.75'
 		params["dateOfPayment"] = new Date()
+		params["campaign"] = new Campaign(name : "2012", startDate : new Date(), endDate : new Date())
 		
 		
     }

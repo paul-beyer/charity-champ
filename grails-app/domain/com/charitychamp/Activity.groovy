@@ -23,6 +23,7 @@ class Activity {
 	String leaderName
 	String comments
 	Date depositDate
+	Campaign campaign
 	
 	Date dateCreated
 	Date lastUpdated
@@ -33,6 +34,6 @@ class Activity {
 		amountCollected min : 1 as BigDecimal
 		leaderName nullable : true
 		comments nullable : true
-		depositDate blank : false
+		
     }
 }

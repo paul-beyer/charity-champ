@@ -7,7 +7,7 @@
 		<g:message code="volunteerShift.numberOfVolunteers.label" default="Number Of Volunteers" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="numberOfVolunteers" type="number" min="1" value="${volunteerShiftInstance.numberOfVolunteers}" required=""/>
+	<g:field type="number" name="numberOfVolunteers" min="1" required="" value="${fieldValue(bean: volunteerShiftInstance, field: 'numberOfVolunteers')}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: volunteerShiftInstance, field: 'comments', 'error')} ">
@@ -31,7 +31,15 @@
 		<g:message code="volunteerShift.mealFactor.label" default="Meal Factor" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="mealFactor" value="${fieldValue(bean: volunteerShiftInstance, field: 'mealFactor')}" required=""/>
+	<g:field type="number" name="mealFactor" min="1" required="" value="${fieldValue(bean: volunteerShiftInstance, field: 'mealFactor')}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: volunteerShiftInstance, field: 'campaign', 'error')} required">
+	<label for="campaign">
+		<g:message code="volunteerShift.campaign.label" default="Campaign" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="campaign" name="campaign.id" from="${com.charitychamp.Campaign.list()}" optionKey="id" required="" value="${volunteerShiftInstance?.campaign?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: volunteerShiftInstance, field: 'dateOfShift', 'error')} required">

@@ -32,7 +32,7 @@
 					
 						<g:sortableColumn property="comments" title="${message(code: 'activity.comments.label', default: 'Comments')}" />
 					
-						<g:sortableColumn property="depositDate" title="${message(code: 'activity.depositDate.label', default: 'Deposit Date')}" />
+						<th><g:message code="activity.campaign.label" default="Campaign" /></th>
 					
 						<g:sortableColumn property="dateCreated" title="${message(code: 'activity.dateCreated.label', default: 'Date Created')}" />
 					
@@ -50,7 +50,7 @@
 					
 						<td>${fieldValue(bean: activityInstance, field: "comments")}</td>
 					
-						<td><g:formatDate date="${activityInstance.depositDate}" /></td>
+						<td>${fieldValue(bean: activityInstance, field: "campaign")}</td>
 					
 						<td><g:formatDate date="${activityInstance.dateCreated}" /></td>
 					

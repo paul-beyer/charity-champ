@@ -87,6 +87,7 @@ class CharityChampUtilsSpec extends UnitSpec {
 
 	}
 	
+		
 	def "Calling currentCampaign should return null if more than one campaign is found"() {
 		
 		//Campaigns are set up in Bootstrap.groovy

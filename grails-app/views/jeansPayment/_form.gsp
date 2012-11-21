@@ -47,7 +47,15 @@
 		<g:message code="jeansPayment.amtPaid.label" default="Amt Paid" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="amtPaid" value="${fieldValue(bean: jeansPaymentInstance, field: 'amtPaid')}" required=""/>
+	<g:field type="number" name="amtPaid" min="1" required="" value="${fieldValue(bean: jeansPaymentInstance, field: 'amtPaid')}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: jeansPaymentInstance, field: 'campaign', 'error')} required">
+	<label for="campaign">
+		<g:message code="jeansPayment.campaign.label" default="Campaign" />
+		<span class="required-indicator">*</span>
+	</label>
+	<g:select id="campaign" name="campaign.id" from="${com.charitychamp.Campaign.list()}" optionKey="id" required="" value="${jeansPaymentInstance?.campaign?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: jeansPaymentInstance, field: 'dateOfPayment', 'error')} required">

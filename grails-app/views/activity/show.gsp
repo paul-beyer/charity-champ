@@ -59,11 +59,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${activityInstance?.depositDate}">
+				<g:if test="${activityInstance?.campaign}">
 				<li class="fieldcontain">
-					<span id="depositDate-label" class="property-label"><g:message code="activity.depositDate.label" default="Deposit Date" /></span>
+					<span id="campaign-label" class="property-label"><g:message code="activity.campaign.label" default="Campaign" /></span>
 					
-						<span class="property-value" aria-labelledby="depositDate-label"><g:formatDate date="${activityInstance?.depositDate}" /></span>
+						<span class="property-value" aria-labelledby="campaign-label"><g:link controller="campaign" action="show" id="${activityInstance?.campaign?.id}">${activityInstance?.campaign?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 				</g:if>
@@ -73,6 +73,15 @@
 					<span id="dateCreated-label" class="property-label"><g:message code="activity.dateCreated.label" default="Date Created" /></span>
 					
 						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${activityInstance?.dateCreated}" /></span>
+					
+				</li>
+				</g:if>
+			
+				<g:if test="${activityInstance?.depositDate}">
+				<li class="fieldcontain">
+					<span id="depositDate-label" class="property-label"><g:message code="activity.depositDate.label" default="Deposit Date" /></span>
+					
+						<span class="property-value" aria-labelledby="depositDate-label"><g:formatDate date="${activityInstance?.depositDate}" /></span>
 					
 				</li>
 				</g:if>

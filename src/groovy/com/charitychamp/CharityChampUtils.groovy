@@ -32,5 +32,19 @@ class CharityChampUtils {
 		return foundList[0]
 			
 	}
+	
+	public static final String campaignTitle(LocalDate dateTime){
+		
+		def currentCampaign = currentCampaign(dateTime)
+		
+		def campaignString = "No campaign found for today's date (Setup Campaign in Configuration)"
+		
+		if(currentCampaign){
+			campaignString = currentCampaign.toString()
+		}
+		
+		return campaignString
+		
+	}
 
 }

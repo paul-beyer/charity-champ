@@ -18,7 +18,7 @@
 		
 		
 		<g:layoutHead/>
-		<r:require modules="application, jquery, dtree, moneyMask" />
+		<r:require modules="application, jquery, dtree, moneyMask, jquery-ui" />
 		<r:layoutResources />
 	</head>
 	<body>
