@@ -17,7 +17,7 @@
 package com.charitychamp
 
 class Activity {
-
+//This is just a change to see where it shows up!!
 	String name
 	BigDecimal amountCollected
 	String leaderName
