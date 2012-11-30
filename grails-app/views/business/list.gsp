@@ -55,7 +55,7 @@
 							
 								<td><g:formatDate date="${businessInstance.dateCreated}" /></td>
 							
-								<td>${fieldValue(bean: businessInstance, field: "executive")}</td>
+								<td>${fieldValue(bean: businessInstance, field: "leader")}</td>
 							
 							</tr>
 						</g:each>

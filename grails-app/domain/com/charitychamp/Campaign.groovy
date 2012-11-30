@@ -5,11 +5,12 @@ class Campaign {
 	String name
 	Date startDate
 	Date endDate
+		
+	static hasMany = [donationSources : DonationSource]
 	
-
     static constraints = {
 		name blank:false, unique:true
-		
+		donationSources nullable:true
     }
 	
 	@Override

@@ -18,23 +18,18 @@ package com.charitychamp
 
 import java.util.Date;
 
-class Group {
+class Group extends OrganizationalUnit{
 
-	String name
-	Person leader
-	
 	Date dateCreated
 	Date lastUpdated
 	
 	static belongsTo = [department: Department]
-	static hasMany = [activities: Activity, volunteerShifts : VolunteerShift, jeansPayments : JeansPayment]
+
 	
     static constraints = {
 		name blank : false
 		leader nullable : true
-		activities nullable : true
-		volunteerShifts nullable : true
-		jeansPayments nullable : true
+
     }
 	
 	static mapping = { table 'work_group' }

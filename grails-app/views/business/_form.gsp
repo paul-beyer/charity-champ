@@ -36,11 +36,11 @@
 	<g:select id="company" name="company.id" from="${com.charitychamp.Company.list()}" optionKey="id" required="" value="${businessInstance?.company?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: businessInstance, field: 'executive', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: businessInstance, field: 'leader', 'error')} required">
 	<label for="executive">
 		<g:message code="business.executive.label" default="Executive" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="executive" name="executive.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${businessInstance?.executive?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
+	<g:select id="executive" name="leader.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${businessInstance?.leader?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 

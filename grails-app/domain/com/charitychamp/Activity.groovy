@@ -16,14 +16,14 @@
 
 package com.charitychamp
 
-class Activity {
-//This is just a change to see where it shows up!!
+class Activity extends Donation{
+	
+	static final String type = CharityChampConstants.activity
+
 	String name
 	BigDecimal amountCollected
 	String leaderName
 	String comments
-	Date depositDate
-	Campaign campaign
 	
 	Date dateCreated
 	Date lastUpdated

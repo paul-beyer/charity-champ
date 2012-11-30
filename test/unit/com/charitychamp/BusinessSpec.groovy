@@ -46,7 +46,7 @@ class BusinessSpec extends ConstraintUnitSpec{
         error                  | field              | val
         'blank'                | 'name'             | ''
         'nullable'             | 'name'             | null
-		'nullable'             | 'executive'        | null
+		'nullable'             | 'leader'        | null
 		'nullable'             | 'charityLeader'    | null
 		'valid'                | 'offices'          | null
 		'blank'                | 'teamNumber'       | ''

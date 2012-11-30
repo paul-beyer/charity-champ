@@ -12,7 +12,7 @@ class DepartmentControllerTests {
     def populateValidParams(params) {
         assert params != null
         params["name"] = 'CIM/CIF'
-		params["departmentHead"] = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
+		params["leader"] = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
 		params["charityLieutenant"] = new Person(userId:'biffle', firstName: "Greg", lastName: "Biffle")
 		params["office"] = new Office(name:'some office name')
     }

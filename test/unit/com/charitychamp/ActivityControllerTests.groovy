@@ -28,8 +28,8 @@ class ActivityControllerTests {
         // TODO: Populate valid properties like...
         params["name"] = 'Bake Sale'
 		params["amountCollected"] = '100.50'
-		params["depositDate"] = new Date().parse("yyyy-MM-dd", '2011-10-05')
-		params["campaign"] = new Campaign(name : "2012", startDate : new Date(), endDate : new Date())
+		params["donationDate"] = new Date().parse("yyyy-MM-dd", '2011-10-05')
+	
     }
 
     void testIndex() {

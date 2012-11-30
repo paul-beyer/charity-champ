@@ -1,5 +1,5 @@
 <%@ page import="com.charitychamp.Activity" %>
-<!doctype html>
+<g:applyLayout name="groupLayout">
 <html>
 	<head>
 		<title>Add Activity</title>
@@ -8,11 +8,8 @@
 	<body>
 	
 	
-		<div id="create-activity-dialog" class="content scaffold-create" role="main">
-			<h1>Create Activity</h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
+		<div id="create-activity" class="content scaffold-create" role="main">
+		
 			<g:hasErrors bean="${activityInstance}">
 			<ul class="errors" role="alert">
 				<g:eachError bean="${activityInstance}" var="error">
@@ -21,6 +18,7 @@
 			</ul>
 			</g:hasErrors>
 			<g:form action="saveActivity" >
+				<g:hiddenField name="groupId" value="${groupInstance.id}" />
 				<fieldset class="form">
 					<g:render template="activityForm"/>
 				</fieldset>
@@ -30,9 +28,6 @@
 			</g:form>
 		</div>
 	</body>
-	<div id="saveApplicationDialog" title="Application Area Selection Alert">
-	     	<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 0 0;"></span>
-	        <p>You must select an Application Area</p>
-	
-	</div>
+
 </html>
+</g:applyLayout>

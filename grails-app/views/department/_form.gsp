@@ -34,12 +34,12 @@
 	<g:select id="charityLieutenant" name="charityLieutenant.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.charityLieutenant?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'departmentHead', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'leader', 'error')} required">
 	<label for="departmentHead">
 		<g:message code="department.departmentHead.label" default="Department Head" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="departmentHead" name="departmentHead.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.departmentHead?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
+	<g:select id="departmentHead" name="departmentHead.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.leader?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'office', 'error')} required">

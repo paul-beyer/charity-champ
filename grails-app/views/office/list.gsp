@@ -55,7 +55,7 @@
 							
 								<td><g:formatDate date="${officeInstance.lastUpdated}" /></td>
 							
-								<td>${fieldValue(bean: officeInstance, field: "officer")}</td>
+								<td>${fieldValue(bean: officeInstance, field: "leader")}</td>
 							
 							</tr>
 						</g:each>

@@ -55,7 +55,7 @@
 							
 								<td>${fieldValue(bean: departmentInstance, field: "office")}</td>
 							
-								<td>${fieldValue(bean: departmentInstance, field: "departmentHead")}</td>
+								<td>${fieldValue(bean: departmentInstance, field: "leader")}</td>
 							
 							</tr>
 						</g:each>

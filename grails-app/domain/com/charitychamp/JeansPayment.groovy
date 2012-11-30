@@ -18,7 +18,9 @@ package com.charitychamp
 
 import java.util.Date;
 
-class JeansPayment {
+class JeansPayment extends Donation{
+	
+	static final String type = CharityChampConstants.jeansPayment
 	
 	String employeeUserId
 	String payerFirstName
@@ -26,9 +28,7 @@ class JeansPayment {
 	String payerPhone
 	String payerEmail
 	BigDecimal amtPaid
-	Date dateOfPayment
-	Campaign campaign
-	
+
 	Date dateCreated
 	Date lastUpdated
 	

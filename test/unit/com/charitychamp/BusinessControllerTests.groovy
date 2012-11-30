@@ -27,9 +27,9 @@ class BusinessControllerTests {
         assert params != null
 		def remy = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
 		def greg = new Person(userId:'biffle', firstName: "Greg", lastName: "Biffle")
-		def company = new Company(name: "ACME", ceo: greg)
+		def company = new Company(name: "ACME", leader: greg)
         params["name"] = 'IT'
-		params["executive"] = remy
+		params["leader"] = remy
 		params["charityLeader"] = greg
 		params["teamNumber"] = "1234"
 		params["company"] = company

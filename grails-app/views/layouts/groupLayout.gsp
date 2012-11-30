@@ -43,6 +43,8 @@
 						<div class="overViewTitle">
 							<h1>${groupInstance.name}</h1>
 							<h2>${currentCampaign}</h2>
+							
+						
 						</div>	
 						
 					</div>

@@ -1,26 +1,42 @@
 package com.charitychamp
 
-import static org.junit.Assert.*
-
 import grails.test.mixin.*
 import grails.test.mixin.support.*
+
 import org.junit.*
+
+import spock.lang.Unroll
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
  */
-@TestMixin(GrailsUnitTestMixin)
-class CampaignSpec {
+@TestFor(Campaign)
+class CampaignSpec extends ConstraintUnitSpec{
 
-    void setUp() {
-        // Setup logic here
+     def setup() {
+    
+        mockForConstraintsTests(Campaign, [new Campaign(name : 'First')])
     }
 
-    void tearDown() {
-        // Tear down logic here
+    @Unroll("test Campaign all constraints #field is #error")
+    def "test Campaign all constraints"() {
+        when:
+        def obj = new Campaign("$field": val)
+
+        then:
+        validateConstraints(obj, field, error)
+
+        where:
+        error                  | field              | val
+    
+        'blank'                | 'name'             | ''
+        'nullable'             | 'name'             | null
+		'unique'               | 'name'             | 'First'
+		'nullable'             | 'startDate' 		| null
+		'nullable'             | 'endDate'  		| null
+		'valid'                | 'donationSources'  | null
+		
+			
     }
 
-    void testSomething() {
-        fail "Implement me"
-    }
 }

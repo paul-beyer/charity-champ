@@ -21,16 +21,10 @@ $(function () {
 	
 	 $("#create-activity-dialog").dialog({
 		  autoOpen: false,
-          width: 400,
+          width: 550,
           modal: true,
-          resizable: false,
-          buttons: {
-              "Retry": function() {
-                 
-                  $(this).dialog("close");
-                  
-              }
-          }
+          resizable: true
+       
       });
 	
 	

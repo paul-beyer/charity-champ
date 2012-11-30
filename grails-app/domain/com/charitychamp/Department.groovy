@@ -18,10 +18,8 @@ package com.charitychamp
 
 import java.util.Date;
 
-class Department {
+class Department extends OrganizationalUnit{
 	
-	String name
-	Person departmentHead
 	Person charityLieutenant
 	int numberOfEmployees
 	Date dateOfEmployeeCount

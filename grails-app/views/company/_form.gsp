@@ -16,6 +16,6 @@
 		<g:message code="company.ceo.label" default="Ceo" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="ceo" name="ceo.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${companyInstance?.ceo?.id}"  noSelection="['':'-Choose-']" class="many-to-one"/>
+	<g:select id="ceo" name="leader.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${companyInstance?.leader?.id}"  noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 

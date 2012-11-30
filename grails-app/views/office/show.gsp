@@ -72,11 +72,11 @@
 						</li>
 						</g:if>
 					
-						<g:if test="${officeInstance?.officer}">
+						<g:if test="${officeInstance?.leader}">
 						<li class="fieldcontain">
 							<span id="officer-label" class="property-label"><g:message code="office.officer.label" default="Officer" /></span>
 							
-								<span class="property-value" aria-labelledby="officer-label"><g:link controller="person" action="show" id="${officeInstance?.officer?.id}">${officeInstance?.officer?.encodeAsHTML()}</g:link></span>
+								<span class="property-value" aria-labelledby="officer-label"><g:link controller="person" action="show" id="${officeInstance?.leader?.id}">${officeInstance?.leader?.encodeAsHTML()}</g:link></span>
 							
 						</li>
 						</g:if>

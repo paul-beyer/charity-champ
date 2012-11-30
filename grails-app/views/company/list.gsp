@@ -41,7 +41,7 @@
 							
 								<td><g:link action="show" id="${companyInstance.id}">${fieldValue(bean: companyInstance, field: "name")}</g:link></td>
 							
-								<td>${fieldValue(bean: companyInstance, field: "ceo")}</td>
+								<td>${fieldValue(bean: companyInstance, field: "leader")}</td>
 							
 							</tr>
 						</g:each>

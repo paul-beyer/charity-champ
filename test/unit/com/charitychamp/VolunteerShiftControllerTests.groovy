@@ -14,10 +14,10 @@ class VolunteerShiftControllerTests {
 
     def populateValidParams(params) {
         assert params != null
-        params["dateOfShift"] = new Date()
+        params["donationDate"] = new Date()
 		params["numberOfVolunteers"] = '12'
 		params["mealFactor"] = '33.3'
-		params["campaign"] = new Campaign(name : "2012", startDate : new Date(), endDate : new Date())
+	
     }
 
     void testIndex() {
@@ -106,7 +106,7 @@ class VolunteerShiftControllerTests {
 
         // test invalid parameters in update
         params.id = volunteerShift.id
-        params.dateOfShift = null
+        params.donationDate = null
 
         controller.update()
 

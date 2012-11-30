@@ -44,7 +44,7 @@ class VolunteerShiftSpec extends ConstraintUnitSpec{
 
         where:
         error                  | field                | val
-        'nullable'             | 'dateOfShift'        | ''
+        'nullable'             | 'donationDate'        | ''
         'min'                  | 'numberOfVolunteers' | 0
 		'valid'                | 'comments'           | null
 		'valid'                | 'leader'             | null

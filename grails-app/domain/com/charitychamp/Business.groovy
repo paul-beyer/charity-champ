@@ -18,10 +18,8 @@ package com.charitychamp
 
 import java.util.Date;
 
-class Business {
+class Business extends OrganizationalUnit{
 
-	String name
-	Person executive
 	Person charityLeader
 	String teamNumber
 	
@@ -39,6 +37,7 @@ class Business {
 		
     }
 	
+	@Override
 	String toString(){
 		return "${name}"
 	}

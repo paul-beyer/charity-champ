@@ -109,4 +109,117 @@ class CharityChampUtilsSpec extends UnitSpec {
 		foundCampaign == null
 
 	}
+	
+	def "Calling currentCampaign should return null if no campaign is found"() {
+		
+		//Campaigns are set up in Bootstrap.groovy
+		setup:
+	
+		def currentDate = new LocalDate(2014, 10, 25)
+		
+		
+		when:
+		
+		def foundCampaign = CharityChampUtils.currentCampaign(currentDate)
+		
+		then:
+	
+		foundCampaign == null
+
+	}
+	
+	def "donation date occurs within the campaign"(){
+		
+		setup:
+		def campaign = Campaign.findByName("Second Campaign")
+		def date = new LocalDate(2012, 4, 10)
+		
+		when:
+		
+		def isDateGood = CharityChampUtils.donationOccursWithinValidCampaign(campaign, date.toDate())
+		
+		then:
+		
+		isDateGood == true
+		
+		
+		
+		
+	}
+	
+	def "donation date occurs on first day of the campaign"(){
+		
+		setup:
+		def campaign = Campaign.findByName("Second Campaign")
+		def date = new LocalDate(2012, 1, 1)
+		
+		when:
+		
+		def isDateGood = CharityChampUtils.donationOccursWithinValidCampaign(campaign, date.toDate())
+		
+		then:
+		
+		isDateGood == true
+		
+		
+		
+		
+	}
+	
+	def "donation date occurs on last day of the campaign"(){
+		
+		setup:
+		def campaign = Campaign.findByName("Second Campaign")
+		def date = new LocalDate(2012, 12, 31)
+		
+		when:
+		
+		def isDateGood = CharityChampUtils.donationOccursWithinValidCampaign(campaign, date.toDate())
+		
+		then:
+		
+		isDateGood == true
+		
+		
+		
+		
+	}
+	
+	def "donation date occurs on one day before the start of the campaign"(){
+		
+		setup:
+		def campaign = Campaign.findByName("Second Campaign")
+		def date = new LocalDate(2011, 12, 31)
+		
+		when:
+		
+		def isDateGood = CharityChampUtils.donationOccursWithinValidCampaign(campaign, date.toDate())
+		
+		then:
+		
+		isDateGood == false
+		
+		
+		
+		
+	}
+	
+	def "donation date occurs on one day after the end of the campaign"(){
+		
+		setup:
+		def campaign = Campaign.findByName("Second Campaign")
+		def date = new LocalDate(2013, 1, 1)
+		
+		when:
+		
+		def isDateGood = CharityChampUtils.donationOccursWithinValidCampaign(campaign, date.toDate())
+		
+		then:
+		
+		isDateGood == false
+		
+		
+		
+		
+	}
 }

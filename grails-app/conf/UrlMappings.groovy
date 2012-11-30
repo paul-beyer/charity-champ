@@ -7,7 +7,10 @@ class UrlMappings {
 			}
 		}
 
-		"/"(view:"/home")
+//		"/"(view:"/home")
+		"/"(controller:"home"){
+			action = [GET:'home']
+		}
 		"500"(view:'/error')
 		
 		"/organizationalTree"(controller:"organizationalTree"){

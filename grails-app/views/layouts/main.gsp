@@ -28,7 +28,7 @@
 			<div id="main">
 				<a href="#" id="opfeed"><g:img dir="images" file="rsz_mid-ohio-food-bank.png"/></a>
 				<a href="#" id="title"></a>
-				
+			
 			</div>	
 <!-- END HEADER -->
 
@@ -37,11 +37,11 @@
 				<ul>
 					<li><a href="${createLink(uri: '/')}">Home</a></li>
 					<li><a href="${createLink(controller: 'admin', action: 'admin')}">Manage</a></li>
-					
+				
 				</ul>
 			</div>
 <!-- END NAVIGATION -->	
-	
+			
 			<g:layoutBody/>
 		<!-- BEGIN FOOTER -->	
 			<div id="primary-foot">

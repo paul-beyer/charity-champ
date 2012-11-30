@@ -32,6 +32,13 @@
 									by selecting "Configure".
 								</p> 
 							</li>
+							<br/>
+							<li>
+								<p>
+									Charity Champ defaults all views to the current campaign.  You can change it here for the current user session.
+									This setting will revert to the current campaign when you leave and re-enter the application.
+								</p> 
+							</li>
 						
 						</ul>
 											

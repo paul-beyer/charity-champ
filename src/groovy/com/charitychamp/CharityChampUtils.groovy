@@ -46,5 +46,25 @@ class CharityChampUtils {
 		return campaignString
 		
 	}
+	
+	public static final boolean donationOccursWithinValidCampaign(Campaign campaign, Date donationDate){
+		
+		def depositDate = new LocalDate(donationDate)
+		def startDate = new LocalDate(campaign.startDate)
+		def endDate = new LocalDate(campaign.endDate)
+		def startDateMinusOne = startDate.minusDays(1)
+		def endDatePlusOne = endDate.plusDays(1)
+		def boolean isGood = false
+		
+		if(depositDate.isAfter(startDateMinusOne) && depositDate.isBefore(endDatePlusOne)){
+			isGood = true
+			
+		}
+		
+		return isGood
+
+	}
+	
+	
 
 }

@@ -18,10 +18,7 @@ package com.charitychamp
 
 import java.util.Date;
 
-class Company {
-
-	String name
-	Person ceo
+class Company extends OrganizationalUnit{
 	
 	Date dateCreated
 	Date lastUpdated
@@ -34,6 +31,7 @@ class Company {
 		globalSettings nullable : true
     }
 	
+	@Override
 	String toString(){
 		return "${name}"
 	}

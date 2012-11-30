@@ -72,11 +72,11 @@
 						</li>
 						</g:if>
 					
-						<g:if test="${departmentInstance?.departmentHead}">
+						<g:if test="${departmentInstance?.leader}">
 						<li class="fieldcontain">
 							<span id="departmentHead-label" class="property-label"><g:message code="department.departmentHead.label" default="Department Head" /></span>
 							
-								<span class="property-value" aria-labelledby="departmentHead-label"><g:link controller="person" action="show" id="${departmentInstance?.departmentHead?.id}">${departmentInstance?.departmentHead?.encodeAsHTML()}</g:link></span>
+								<span class="property-value" aria-labelledby="departmentHead-label"><g:link controller="person" action="show" id="${departmentInstance?.leader?.id}">${departmentInstance?.leader?.encodeAsHTML()}</g:link></span>
 							
 						</li>
 						</g:if>

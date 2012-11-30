@@ -2,12 +2,21 @@ package com.charitychamp
 
 
 
-import org.junit.*
 import grails.test.mixin.*
+import groovy.mock.interceptor.MockFor
+
+import org.joda.time.DateTime
+import org.joda.time.LocalDate
+import org.junit.*
 
 @TestFor(GroupController)
-@Mock(Group)
+@Mock([Group, Campaign, Activity, Company, Business, Office, Department, Person])
 class GroupControllerTests {
+	
+	
+	void setUp(){
+		
+	}
 
     def populateValidParams(params) {
         assert params != null
@@ -154,4 +163,314 @@ class GroupControllerTests {
         assert Group.get(group.id) == null
         assert response.redirectedUrl == '/group/list'
     }
+	
+	void testSaveActivityWithNoCampaignFound(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+			 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+	
+		
+		params.groupId = group.id 
+		
+		def dateServiceMockContext = new MockFor(DateHandlerService)
+		dateServiceMockContext.demand.todaysDate(1..1) { return new LocalDate(2013, 5, 15) }
+		def mockDateService = dateServiceMockContext.proxyInstance()
+		controller.dateHandlerService = mockDateService
+		
+		controller.saveActivity()
+		assert controller.flash.message == 'campaign.not.found'
+		assert model.groupInstance != null
+		assert model.activityInstance != null
+		assert view == '/group/addActivity'
+		
+	}
+	
+	void testSaveActivityWithGarbageInputAmount(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save()
+	
+//		DonationSource donationSource = new DonationSource(donation : activity, orgUnit : group).save()
+//		List donations = new ArrayList()
+//		donations << donationSource
+//		campaign.donationSources = donations
+//		campaign.save()
+		
+		params.groupId = group.id
+		params.amountCollected = 'AAAA'
+		
+		def dateServiceMockContext = new MockFor(DateHandlerService)
+		dateServiceMockContext.demand.todaysDate(1..1) { return new LocalDate(2013, 5, 15) }
+		def mockDateService = dateServiceMockContext.proxyInstance()
+		controller.dateHandlerService = mockDateService
+		
+		controller.saveActivity()
+		assert controller.flash.message == 'activity.amount.collected.parse.exception'
+		assert model.groupInstance != null
+		assert model.activityInstance != null
+		assert view == '/group/addActivity'
+		
+	}
+	
+	void testSaveActivityWithDepositDateOutsideOfCampaign(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save()
+	
+//		DonationSource donationSource = new DonationSource(donation : activity, orgUnit : group).save()
+//		List donations = new ArrayList()
+//		donations << donationSource
+//		campaign.donationSources = donations
+//		campaign.save()
+		
+		LocalDate depDate = new LocalDate(2014, 6, 12)
+		params.groupId = group.id
+		params.amountCollected = '100.00'
+		params.depositDate = depDate.toDate()
+		
+		
+		def dateServiceMockContext = new MockFor(DateHandlerService)
+		dateServiceMockContext.demand.todaysDate(1..1) { return new LocalDate(2013, 5, 15) }
+		def mockDateService = dateServiceMockContext.proxyInstance()
+		controller.dateHandlerService = mockDateService
+		
+		controller.saveActivity()
+		controller.flash.message == 'donation.date.not.in.valid.campaign'
+		assert model.groupInstance != null
+		assert model.activityInstance != null
+		assert view == '/group/addActivity'
+		
+	}
+	
+	void testSaveActivityWithEverythingFine(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save()
+	
+		
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.name = 'Chili Cookoff'
+		params.groupId = group.id
+		params.amountCollected = '100.00'
+		params.depositDate = depDate.toDate()
+		
+		
+		def dateServiceMockContext = new MockFor(DateHandlerService)
+		dateServiceMockContext.demand.todaysDate(1..1) { return new LocalDate(2013, 5, 15) }
+		def mockDateService = dateServiceMockContext.proxyInstance()
+		controller.dateHandlerService = mockDateService
+		
+		controller.saveActivity()
+		assert controller.flash.message == 'default.created.message'
+		assert response.redirectedUrl == '/group/activities/1'
+		
+	}
+	
+	void testUpdatingActivityWithGroupNotFound(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save()
+		
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.name = 'Chili Cookoff'
+		params.amountCollected = '100.00'
+		params.depositDate = depDate.toDate()
+		
+		controller.updateActivity(0, activity.id, activity.version)
+		
+		assert controller.flash.message == 'default.not.found.message'
+		assert response.redirectedUrl == '/home/home'
+		
+	}
+	
+	void testUpdatingActivityWithActivityNotFound(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save()
+		
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.name = 'Chili Cookoff'
+		params.amountCollected = '100.00'
+		params.depositDate = depDate.toDate()
+		
+		controller.updateActivity(group.id, 0, activity.version)
+		
+		assert controller.flash.message == 'default.not.found.message'
+		assert response.redirectedUrl == '/group/activities/1'
+		
+	}
+	
+	void testUpdatingActivityWithBadVersion(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush:true)
+		
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.name = 'Chili Cookoff'
+		params.amountCollected = '100.00'
+		params.depositDate = depDate.toDate()
+		session["campaign"] = campaign.id
+		controller.updateActivity(group.id, activity.id, -1)
+		
+		assert model.groupInstance != null
+		assert model.activityInstance != null
+		assert view == '/group/editActivity'
+		
+	}
+	
+	void testUpdatingActivityWithBadAmount(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush:true)
+		
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.name = 'Chili Cookoff'
+		params.amountCollected = 'A'
+		params.depositDate = depDate.toDate()
+		session["campaign"] = campaign.id
+		controller.updateActivity(group.id, activity.id, activity.version)
+		
+		assert model.groupInstance != null
+		assert model.activityInstance != null
+		assert view == '/group/editActivity'
+		
+	}
+	
+	void testUpdatingActivityWithDonationDateThatDoesNotFallInAValidCampaign(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush:true)
+		
+		LocalDate depDate = new LocalDate(2014, 6, 12)
+		params.name = 'Chili Cookoff'
+		params.amountCollected = '100.00'
+		params.depositDate = depDate.toDate()
+		params.campaignId = campaign.id 
+		session["campaign"] = campaign.id
+		controller.updateActivity(group.id, activity.id, activity.version)
+		
+		assert model.groupInstance != null
+		assert model.activityInstance != null
+		assert view == '/group/editActivity'
+		
+	}
+	
+	void testUpdatingActivityWithDonationDateThatFallsInDifferentCampaignThanCurrent(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime startDateTwo = new DateTime(2014, 1 , 2, 0, 0)
+		DateTime endDateTwo = new DateTime(2014, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush:true)
+		
+		LocalDate depDate = new LocalDate(2014, 6, 12)
+		params.name = 'Chili Cookoff'
+		params.amountCollected = '100.00'
+		params.depositDate = depDate.toDate()
+		params.campaignId = campaign.id
+		session["campaign"] = campaign.id
+		controller.updateActivity(group.id, activity.id, activity.version)
+		
+		assert model.groupInstance != null
+		assert model.activityInstance != null
+		assert view == '/group/editActivity'
+		
+	}
 }

@@ -46,7 +46,7 @@ class CompanySpec extends ConstraintUnitSpec{
         error                  | field              | val
         'blank'                | 'name'             | ''
         'nullable'             | 'name'             | null
-		'nullable'             | 'ceo'              | null
+		'nullable'             | 'leader'           | null
 		'valid'                | 'businesses'       | null
 		'valid'                | 'globalSettings'   | null
 		

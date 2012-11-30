@@ -46,7 +46,7 @@ class DepartmentSpec extends ConstraintUnitSpec{
         error                  | field                 | val
         'blank'                | 'name'                | ''
         'nullable'             | 'name'                | null
-		'nullable'             | 'departmentHead'      | null
+		'nullable'             | 'leader'      | null
 		'nullable'             | 'charityLieutenant'   | null
 		'valid'                | 'numberOfEmployees'   | null
 		'valid'                | 'dateOfEmployeeCount' | null	

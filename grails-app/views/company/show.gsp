@@ -36,11 +36,11 @@
 						</g:if>
 					
 													
-						<g:if test="${companyInstance?.ceo}">
+						<g:if test="${companyInstance?.leader}">
 						<li class="fieldcontain">
 							<span id="ceo-label" class="property-label"><g:message code="company.ceo.label" default="Ceo" /></span>
 							
-								<span class="property-value" aria-labelledby="ceo-label"><g:link controller="person" action="show" id="${companyInstance?.ceo?.id}">${companyInstance?.ceo?.encodeAsHTML()}</g:link></span>
+								<span class="property-value" aria-labelledby="ceo-label"><g:link controller="person" action="show" id="${companyInstance?.leader?.id}">${companyInstance?.leader?.encodeAsHTML()}</g:link></span>
 							
 						</li>
 						</g:if>

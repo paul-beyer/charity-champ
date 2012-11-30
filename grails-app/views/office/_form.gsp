@@ -26,11 +26,11 @@
 	<g:select id="charityCaptain" name="charityCaptain.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${officeInstance?.charityCaptain?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: officeInstance, field: 'officer', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: officeInstance, field: 'leader', 'error')} required">
 	<label for="officer">
 		<g:message code="office.officer.label" default="Officer" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="officer" name="officer.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${officeInstance?.officer?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
+	<g:select id="officer" name="officer.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${officeInstance?.leader?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 

@@ -55,7 +55,7 @@ class JeansPaymentSpec extends ConstraintUnitSpec{
 		'email'                | 'payerEmail'          | getEmail(false)
 		'min'                  | 'amtPaid'             | 0
 		'nullable'             | 'amtPaid'             | null
-		'nullable'             | 'dateOfPayment'       | null
+		'nullable'             | 'donationDate'        | null
 		
 			
     }

@@ -25,7 +25,7 @@ class CompanyControllerTests {
 
     def populateValidParams(params) {
         assert params != null
-        params["ceo"] = new Person(userId:'biffle', firstName: "Greg", lastName: "Biffle")
+        params["leader"] = new Person(userId:'biffle', firstName: "Greg", lastName: "Biffle")
 		params["name"] = 'PepsiCo'
     }
 

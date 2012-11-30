@@ -18,15 +18,15 @@ package com.charitychamp
 
 import java.util.Date;
 
-class VolunteerShift {
+class VolunteerShift extends Donation{
 	
-	Date dateOfShift
+	static final String type = CharityChampConstants.midOhioFoodBankShift
+	
 	int numberOfVolunteers
 	String comments
 	Person leader
 	BigDecimal mealFactor
-	Campaign campaign
-	
+		
 	Date dateCreated
 	Date lastUpdated
 	

@@ -12,7 +12,7 @@ class OfficeControllerTests {
     def populateValidParams(params) {
         assert params != null
         params["name"] = 'Enterprise Apps'
-		params["officer"] = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
+		params["leader"] = new Person(userId:'gambit', firstName: "Remy", lastName: "LeBeau")
 		params["charityCaptain"] = new Person(userId:'biffle', firstName: "Greg", lastName: "Biffle")
 		params["business"] = new Business(name : "Sales")
 		

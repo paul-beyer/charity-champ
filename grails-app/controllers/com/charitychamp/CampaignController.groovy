@@ -1,6 +1,7 @@
 package com.charitychamp
 
-import org.joda.time.DateTime
+import org.joda.time.DateMidnight
+import org.joda.time.Interval
 import org.joda.time.LocalDate
 import org.springframework.dao.DataIntegrityViolationException
 

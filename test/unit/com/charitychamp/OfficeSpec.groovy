@@ -46,9 +46,9 @@ class OfficeSpec extends ConstraintUnitSpec{
         error                  | field            | val
         'blank'                | 'name'           | ''
         'nullable'             | 'name'           | null
-		'nullable'             | 'officer'        | null
+		'nullable'             | 'leader'         | null
 		'nullable'             | 'charityCaptain' | null
-		'valid'                | 'departments'        | null
+		'valid'                | 'departments'    | null
 					
     }
 

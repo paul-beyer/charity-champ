@@ -48,7 +48,7 @@ class ActivitySpec extends ConstraintUnitSpec{
         'nullable'             | 'name'             | null
 		'min'                  | 'amountCollected'  | 0
 		'nullable'             | 'amountCollected'  | null
-		'nullable'             | 'depositDate'      | null
+		'nullable'             | 'donationDate'      | null
 			
     }
 
