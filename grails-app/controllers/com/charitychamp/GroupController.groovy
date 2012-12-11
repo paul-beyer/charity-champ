@@ -141,8 +141,9 @@ class GroupController {
 		def groupInstance = Group.get(groupId)
 		if (!groupInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
-			redirect(action: "overview", id: groupId)
+			redirect(controller: "home", action: "home")
 			return
+		
 		}
 		
 		def campaignId = session["campaign"]
@@ -160,13 +161,43 @@ class GroupController {
 		return returnModel     
     }
 	
+	def foodBankShifts() {
+		
+		def groupId = params.id.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+		
+		def foodBankShiftList = new ArrayList()
+		if(currentCampaign){
+			foodBankShiftList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.midOhioFoodBankShift)
+		}
+		
+	
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		returnModel.put('foodBankShiftList', foodBankShiftList)
+		returnModel.put('foodBankShiftListTotal', foodBankShiftList.size())
+	
+		
+		return returnModel
+		
+		
+	}
+	
 	def addActivity() {
 
 		def groupId = params.id.toLong()
 		def groupInstance = Group.get(groupId)
 		if (!groupInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
-			redirect(action: "overview", id: groupId)
+			redirect(controller: "home", action: "home")
 			return
 		}
 		
@@ -175,6 +206,29 @@ class GroupController {
 		
 		commonGroupActivityReturnValues(groupInstance, currentCampaign)
 				
+		
+	}
+	
+	def addFoodBankShift() {
+		
+		def groupId = params.id.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+		
+		def mealFactors = GlobalNumericSetting.findAll("from GlobalNumericSetting as g where g.mofbShift=?", [true])
+		println mealFactors
+		
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		returnModel.put('mealFactorList', mealFactors)
+		return returnModel
+		
 		
 	}
 	
@@ -190,7 +244,7 @@ class GroupController {
 		def groupInstance = Group.get(groupId)
 		if (!groupInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
-			redirect(action: "overview", id: groupId)
+			redirect(controller: "home", action: "home")
 			return
 		}
 		
@@ -200,14 +254,6 @@ class GroupController {
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		returnModel.put('activityInstance', activityInstance)
 			
-		if(!currentCampaign){
-			flash.message = message(code: 'campaign.not.found', args: [todaysDate])
-		
-			render(view: "addActivity", model: returnModel)
-			return
-		}
-				
-	
 		def depositAmount = 0
 	
 		if(params.amountCollected){
@@ -230,15 +276,24 @@ class GroupController {
 			return
 			
 		}
-		
 
-		if (!activityInstance.save(flush: true)) {	
-			
+	
+
+		if (!activityInstance.save(flush :true)) {
 			render(view: "addActivity", model: returnModel)
 			return
 		}
 		
-		def donationSource = new DonationSource(donation: activityInstance, orgUnit : groupInstance).save(flush:true)
+		DonationSource donationSource = new DonationSource()
+		donationSource.donation = activityInstance
+		donationSource.orgUnit = groupInstance
+				
+		if(!donationSource.save(flush : true)){
+			activityInstance.delete(flush : true)
+			render(view: "addActivity", model: returnModel)
+			return
+		}
+			
 		currentCampaign.addToDonationSources(donationSource).save(flush:true)
 		flash.message = message(code: 'default.created.message', args: [message(code: 'activity.label', default: 'Activity'), activityInstance.id])
 		redirect(action: "activities", id: groupInstance.id)
@@ -251,7 +306,7 @@ class GroupController {
 		def groupInstance = Group.get(groupId)
 		if (!groupInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
-			redirect(action: "overview", id: groupId)
+			redirect(controller: "home", action: "home")
 			return
 		}
 		
@@ -305,6 +360,7 @@ class GroupController {
 		}
 		
 		activityInstance.properties = params
+		activityInstance.donationDate = params.depositDate
 		def depositAmount = 0
 		
 		if(params.amountCollected){
@@ -321,26 +377,73 @@ class GroupController {
 		}
 		
 		
-		
-		def selectedCampaign = Campaign.get(params.campaignId.toLong())
-				
-		boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(selectedCampaign, params.depositDate)
+		boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.depositDate)
 		if(!donationDateIsGood){
 			flash.message = message(code: 'donation.date.not.in.valid.campaign', args: [params.depositDate])
 			render(view: "editActivity", model: returnModel)
 			return
 		}
-
-		groupInstance.properties = params
-
-		if (!groupInstance.save(flush: true)) {
-			render(view: "edit", model: [groupInstance: groupInstance])
+		
+		
+		if (!activityInstance.save(flush: true)) {
+			render(view: "editActivity", model: returnModel)
 			return
 		}
 
-		flash.message = message(code: 'default.updated.message', args: [message(code: 'group.label', default: 'Group'), groupInstance.id])
-		redirect(action: "show", id: groupInstance.id)
+		flash.message = message(code: 'default.updated.message', args: [message(code: 'activity.label', default: 'Activity'), activityInstance.id])
+		redirect(action: "activities", id : groupInstance.id)
 		
+	}
+	
+	def deleteActivity(Long id, Long activityId){
+		
+			
+		def groupInstance = Group.get(id)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def activityInstance = Activity.get(activityId)
+		if (!activityInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'activity.label', default: 'Activity'), activityId])
+			redirect(action: "activities", id : groupInstance.id)
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+				
+				
+		try {
+			def donationSource = donationService.findDonationSource(currentCampaign, activityInstance.id, CharityChampConstants.activity)
+		
+			donationSource.donation = null
+			donationSource.orgUnit = null
+						
+			activityInstance.donationSource = null			
+			activityInstance.delete(flush:true)
+			currentCampaign.removeFromDonationSources(donationSource)
+			currentCampaign.save(flush:true)
+		
+			donationSource.delete(flush : true)
+									
+			flash.message = message(code: 'default.deleted.message', args: [message(code: 'activity.label', default: 'Activity'), activityId])
+			redirect(action: "activities", id : groupInstance.id)
+			return
+		}
+		catch (DataIntegrityViolationException e) {
+			def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+			returnModel.put('activityInstance', activityInstance)
+			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'activity.label', default: 'Activity'), activityId])
+			render(view: "editActivity", model: returnModel)
+			return
+		}
+			
+						
+		
+			
 	}
 	
 	

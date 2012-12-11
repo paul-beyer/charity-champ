@@ -39,6 +39,6 @@ class JeansPayment extends Donation{
 		payerPhone nullable : true
 		payerEmail nullable : true, email : true
 		amtPaid min : 1 as BigDecimal
-		
+			
     }
 }

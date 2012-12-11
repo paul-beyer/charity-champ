@@ -1,7 +1,5 @@
 <%@ page import="com.charitychamp.GlobalNumericSetting" %>
 
-<g:hiddenField name="entryType" value="MOFB" />
-
 <div class="fieldcontain ${hasErrors(bean: globalNumericSettingInstance, field: 'name', 'error')} required">
 	<label for="name">
 		<g:message code="globalNumericSetting.name.label" default="Name" />

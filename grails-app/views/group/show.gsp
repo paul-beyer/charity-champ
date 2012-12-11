@@ -44,38 +44,7 @@
 						</li>
 						</g:if>
 					
-						<g:if test="${groupInstance?.activities}">
-						<li class="fieldcontain">
-							<span id="activities-label" class="property-label"><g:message code="group.activities.label" default="Activities" /></span>
-							
-								<g:each in="${groupInstance.activities}" var="a">
-								<span class="property-value" aria-labelledby="activities-label"><g:link controller="activity" action="show" id="${a.id}">${a?.encodeAsHTML()}</g:link></span>
-								</g:each>
-							
-						</li>
-						</g:if>
-					
-						<g:if test="${groupInstance?.volunteerShifts}">
-						<li class="fieldcontain">
-							<span id="volunteerShifts-label" class="property-label"><g:message code="group.volunteerShifts.label" default="Volunteer Shifts" /></span>
-							
-								<g:each in="${groupInstance.volunteerShifts}" var="v">
-								<span class="property-value" aria-labelledby="volunteerShifts-label"><g:link controller="volunteerShift" action="show" id="${v.id}">${v?.encodeAsHTML()}</g:link></span>
-								</g:each>
-							
-						</li>
-						</g:if>
-					
-						<g:if test="${groupInstance?.jeansPayments}">
-						<li class="fieldcontain">
-							<span id="jeansPayments-label" class="property-label"><g:message code="group.jeansPayments.label" default="Jeans Payments" /></span>
-							
-								<g:each in="${groupInstance.jeansPayments}" var="j">
-								<span class="property-value" aria-labelledby="jeansPayments-label"><g:link controller="jeansPayment" action="show" id="${j.id}">${j?.encodeAsHTML()}</g:link></span>
-								</g:each>
-							
-						</li>
-						</g:if>
+						
 					
 						<g:if test="${groupInstance?.dateCreated}">
 						<li class="fieldcontain">

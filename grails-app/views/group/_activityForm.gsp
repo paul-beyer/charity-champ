@@ -42,11 +42,3 @@
 	<g:datePicker name="depositDate" precision="day"  value="${activityInstance?.donationDate}"  />
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'campaign', 'error')} required">
-	<label for="campaign">
-		<g:message code="activity.campaign.label" default="Campaign (Defaults to current)" />
-		<span class="required-indicator">*</span>
-	</label>
-	<g:select id="campaign" name="campaignId" from="${com.charitychamp.Campaign.list()}" optionKey="id" required="" value="${currentCampaign?.id}" class="many-to-one"/>
-</div>
-

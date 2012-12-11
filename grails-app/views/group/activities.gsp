@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		
-		<div id="list-activity" class="content scaffold-list" role="main">
+		<div id="list-activity" class="content" role="main">
 			<h2>Activities</h2><br/>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
@@ -26,7 +26,7 @@
 					
 						<g:sortableColumn property="comments" title="${message(code: 'activity.comments.label', default: 'Comments')}" />
 					
-						<g:sortableColumn property="dateCreated" title="${message(code: 'activity.dateCreated.label', default: 'Date Created')}" />
+						<g:sortableColumn property="donationDate" title="${message(code: 'activity.donation.date.label', default: 'Deposit Date')}" />
 					
 					</tr>
 				</thead>
@@ -42,7 +42,7 @@
 					
 						<td>${fieldValue(bean: activityInstance, field: "comments")}</td>
 					
-						<td><g:formatDate date="${activityInstance.dateCreated}" /></td>
+						<td><g:formatDate date="${activityInstance.donationDate}" /></td>
 					
 					</tr>
 				</g:each>

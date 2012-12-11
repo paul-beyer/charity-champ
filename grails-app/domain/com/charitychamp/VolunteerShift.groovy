@@ -24,17 +24,17 @@ class VolunteerShift extends Donation{
 	
 	int numberOfVolunteers
 	String comments
-	Person leader
-	BigDecimal mealFactor
+	String leaderName
+	GlobalNumericSetting mealFactor
 		
 	Date dateCreated
 	Date lastUpdated
-	
 
     static constraints = {
 		numberOfVolunteers min : 1
 		comments nullable : true
-		leader nullable : true
+		leaderName nullable : true
 		mealFactor min : 1 as BigDecimal
+	
     }
 }

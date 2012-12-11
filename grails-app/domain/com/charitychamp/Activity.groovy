@@ -16,6 +16,9 @@
 
 package com.charitychamp
 
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode(includeFields=true, callSuper=true, excludes="donationSource")
 class Activity extends Donation{
 	
 	static final String type = CharityChampConstants.activity
@@ -28,12 +31,13 @@ class Activity extends Donation{
 	Date dateCreated
 	Date lastUpdated
 	
-	
+
+
     static constraints = {
 		name blank:false
 		amountCollected min : 1 as BigDecimal
 		leaderName nullable : true
 		comments nullable : true
-		
+				
     }
 }

@@ -33,5 +33,10 @@ class GlobalNumericSetting {
 		value min : 1 as BigDecimal
     }
 	
+	@Override
+	String toString(){
+		name
+	}
+	
 	
 }

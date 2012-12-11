@@ -184,7 +184,6 @@ class ActivityControllerTests {
         controller.delete()
 
         assert Activity.count() == 0
-        assert Activity.get(activity.id) == null
         assert response.redirectedUrl == '/activity/list'
     }
 }

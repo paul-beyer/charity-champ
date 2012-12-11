@@ -3,6 +3,7 @@ package com.charitychamp
 import grails.test.mixin.*
 import grails.test.mixin.support.*
 
+import org.joda.time.DateTime
 import org.junit.*
 
 import spock.lang.Unroll
@@ -16,10 +17,12 @@ class DonationSourceSpec extends ConstraintUnitSpec{
      def setup() {
     
         mockForConstraintsTests(DonationSource, [new DonationSource()])
-    }
+			
+	}
 
     @Unroll("test DonationSource all constraints #field is #error")
     def "test DonationSource all constraints"() {
+		
         when:
         def obj = new DonationSource("$field": val)
 
@@ -29,8 +32,9 @@ class DonationSourceSpec extends ConstraintUnitSpec{
         where:
         error                  | field              | val
     
-        'nullable'             | 'donation'         | null
-		'nullable'             | 'orgUnit'          | null
+        'valid'                | 'donation'         | null
+		'valid'                | 'orgUnit'          | null
+		'valid'                | 'campaign'         | null
 		
 			
     }
