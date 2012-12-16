@@ -66,17 +66,20 @@ class GlobalNumericSettingController {
 		def globalNumericSettingInstance = new GlobalNumericSetting(params)
 		
 		if(params.value){
+		
 			try{
 				def inputValue = NumberFormat.getNumberInstance().parse(params.value)
 				value = inputValue.toBigDecimal()
 				
 			}catch(Exception ex){
-				flash.message = message(code: 'global.numeric.value.parse.exception')
+			
+				flash.message = message(code: 'mofb.shift.value.parse.exception')
 				log.error("An error occurred converting input value to bigDecimal", ex)
-				render(view: "create", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				render(view: "createMofbShiftValue", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				return
 			}
 			
-			
+				
 		}
 		       
 		globalNumericSettingInstance.value = value
@@ -105,9 +108,10 @@ class GlobalNumericSettingController {
 				value = inputValue.toBigDecimal()
 				
 			}catch(Exception ex){
-				flash.message = message(code: 'global.numeric.value.parse.exception')
+				flash.message = message(code: 'employee.goal.value.parse.exception')
 				log.error("An error occurred converting input value to bigDecimal", ex)
-				render(view: "create", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				return
 			}
 			
 			
@@ -141,9 +145,10 @@ class GlobalNumericSettingController {
 				value = inputValue.toBigDecimal()
 				
 			}catch(Exception ex){
-				flash.message = message(code: 'global.numeric.value.parse.exception')
+				flash.message = message(code: 'meals.dollar.buys.value.parse.exception')
 				log.error("An error occurred converting input value to bigDecimal", ex)
-				render(view: "create", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				return
 			}
 			
 			
@@ -162,24 +167,13 @@ class GlobalNumericSettingController {
 		redirect(action: "mealsADollarBuys")
 		
 	}
-
-    def show(Long id) {
-        def globalNumericSettingInstance = GlobalNumericSetting.get(id)
-        if (!globalNumericSettingInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [globalNumericSettingInstance: globalNumericSettingInstance]
-    }
 	
 	def showEmployeeGoal(Long id){
 		
 		def globalNumericSettingInstance = GlobalNumericSetting.get(id)
 		if (!globalNumericSettingInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-			redirect(action: "list")
+			redirect(action: "goalPerEmployee")
 			return
 		}
 
@@ -192,7 +186,7 @@ class GlobalNumericSettingController {
 		def globalNumericSettingInstance = GlobalNumericSetting.get(id)
 		if (!globalNumericSettingInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-			redirect(action: "list")
+			redirect(action: "mealsADollarBuys")
 			return
 		}
 
@@ -204,7 +198,7 @@ class GlobalNumericSettingController {
 		def globalNumericSettingInstance = GlobalNumericSetting.get(id)
 		if (!globalNumericSettingInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-			redirect(action: "list")
+			redirect(action: "mofbShiftValue")
 			return
 		}
 
@@ -213,24 +207,13 @@ class GlobalNumericSettingController {
 	}
 		
 	
-
-    def edit(Long id) {
-        def globalNumericSettingInstance = GlobalNumericSetting.get(id)
-        if (!globalNumericSettingInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [globalNumericSettingInstance: globalNumericSettingInstance]
-    }
 	
 	def editEmployeeGoal(Long id){
 		
 		def globalNumericSettingInstance = GlobalNumericSetting.get(id)
 		if (!globalNumericSettingInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-			redirect(action: "list")
+			redirect(action: "goalPerEmployee")
 			return
 		}
 
@@ -243,7 +226,7 @@ class GlobalNumericSettingController {
 		def globalNumericSettingInstance = GlobalNumericSetting.get(id)
 		if (!globalNumericSettingInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-			redirect(action: "list")
+			redirect(action: "mealsADollarBuys")
 			return
 		}
 
@@ -251,11 +234,24 @@ class GlobalNumericSettingController {
 		
 	}
 	
-    def update(Long id, Long version) {
+	def editMofbShiftValue(Long id){
+		
+		def globalNumericSettingInstance = GlobalNumericSetting.get(id)
+		if (!globalNumericSettingInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
+			redirect(action: "mofbShiftValue")
+			return
+		}
+
+		[globalNumericSettingInstance: globalNumericSettingInstance]
+		
+	}
+	
+    def updateMofbShift(Long id, Long version) {
         def globalNumericSettingInstance = GlobalNumericSetting.get(id)
         if (!globalNumericSettingInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
-            redirect(action: "list")
+            redirect(action: "mofbShiftValue")
             return
         }
 
@@ -264,7 +260,7 @@ class GlobalNumericSettingController {
                 globalNumericSettingInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                           [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting')] as Object[],
                           "Another user has updated this GlobalNumericSetting while you were editing")
-                render(view: "edit", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+                render(view: "editMofbShiftValue", model: [globalNumericSettingInstance: globalNumericSettingInstance])
                 return
             }
         }
@@ -280,9 +276,10 @@ class GlobalNumericSettingController {
 				value = inputValue.toBigDecimal()
 				
 			}catch(Exception ex){
-				flash.message = message(code: 'global.numeric.value.parse.exception')
+				flash.message = message(code: 'mofb.shift.value.parse.exception')
 				log.error("An error occurred converting input value to bigDecimal", ex)
-				render(view: "edit", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				render(view: "editMofbShiftValue", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				return
 			}
 			
 			
@@ -292,12 +289,12 @@ class GlobalNumericSettingController {
 		
 
         if (!globalNumericSettingInstance.save(flush: true)) {
-            render(view: "edit", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+            render(view: "editMofbShiftValue", model: [globalNumericSettingInstance: globalNumericSettingInstance])
             return
         }
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), globalNumericSettingInstance.id])
-        redirect(action: "show", id: globalNumericSettingInstance.id)
+        redirect(action: "showMofbShiftValue", id: globalNumericSettingInstance.id)
     }
 	
 	def updateEmployeeGoal(Long id, Long version) {
@@ -329,9 +326,10 @@ class GlobalNumericSettingController {
 				value = inputValue.toBigDecimal()
 				
 			}catch(Exception ex){
-				flash.message = message(code: 'global.numeric.value.parse.exception')
+				flash.message = message(code: 'employee.goal.value.parse.exception')
 				log.error("An error occurred converting input value to bigDecimal", ex)
 				render(view: "editEmployeeGoal", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				return
 			}
 			
 			
@@ -345,7 +343,7 @@ class GlobalNumericSettingController {
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), globalNumericSettingInstance.id])
+        flash.message = message(code: 'employee.goal.updated.message', args: [globalNumericSettingInstance.id])
         redirect(action: "showEmployeeGoal", id: globalNumericSettingInstance.id)
     }
 	
@@ -378,9 +376,10 @@ class GlobalNumericSettingController {
 				value = inputValue.toBigDecimal()
 				
 			}catch(Exception ex){
-				flash.message = message(code: 'global.numeric.value.parse.exception')
+				flash.message = message(code: 'meals.dollar.buys.value.parse.exception')
 				log.error("An error occurred converting input value to bigDecimal", ex)
 				render(view: "editMealsDollarBuys", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+				return
 			}
 			
 			
@@ -394,7 +393,7 @@ class GlobalNumericSettingController {
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), globalNumericSettingInstance.id])
+        flash.message = message(code: 'meals.dollar.buys.updated.message', args: [globalNumericSettingInstance.id])
         redirect(action: "showMealsDollarBuys", id: globalNumericSettingInstance.id)
     }
 

@@ -37,28 +37,132 @@ class GlobalNumericSettingControllerTests {
 
         assert model.globalNumericSettingInstance != null
     }
+	
+	void testCreateEmployeeGoal(){
+		
+		def model = controller.createEmployeeGoal()
+		 assert view == '/globalNumericSetting/createEmployeeGoal'
+	}
+	
+	void testCreateMofbShiftValue(){
+		
+		def model = controller.createMofbShiftValue()
+		 assert view == '/globalNumericSetting/createMofbShiftValue'
+	}
+	
+	void testCreateMealADollarBuys() {
+		
+		def model = controller.createMealADollarBuys()
+		 assert view == '/globalNumericSetting/createMealsADollarBuys'
+	}
 
-    void testSave() {
-        controller.save()
+    void testSaveMofbShift() {
+        controller.saveMofbShift()
 
         assert model.globalNumericSettingInstance != null
-        assert view == '/globalNumericSetting/create'
+        assert view == '/globalNumericSetting/createMofbShiftValue'
 
         response.reset()
 
         populateValidParams(params)
-        controller.save()
+        controller.saveMofbShift()
 
-        assert response.redirectedUrl == '/globalNumericSetting/show/1'
+        assert response.redirectedUrl == "/globalNumericSetting/mofbShiftValue"
         assert controller.flash.message != null
         assert GlobalNumericSetting.count() == 1
     }
+	
+	void testSaveMofbShiftWithBadNumericInput(){
+		controller.saveMofbShift()
+		
+		assert model.globalNumericSettingInstance != null
+		assert view == '/globalNumericSetting/createMofbShiftValue'
+		
+		response.reset()
+		
+		populateValidParams(params)
+		params["value"] = 'AAAA'
+		controller.saveMofbShift()
+		
+		assert view ==  '/globalNumericSetting/createMofbShiftValue'
+		assert controller.flash.message != null
+		assert GlobalNumericSetting.count() == 0
+		
+	}
+	
+	void testSaveEmployeeGoal() {
+		controller.saveEmployeeGoal()
 
-    void testShow() {
-        controller.show()
+		assert model.globalNumericSettingInstance != null
+		assert view == '/globalNumericSetting/createEmployeeGoal'
+
+		response.reset()
+
+		populateValidParams(params)
+		controller.saveEmployeeGoal()
+
+		assert response.redirectedUrl == "/globalNumericSetting/goalPerEmployee"
+		assert controller.flash.message != null
+		assert GlobalNumericSetting.count() == 1
+	}
+	
+	void testSaveEmployeeGoalWithBadNumericInput(){
+		controller.saveEmployeeGoal()
+		
+		assert model.globalNumericSettingInstance != null
+		assert view == '/globalNumericSetting/createEmployeeGoal'
+		
+		response.reset()
+		
+		populateValidParams(params)
+		params["value"] = 'AAAA'
+		controller.saveEmployeeGoal()
+		
+		assert view ==  '/globalNumericSetting/createEmployeeGoal'
+		assert controller.flash.message != null
+		assert GlobalNumericSetting.count() == 0
+		
+	}
+	
+	void testSaveMealsDollarBuys() {
+		controller.saveMealsDollarBuys()
+
+		assert model.globalNumericSettingInstance != null
+		assert view == '/globalNumericSetting/createMealsADollarBuys'
+
+		response.reset()
+
+		populateValidParams(params)
+		controller.saveMealsDollarBuys()
+
+		assert response.redirectedUrl == "/globalNumericSetting/mealsADollarBuys"
+		assert controller.flash.message != null
+		assert GlobalNumericSetting.count() == 1
+	}
+	
+	void testSaveMealsDollarBuysWithBadNumericInput(){
+		controller.saveMealsDollarBuys()
+		
+		assert model.globalNumericSettingInstance != null
+		assert view == '/globalNumericSetting/createMealsADollarBuys'
+		
+		response.reset()
+		
+		populateValidParams(params)
+		params["value"] = 'AAAA'
+		controller.saveMealsDollarBuys()
+		
+		assert view ==  '/globalNumericSetting/createMealsADollarBuys'
+		assert controller.flash.message != null
+		assert GlobalNumericSetting.count() == 0
+		
+	}
+
+    void testShowEmployeeGoal() {
+        controller.showEmployeeGoal()
 
         assert flash.message != null
-        assert response.redirectedUrl == '/globalNumericSetting/list'
+        assert response.redirectedUrl == '/globalNumericSetting/goalPerEmployee'
 
         populateValidParams(params)
         def globalNumericSetting = new GlobalNumericSetting(params)
@@ -68,16 +172,54 @@ class GlobalNumericSettingControllerTests {
 	
         params.id = globalNumericSetting.id
 
-        def model = controller.show()
+        def model = controller.showEmployeeGoal()
 
         assert model.globalNumericSettingInstance == globalNumericSetting
     }
+	
+	void testShowMealsDollarBuys() {
+		controller.showMealsDollarBuys()
 
-    void testEdit() {
-        controller.edit()
+		assert flash.message != null
+		assert response.redirectedUrl == '/globalNumericSetting/mealsADollarBuys'
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+		globalNumericSetting.save()
+	
+		params.id = globalNumericSetting.id
+
+		def model = controller.showMealsDollarBuys()
+
+		assert model.globalNumericSettingInstance == globalNumericSetting
+	}
+	
+	void testShowMofbShiftValue() {
+		controller.showMofbShiftValue()
+
+		assert flash.message != null
+		assert response.redirectedUrl == '/globalNumericSetting/mofbShiftValue'
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+		globalNumericSetting.save()
+	
+		params.id = globalNumericSetting.id
+
+		def model = controller.showMofbShiftValue()
+
+		assert model.globalNumericSettingInstance == globalNumericSetting
+	}
+
+    void testEditEmployeeGoal() {
+        controller.editEmployeeGoal()
 
         assert flash.message != null
-        assert response.redirectedUrl == '/globalNumericSetting/list'
+        assert response.redirectedUrl == '/globalNumericSetting/goalPerEmployee'
 
         populateValidParams(params)
         def globalNumericSetting = new GlobalNumericSetting(params)
@@ -86,55 +228,183 @@ class GlobalNumericSettingControllerTests {
 
         params.id = globalNumericSetting.id
 
-        def model = controller.edit()
+        def model = controller.editEmployeeGoal()
 
         assert model.globalNumericSettingInstance == globalNumericSetting
     }
+	
+	void testEditMealsDollarBuys() {
+		controller.editMealsDollarBuys()
 
-    void testUpdate() {
-        controller.update()
+		assert flash.message != null
+		assert response.redirectedUrl == '/globalNumericSetting/mealsADollarBuys'
 
-        assert flash.message != null
-        assert response.redirectedUrl == '/globalNumericSetting/list'
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
 
-        response.reset()
+		assert globalNumericSetting.save() != null
 
-        populateValidParams(params)
-        def globalNumericSetting = new GlobalNumericSetting(params)
+		params.id = globalNumericSetting.id
 
-        assert globalNumericSetting.save() != null
+		def model = controller.editMealsDollarBuys()
 
-        // test invalid parameters in update
-        params.id = globalNumericSetting.id
-        params.name = ''
+		assert model.globalNumericSettingInstance == globalNumericSetting
+	}
+	
+	void testEditMofbShiftValue() {
+		controller.editMofbShiftValue()
 
-        controller.update()
+		assert flash.message != null
+		assert response.redirectedUrl == '/globalNumericSetting/mofbShiftValue'
 
-        assert view == "/globalNumericSetting/edit"
-        assert model.globalNumericSettingInstance != null
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
 
-        globalNumericSetting.clearErrors()
+		assert globalNumericSetting.save() != null
 
-        populateValidParams(params)
-        controller.update()
+		params.id = globalNumericSetting.id
 
-        assert response.redirectedUrl == "/globalNumericSetting/show/$globalNumericSetting.id"
-        assert flash.message != null
+		def model = controller.editMofbShiftValue()
 
-        //test outdated version number
-        response.reset()
-        globalNumericSetting.clearErrors()
+		assert model.globalNumericSettingInstance == globalNumericSetting
+	}
 
-        populateValidParams(params)
-        params.id = globalNumericSetting.id
-        params.version = -1
-        controller.update()
 
-        assert view == "/globalNumericSetting/edit"
-        assert model.globalNumericSettingInstance != null
-        assert model.globalNumericSettingInstance.errors.getFieldError('version')
-        assert flash.message != null
-    }
+	
+	void testUpdateEmployeeGoal() {
+		controller.updateEmployeeGoal()
+
+		assert flash.message != null
+		assert response.redirectedUrl == '/globalNumericSetting/goalPerEmployee'
+
+		response.reset()
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+
+		// test invalid parameters in update
+		params.id = globalNumericSetting.id
+		params.name = ''
+
+		controller.updateEmployeeGoal()
+
+		assert view == "/globalNumericSetting/editEmployeeGoal"
+		assert model.globalNumericSettingInstance != null
+
+		globalNumericSetting.clearErrors()
+
+		populateValidParams(params)
+		controller.updateEmployeeGoal()
+
+		assert response.redirectedUrl == "/globalNumericSetting/showEmployeeGoal/$globalNumericSetting.id"
+		assert flash.message != null
+
+		//test outdated version number
+		response.reset()
+		globalNumericSetting.clearErrors()
+
+		populateValidParams(params)
+		params.id = globalNumericSetting.id
+		params.version = -1
+		controller.updateEmployeeGoal()
+
+		assert view == "/globalNumericSetting/editEmployeeGoal"
+		assert model.globalNumericSettingInstance != null
+		assert model.globalNumericSettingInstance.errors.getFieldError('version')
+		assert flash.message != null
+	}
+	
+	void testUpdateMealsDollarBuys() {
+		controller.updateMealsDollarBuys()
+
+		assert flash.message != null
+		assert response.redirectedUrl == '/globalNumericSetting/mealsADollarBuys'
+
+		response.reset()
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+
+		// test invalid parameters in update
+		params.id = globalNumericSetting.id
+		params.name = ''
+
+		controller.updateMealsDollarBuys()
+
+		assert view == "/globalNumericSetting/editMealsDollarBuys"
+		assert model.globalNumericSettingInstance != null
+
+		globalNumericSetting.clearErrors()
+
+		populateValidParams(params)
+		controller.updateMealsDollarBuys()
+
+		assert response.redirectedUrl == "/globalNumericSetting/showMealsDollarBuys/$globalNumericSetting.id"
+		assert flash.message != null
+
+		//test outdated version number
+		response.reset()
+		globalNumericSetting.clearErrors()
+
+		populateValidParams(params)
+		params.id = globalNumericSetting.id
+		params.version = -1
+		controller.updateMealsDollarBuys()
+
+		assert view == "/globalNumericSetting/editMealsDollarBuys"
+		assert model.globalNumericSettingInstance != null
+		assert model.globalNumericSettingInstance.errors.getFieldError('version')
+		assert flash.message != null
+	}
+	
+	void testUpdateMofbShift() {
+		controller.updateMofbShift()
+
+		assert flash.message != null
+		assert response.redirectedUrl == '/globalNumericSetting/mofbShiftValue'
+
+		response.reset()
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+
+		// test invalid parameters in update
+		params.id = globalNumericSetting.id
+		params.name = ''
+
+		controller.updateMofbShift()
+
+		assert view == "/globalNumericSetting/editMofbShiftValue"
+		assert model.globalNumericSettingInstance != null
+
+		globalNumericSetting.clearErrors()
+
+		populateValidParams(params)
+		controller.updateMofbShift()
+
+		assert response.redirectedUrl == "/globalNumericSetting/showMofbShiftValue/$globalNumericSetting.id"
+		assert flash.message != null
+
+		//test outdated version number
+		response.reset()
+		globalNumericSetting.clearErrors()
+
+		populateValidParams(params)
+		params.id = globalNumericSetting.id
+		params.version = -1
+		controller.updateMofbShift()
+
+		assert view == "/globalNumericSetting/editMofbShiftValue"
+		assert model.globalNumericSettingInstance != null
+		assert model.globalNumericSettingInstance.errors.getFieldError('version')
+		assert flash.message != null
+	}
 
     void testDelete() {
         controller.delete()
@@ -156,4 +426,67 @@ class GlobalNumericSettingControllerTests {
         assert GlobalNumericSetting.get(globalNumericSetting.id) == null
       
     }
+	
+	void testDeleteEmployeeGoal() {
+		controller.deleteEmployeeGoal()
+		assert flash.message != null
+	  
+		response.reset()
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+		assert GlobalNumericSetting.count() == 1
+
+		params.id = globalNumericSetting.id
+
+		controller.deleteEmployeeGoal()
+
+		assert GlobalNumericSetting.count() == 0
+		assert GlobalNumericSetting.get(globalNumericSetting.id) == null
+	  
+	}
+	
+	void testDeleteMealsDollarBuys() {
+		controller.deleteMealsDollarBuys()
+		assert flash.message != null
+	  
+		response.reset()
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+		assert GlobalNumericSetting.count() == 1
+
+		params.id = globalNumericSetting.id
+
+		controller.deleteMealsDollarBuys()
+
+		assert GlobalNumericSetting.count() == 0
+		assert GlobalNumericSetting.get(globalNumericSetting.id) == null
+	  
+	}
+	
+	void testDeleteMofbShiftValue() {
+		controller.deleteMofbShiftValue()
+		assert flash.message != null
+	  
+		response.reset()
+
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+		assert GlobalNumericSetting.count() == 1
+
+		params.id = globalNumericSetting.id
+
+		controller.deleteMofbShiftValue()
+
+		assert GlobalNumericSetting.count() == 0
+		assert GlobalNumericSetting.get(globalNumericSetting.id) == null
+	  
+	}
 }
