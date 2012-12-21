@@ -48,7 +48,6 @@ class VolunteerShiftSpec extends ConstraintUnitSpec{
         'min'                  | 'numberOfVolunteers' | 0
 		'valid'                | 'comments'           | null
 		'valid'                | 'leader'             | null
-		'min'                  | 'mealFactor'         | 0		
 		'nullable'             | 'mealFactor'         | null
     }
 

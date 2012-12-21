@@ -44,7 +44,7 @@
 						
 						<td>${fieldValue(bean: foodBankShiftInstance, field: "leaderName")}</td>
 					
-						<td><g:formatNumber number="${fieldValue(bean:foodBankShiftInstance, field:'mealFactor')?.toString().toFloat()}"  /></td>
+						<td><g:formatNumber number="${fieldValue(bean:foodBankShiftInstance.mealFactor, field:'value')?.toString().toFloat()}"  /></td>
 					
 					</tr>
 				</g:each>

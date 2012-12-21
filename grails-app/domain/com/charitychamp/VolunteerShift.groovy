@@ -34,7 +34,6 @@ class VolunteerShift extends Donation{
 		numberOfVolunteers min : 1
 		comments nullable : true
 		leaderName nullable : true
-		mealFactor min : 1 as BigDecimal
-	
+			
     }
 }

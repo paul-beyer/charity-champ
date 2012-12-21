@@ -2,10 +2,12 @@ package com.charitychamp
 
 import java.text.NumberFormat
 
+import org.joda.time.LocalDate
 import org.springframework.dao.DataIntegrityViolationException
 
 class GroupController {
 	
+	def activityService
 	def donationService
 	def dateHandlerService
 
@@ -53,7 +55,7 @@ class GroupController {
 		def groupInstance = Group.get(id)
 		if (!groupInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
-			redirect(action: "list")
+			redirect(controller: "home", action: "home")
 			return
 		}
 		
@@ -149,7 +151,7 @@ class GroupController {
 		def campaignId = session["campaign"]
 		def currentCampaign = Campaign.get(campaignId.toLong())
 		
-		def activityList = new ArrayList()
+		def activityList = new ArrayList()	
 		if(currentCampaign){
 			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.activity)
 		}
@@ -221,10 +223,8 @@ class GroupController {
 		
 		def campaignId = session["campaign"]
 		def currentCampaign = Campaign.get(campaignId.toLong())
-		
-		def mealFactors = GlobalNumericSetting.findAll("from GlobalNumericSetting as g where g.mofbShift=?", [true])
-		println mealFactors
-		
+		def mealFactors = getShiftList()
+				
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		returnModel.put('mealFactorList', mealFactors)
 		return returnModel
@@ -446,5 +446,227 @@ class GroupController {
 			
 	}
 	
+	def saveFoodBankShift(long mealFactorId){
+		
+		log.debug("Entering food banks shift save")
+		
+		def shiftInstance = new VolunteerShift(params)
+						
+		def groupId = params.groupId.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		returnModel.put('volunteerShiftInstance', shiftInstance)
+		def mealFactors = getShiftList()
+		returnModel.put('mealFactorList', mealFactors)
+	
+		def mealFactor = GlobalNumericSetting.get(mealFactorId)
+	
+		if(!mealFactor){
+			flash.message = message(code: 'volunteer.shift.type.not.found')
+			render(view: "addFoodBankShift", model: returnModel)
+			return
+		}
+		
+		shiftInstance.mealFactor = mealFactor
+			
+		boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.donationDate)
+		if(!donationDateIsGood){
+			flash.message = message(code: 'donation.date.not.in.valid.campaign', args: [params.donationDate])
+			render(view: "addFoodBankShift", model: returnModel)
+			return
+			
+		}
+
+	
+
+		if (!shiftInstance.save(flush :true)) {
+			println shiftInstance.errors
+			render(view: "addFoodBankShift", model: returnModel)
+			return
+		}
+		
+		DonationSource donationSource = new DonationSource()
+		donationSource.donation = shiftInstance
+		donationSource.orgUnit = groupInstance
+				
+		if(!donationSource.save(flush : true)){
+			shiftInstance.delete(flush : true)
+			render(view: "addFoodBankShift", model: returnModel)
+			return
+		}
+			
+		currentCampaign.addToDonationSources(donationSource).save(flush:true)
+		flash.message = message(code: 'default.created.message', args: [message(code: 'volunteerShift.label', default: 'Volunteer Shift'), shiftInstance.id])
+		redirect(action: "foodBankShifts", id: groupInstance.id)
+		
+	}
+	
+	def editFoodBankShift(Long id) {
+		
+		def groupId = params.groupId.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+		
+		def shiftInstance = VolunteerShift.get(id)
+		if (!shiftInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'volunteerShift.label', default: 'Volunteer Shift'), id])
+			redirect(action: "foodBankShifts", id : groupInstance.id)
+			return
+		}
+		
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		returnModel.put('volunteerShiftInstance', shiftInstance)
+		def mealFactors = getShiftList()
+		returnModel.put('mealFactorList', mealFactors)
+	
+		return returnModel
+	}
+	
+	def updateFoodBankShift(Long id, Long shiftId, Long shiftVersion, Long mealFactorId){
+		
+			def groupInstance = Group.get(id)
+			if (!groupInstance) {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
+				redirect(controller: "home", action: "home")
+				return
+			}
+			
+			def shiftInstance = VolunteerShift.get(shiftId)
+			if (!shiftInstance) {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'volunteerShift.label', default: 'Volunteer Shift'), shiftId])
+				redirect(action: "foodBankShifts", id : groupInstance.id)
+				return
+			}
+			
+			def campaignId = session["campaign"]
+			def currentCampaign = Campaign.get(campaignId.toLong())
+				
+			def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+			returnModel.put('volunteerShiftInstance', shiftInstance)
+			def mealFactors = getShiftList()
+			returnModel.put('mealFactorList', mealFactors)
+			
+			if (shiftVersion) {
+				if (shiftInstance.version > shiftVersion) {
+				
+					shiftInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+							  [message(code: 'volunteerShift.label', default: 'Volunteer Shift')] as Object[],
+							  "Another user has updated this Volunteer Shift while you were editing")
+					render(view: "editFoodBankShift", model: returnModel)
+					return
+				}
+			}
+			
+			shiftInstance.properties = params
+			
+			def mealFactor = GlobalNumericSetting.get(mealFactorId)
+			
+			if(!mealFactor){
+				flash.message = message(code: 'volunteer.shift.type.not.found')
+				render(view: "editFoodBankShift", model: returnModel)
+				return
+			}
+				
+			shiftInstance.mealFactor = mealFactor
+						
+			boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.donationDate)
+			if(!donationDateIsGood){
+				flash.message = message(code: 'donation.date.not.in.valid.campaign', args: [params.donationDate])
+				render(view: "editFoodBankShift", model: returnModel)
+				return
+			}
+			
+			
+			if (!shiftInstance.save(flush: true)) {
+				render(view: "editFoodBankShift", model: returnModel)
+				return
+			}
+	
+			flash.message = message(code: 'default.updated.message', args: [message(code: 'volunteerShift.label', default: 'Volunteer Shift'), shiftInstance.id])
+			redirect(action: "foodBankShifts", id : groupInstance.id)
+			
+		}
+	
+	def deleteFoodBankShift(Long id, Long shiftId){
+		
+			
+		def groupInstance = Group.get(id)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def shiftInstance = VolunteerShift.get(shiftId)
+		if (!shiftInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'volunteerShift.label', default: 'Volunteer Shift'), shiftId])
+			redirect(action: "foodBankShifts", id : groupInstance.id)
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+				
+				
+		try {
+			def donationSource = donationService.findDonationSource(currentCampaign, shiftInstance.id, CharityChampConstants.midOhioFoodBankShift)
+		
+			donationSource.donation = null
+			donationSource.orgUnit = null
+						
+			shiftInstance.donationSource = null
+			shiftInstance.delete(flush:true)
+			currentCampaign.removeFromDonationSources(donationSource)
+			currentCampaign.save(flush:true)
+		
+			donationSource.delete(flush : true)
+									
+			flash.message = message(code: 'default.deleted.message', args: [message(code: 'volunteerShift.label', default: 'Volunteer Shift'), shiftId])
+			redirect(action: "foodBankShifts", id : groupInstance.id)
+			return
+		}
+		catch (DataIntegrityViolationException e) {
+			def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+			returnModel.put('volunteerShiftInstance', shiftInstance)
+			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'volunteerShift.label', default: 'Volunteer Shift'), shiftId])
+			render(view: "editFoodBankShift", model: returnModel)
+			return
+		}
+			
+						
+		
+			
+	}
+	
+	private List getShiftList(){
+		
+		LocalDate localDate = new LocalDate()
+	//	def mealFactors = GlobalNumericSetting.findAll("from GlobalNumericSetting as g where g.mofbShift=? and g.effectiveDate<=?", [true, localDate.toDate()])
+		def mealFactors = GlobalNumericSetting.createCriteria().list {
+			    and {
+			        eq("mofbShift", true)
+			        le("effectiveDate", localDate.toDate())
+			    			
+			    }
+			    order("name", "asc")
+			}
+			
+	}
 	
 }

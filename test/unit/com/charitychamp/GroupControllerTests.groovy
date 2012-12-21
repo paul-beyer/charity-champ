@@ -10,7 +10,7 @@ import org.joda.time.LocalDate
 import org.junit.*
 
 @TestFor(GroupController)
-@Mock([Group, Campaign, Activity, Company, Business, Office, Department, Person, DonationSource, DonationService])
+@Mock([Group, Campaign, Activity, Company, Business, Office, Department, Person, DonationSource, DonationService, GlobalNumericSetting, VolunteerShift])
 class GroupControllerTests {
 	
 	
@@ -233,6 +233,80 @@ class GroupControllerTests {
 		
 	}
 	
+	void testDeleteVolunteerShiftWithNoIdPassedIn(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		
+		controller.deleteFoodBankShift(group.id, null)
+		assert flash.message != null
+		assert  response.redirectedUrl == '/group/foodBankShifts/1'
+	}
+	
+	void testDeleteVolunteerShiftWithNoGroupIdPassedIn(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		
+		controller.deleteFoodBankShift(null, volunteerShift.id)
+		assert flash.message != null
+		assert  response.redirectedUrl == '/home/home'
+	}
+	
+	void testSuccessfullyDeleteVolunteerShift(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "barkleyc", firstName : "Charles", lastName : "Barkley", personTitle : "CEO", email : "breesd@gmail.com").save(flush : true)
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save(flush : true)
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save(flush : true)
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save(flush : true)
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save(flush : true)
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save(flush : true)
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save(flush : true)
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		DonationSource donation = new DonationSource(donation: volunteerShift, orgUnit : group).save(flush : true)
+		campaign.addToDonationSources(donation).save(flush : true)
+		
+		session["campaign"] = campaign.id
+		
+		controller.deleteFoodBankShift(group.id, volunteerShift.id)
+		assert DonationSource.count() == 0
+		assert VolunteerShift.count() == 0
+		assert Group.get(group.id) != null
+		assert campaign.donationSources.size() == 0
+		assert response.redirectedUrl == '/group/foodBankShifts/1'
+		
+	}
+	
 		
 	void testSaveActivityWithGarbageInputAmount(){
 		
@@ -363,6 +437,40 @@ class GroupControllerTests {
 		
 	}
 	
+	void testUpdatingVolunteerShiftWithGroupNotFound(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		
+		params.numberOfVolunteers = 10
+		params.id = null
+		params.shiftId = volunteerShift.id
+		params.shiftVersion = volunteerShift.version
+		params.comments = 'Some Comment'
+		params.donationDate = donationDate.toDate()
+		params.mealFactorId = global.id
+		session["campaign"] = campaign.id
+	
+		
+		controller.updateFoodBankShift()
+		
+		assert controller.flash.message == 'default.not.found.message'
+		assert response.redirectedUrl == '/home/home'
+		
+	}
+	
 	void testUpdatingActivityWithActivityNotFound(){
 		
 		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
@@ -387,6 +495,40 @@ class GroupControllerTests {
 		
 		assert controller.flash.message == 'default.not.found.message'
 		assert response.redirectedUrl == '/group/activities/1'
+		
+	}
+	
+	void testUpdatingVolunteerShiftWithNoVolunteerShiftFound(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		
+		params.numberOfVolunteers = 10
+		params.id = group.id
+		params.shiftId = null
+		params.shiftVersion = volunteerShift.version
+		params.comments = 'Some Comment'
+		params.donationDate = donationDate.toDate()
+		params.mealFactorId = global.id
+		session["campaign"] = campaign.id
+	
+		
+		controller.updateFoodBankShift()
+		
+		assert controller.flash.message == 'default.not.found.message'
+		assert response.redirectedUrl == '/group/foodBankShifts/1'
 		
 	}
 	
@@ -418,6 +560,41 @@ class GroupControllerTests {
 		
 	}
 	
+	void testUpdatingVolunteerShiftWithBadVersion(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		
+		params.numberOfVolunteers = 10
+		params.id = group.id
+		params.shiftId = volunteerShift.id
+		params.shiftVersion = -1
+		params.comments = 'Some Comment'
+		params.donationDate = donationDate.toDate()
+		params.mealFactorId = global.id
+		session["campaign"] = campaign.id
+	
+		
+		controller.updateFoodBankShift()
+		
+		assert model.groupInstance != null
+		assert model.volunteerShiftInstance != null
+		assert view == '/group/editFoodBankShift'
+		
+	}
+	
 	void testUpdatingActivityWithBadAmount(){
 		
 		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
@@ -443,6 +620,41 @@ class GroupControllerTests {
 		assert model.groupInstance != null
 		assert model.activityInstance != null
 		assert view == '/group/editActivity'
+		
+	}
+	
+	void testUpdatingVolunteerShiftWithBadMealFactor(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		
+		params.numberOfVolunteers = 10
+		params.id = group.id
+		params.shiftId = volunteerShift.id
+		params.shiftVersion = volunteerShift.version
+		params.comments = 'Some Comment'
+		params.donationDate = donationDate.toDate()
+		params.mealFactorId = null
+		session["campaign"] = campaign.id
+	
+		
+		controller.updateFoodBankShift()
+		
+		assert model.groupInstance != null
+		assert model.volunteerShiftInstance != null
+		assert view == '/group/editFoodBankShift'
 		
 	}
 	
@@ -475,6 +687,41 @@ class GroupControllerTests {
 		
 	}
 	
+	void testUpdatingVolunteerShiftWithDonationDateThatDoesNotFallInAValidCampaign(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		LocalDate depDate = new LocalDate(2014, 6, 12)
+		params.numberOfVolunteers = 10
+		params.id = group.id
+		params.shiftId = volunteerShift.id
+		params.shiftVersion = volunteerShift.version
+		params.comments = 'Some Comment'
+		params.donationDate = depDate.toDate()
+		params.mealFactorId = global.id
+		session["campaign"] = campaign.id
+	
+		
+		controller.updateFoodBankShift()
+		
+		assert model.groupInstance != null
+		assert model.volunteerShiftInstance != null
+		assert view == '/group/editFoodBankShift'
+		
+	}
+	
 	void testUpdatingActivityWithEverythingGood(){
 		
 		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
@@ -500,6 +747,99 @@ class GroupControllerTests {
 		
 		assert response.redirectedUrl == "/group/activities/$group.id"
         assert flash.message != null
+		
+	}
+	
+	void testUpdatingVolunteerShiftWithEverthingGood(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+		Donation volunteerShift = new VolunteerShift(numberOfVolunteers: 10, mealFactor : global, donationDate: donationDate.toDate()).save()
+		
+		
+		params.numberOfVolunteers = 10
+		params.id = group.id
+		params.shiftId = volunteerShift.id
+		params.shiftVersion = volunteerShift.version
+		params.comments = 'Some Comment'
+		params.donationDate = donationDate.toDate()
+		params.mealFactorId = global.id
+		session["campaign"] = campaign.id
+	
+		
+		controller.updateFoodBankShift()
+		
+		assert response.redirectedUrl == "/group/foodBankShifts/$group.id"
+        assert flash.message != null
+		
+		
+	}
+	
+	void testSaveFoodBankShift(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime shiftDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+				
+		params.groupId = group.id
+		params.numberOfVolunteers = 10
+		params.comments = 'Some Comment'
+		params.donationDate = shiftDate.toDate()
+		params.mealFactorId = global.id
+		session["campaign"] = campaign.id
+		
+		controller.saveFoodBankShift()
+		
+	    assert controller.flash.message != null
+		assert response.redirectedUrl == '/group/foodBankShifts/1'
+		
+	}
+	
+	void testSaveFoodBankShiftWithNoMealFactorSelected(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime shiftDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+				
+		params.groupId = group.id
+		params.numberOfVolunteers = 10
+		params.comments = 'Some Comment'
+		params.donationDate = shiftDate.toDate()
+		params.mealFactorId = null
+		session["campaign"] = campaign.id
+		
+		controller.saveFoodBankShift()
+		
+		assert controller.flash.message != null
+		assert view == '/group/addFoodBankShift'
 		
 	}
 	
