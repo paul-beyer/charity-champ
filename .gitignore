@@ -3,3 +3,5 @@ target-eclipse/
 .settings/
 /plugins
 /web-app/plugins
+*Db.h2.db
+*Db.trace.db
