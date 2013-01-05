@@ -286,6 +286,43 @@ class CampaignControllerTests {
 
 	
 	}
+	//TODO finish implementing this code to actually test donations dropping out
+	void testUpdateWithDonationsDroppingOutOfCampaign() {
+		controller.update()
+
+		assert flash.message != null
+		assert response.redirectedUrl == '/campaign/list'
+
+		response.reset()
+
+		populateValidParams(params)
+		def campaign = new Campaign(params)
+
+		assert campaign.save() != null
+		
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+			
+		DateTime startDate = new DateTime(2012, 12 , 31, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 31, 0, 0)
+		
+	
+		params["startDate"] = startDate.toDate()
+		params["endDate"] = endDate.toDate()
+		
+		params.id = campaign.id
+	
+		controller.update()
+
+		assert view == "/campaign/edit"
+		assert model.campaignInstance != null
+		assert controller.flash.message == 'campaign.dates.overlap'
+
+	
+	}
 	
 	void testSaveWithImmediateNextDayStart() {
 		controller.save()

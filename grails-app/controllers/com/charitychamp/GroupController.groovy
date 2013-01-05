@@ -193,6 +193,36 @@ class GroupController {
 		
 	}
 	
+	def jeanPayments() {
+		
+		def groupId = params.id.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+		
+		def jeanPaymentsList = new ArrayList()
+		if(currentCampaign){
+			jeanPaymentsList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.jeansPayment)
+		}
+		
+	
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		returnModel.put('jeanPaymentsList', jeanPaymentsList)
+		returnModel.put('jeanPaymentsListTotal', jeanPaymentsList.size())
+	
+		
+		return returnModel
+		
+		
+	}
+	
 	def addActivity() {
 
 		def groupId = params.id.toLong()
@@ -232,6 +262,89 @@ class GroupController {
 		
 	}
 	
+	def addJeanPayment(){
+				
+		def groupId = params.id.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+		
+		commonGroupActivityReturnValues(groupInstance, currentCampaign)
+				
+	}
+	
+	def saveJeanPayment(){
+		
+		
+		log.debug("Entering jean payment save")
+		
+		def jeanPaymentInstance = new JeansPayment(params)
+		jeanPaymentInstance.donationDate = params.dateOfPayment
+				
+		def groupId = params.groupId.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+		
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		returnModel.put('jeansPaymentInstance', jeanPaymentInstance)
+			
+		def depositAmount = 0
+	
+		if(params.amtPaid){
+			try{
+				def numberAmount = NumberFormat.getNumberInstance().parse(params.amtPaid)
+				depositAmount = numberAmount.toBigDecimal()
+			}catch(Exception ex){
+				flash.message = message(code: 'activity.amount.collected.parse.exception')
+				log.error("Exception occurred while formating amount collected in saveJeanPayment", ex)
+				render(view: "addJeanPayment", model: returnModel)
+				return
+			}
+		
+		}
+		
+		boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.dateOfPayment)
+		if(!donationDateIsGood){
+			flash.message = message(code: 'donation.date.not.in.valid.campaign', args: [params.amtPaid])
+			render(view: "addJeanPayment", model: returnModel)
+			return
+			
+		}
+
+	
+		if (!jeanPaymentInstance.save(flush :true)) {
+			render(view: "addJeanPayment", model: returnModel)
+			return
+		}
+		
+		DonationSource donationSource = new DonationSource()
+		donationSource.donation = jeanPaymentInstance
+		donationSource.orgUnit = groupInstance	
+				
+		if(!donationSource.save(flush : true)){
+			jeanPaymentInstance.delete(flush : true)
+			render(view: "addJeanPayment", model: returnModel)
+			return
+		}
+			
+		currentCampaign.addToDonationSources(donationSource).save(flush:true)
+		flash.message = message(code: 'default.created.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), jeanPaymentInstance.id])
+		redirect(action: "jeanPayments", id: groupInstance.id)
+		
+	}
 
 	def saveActivity(){
 		
@@ -323,6 +436,32 @@ class GroupController {
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		returnModel.put('activityInstance', activityInstance)
 
+		return returnModel
+	}
+	
+	def editJeanPayments(Long id) {
+		
+		def groupId = params.groupId.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+		
+		def jeanPaymentInstance = JeansPayment.get(id)
+		if (!jeanPaymentInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), id])
+			redirect(action: "jeanPayments", id : groupInstance.id)
+			return
+		}
+		
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		returnModel.put('jeansPaymentInstance', jeanPaymentInstance)
+	
 		return returnModel
 	}
 	
@@ -446,6 +585,125 @@ class GroupController {
 			
 	}
 	
+	def updateJeanPayment(Long id, Long jeanPaymentId, Long jeanPaymentVersion){
+		
+			def groupInstance = Group.get(id)
+			if (!groupInstance) {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
+				redirect(controller: "home", action: "home")
+				return
+			}
+			
+			def jeanPaymentInstance = JeansPayment.get(jeanPaymentId)
+			if (!jeanPaymentInstance) {
+				flash.message = message(code: 'default.not.found.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), jeanPaymentId])
+				redirect(action: "jeanPayments", id : groupInstance.id)
+				return
+			}
+			
+			def campaignId = session["campaign"]
+			def currentCampaign = Campaign.get(campaignId.toLong())
+				
+			def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+			returnModel.put('jeansPaymentInstance', jeanPaymentInstance)
+		
+			if (jeanPaymentVersion) {
+				if (jeanPaymentInstance.version > jeanPaymentVersion) {
+				
+					jeanPaymentInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
+							  [message(code: 'jeanPayment.label', default: 'Jean Payment')] as Object[],
+							  "Another user has updated this Jean Payment while you were editing")
+					render(view: "editJeanPayments", model: returnModel)
+					return
+				}
+			}
+			
+			jeanPaymentInstance.properties = params
+			jeanPaymentInstance.donationDate = params.dateOfPayment
+			def depositAmount = 0
+			
+			if(params.amtPaid){
+				try{
+					def numberAmount = NumberFormat.getNumberInstance().parse(params.amtPaid)
+					depositAmount = numberAmount.toBigDecimal()
+				}catch(Exception ex){
+					flash.message = message(code: 'activity.amount.collected.parse.exception')
+					log.error("Exception occurred while formating amount collected in updateJeanPayment", ex)
+					render(view: "editJeanPayments", model: returnModel)
+					return
+				}
+				jeanPaymentInstance.amtPaid = depositAmount
+			}
+			
+			boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.dateOfPayment)
+			if(!donationDateIsGood){
+			
+				flash.message = message(code: 'donation.date.not.in.valid.campaign', args: [params.dateOfPayment])
+				render(view: "editJeanPayments", model: returnModel)
+				return
+			}
+					
+			if (!jeanPaymentInstance.save(flush: true)) {
+				render(view: "editJeanPayments", model: returnModel)
+				return
+			}
+	
+			flash.message = message(code: 'default.updated.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), jeanPaymentInstance.id])
+			redirect(action: "jeanPayments", id : groupInstance.id)
+			
+		}
+	
+	def deleteJeanPayment(Long id, Long jeanPaymentId){
+		
+			
+		def groupInstance = Group.get(id)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
+			redirect(controller: "home", action: "home")
+			return
+		}
+		
+		def jeanPaymentInstance = JeansPayment.get(jeanPaymentId)
+		if (!jeanPaymentInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), jeanPaymentId])
+			redirect(action: "jeanPayments", id : groupInstance.id)
+			return
+		}
+		
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId.toLong())
+				
+				
+		try {
+			def donationSource = donationService.findDonationSource(currentCampaign, jeanPaymentInstance.id, CharityChampConstants.jeansPayment)
+		
+			donationSource.donation = null
+			donationSource.orgUnit = null
+						
+			jeanPaymentInstance.donationSource = null
+			jeanPaymentInstance.delete(flush:true)
+			currentCampaign.removeFromDonationSources(donationSource)
+			currentCampaign.save(flush:true)
+		
+			donationSource.delete(flush : true)
+									
+			flash.message = message(code: 'default.deleted.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), jeanPaymentId])
+			redirect(action: "jeanPayments", id : groupInstance.id)
+			return
+		}
+		catch (DataIntegrityViolationException e) {
+			def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+			returnModel.put('jeansPaymentInstance', jeanPaymentInstance)
+			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), jeanPaymentId])
+			render(view: "editJeanPayments", model: returnModel)
+			return
+		}
+			
+						
+		
+			
+	}
+	
 	def saveFoodBankShift(long mealFactorId){
 		
 		log.debug("Entering food banks shift save")
@@ -537,6 +795,32 @@ class GroupController {
 	
 		return returnModel
 	}
+	
+//	def editJeanPayments(Long id) {
+//		
+//		def groupId = params.groupId.toLong()
+//		def groupInstance = Group.get(groupId)
+//		if (!groupInstance) {
+//			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+//			redirect(controller: "home", action: "home")
+//			return
+//		}
+//		
+//		def campaignId = session["campaign"]
+//		def currentCampaign = Campaign.get(campaignId.toLong())
+//		
+//		def jeanPayment = JeansPayment.get(id)
+//		if (!jeanPayment) {
+//			flash.message = message(code: 'default.not.found.message', args: [message(code: 'jeanPayment.label', default: 'Jean Payment'), id])
+//			redirect(action: "jeanPayments", id : groupInstance.id)
+//			return
+//		}
+//		
+//		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+//		returnModel.put('jeanPaymentInstance', jeanPayment)
+//	
+//		return returnModel
+//	}
 	
 	def updateFoodBankShift(Long id, Long shiftId, Long shiftVersion, Long mealFactorId){
 		

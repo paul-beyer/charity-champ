@@ -2,6 +2,8 @@ package com.charitychamp
 
 
 
+import java.math.BigDecimal;
+
 import grails.test.mixin.*
 import groovy.mock.interceptor.MockFor
 
@@ -10,7 +12,7 @@ import org.joda.time.LocalDate
 import org.junit.*
 
 @TestFor(GroupController)
-@Mock([Group, Campaign, Activity, Company, Business, Office, Department, Person, DonationSource, DonationService, GlobalNumericSetting, VolunteerShift])
+@Mock([Group, Campaign, Activity, Company, Business, Office, Department, Person, DonationSource, DonationService, GlobalNumericSetting, VolunteerShift, JeansPayment])
 class GroupControllerTests {
 	
 	
@@ -379,36 +381,7 @@ class GroupControllerTests {
 		
 	}
 
-//TODO failing for some reason	
-//	void testSaveActivityWithEverythingFine(){
-//		
-//		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
-//		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
-//		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
-//				 
-//		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
-//		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
-//		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
-//		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
-//		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
-//		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
-//		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-//		
-//		
-//		LocalDate depDate = new LocalDate(2013, 6, 12)
-//		params.name = 'Chili Cookoff'
-//		params.groupId = group.id
-//		params.amountCollected = '100.00'
-//		params.depositDate = depDate.toDate()
-//		
-//		
-//		session["campaign"] = campaign.id
-//		
-//		controller.saveActivity()
-//		assert controller.flash.message == 'default.created.message'
-//		assert response.redirectedUrl == '/group/activities/1'
-//		
-//	}
+
 	
 	void testUpdatingActivityWithGroupNotFound(){
 		
@@ -498,6 +471,29 @@ class GroupControllerTests {
 		
 	}
 	
+	void testUpdatingJeanPaymentWithJeanPaymentNotFound(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		
+				
+		controller.updateJeanPayment(group.id, 0, jeanPayment.version)
+		
+		assert controller.flash.message == 'default.not.found.message'
+		assert response.redirectedUrl == '/group/jeanPayments/1'
+		
+	}
+	
 	void testUpdatingVolunteerShiftWithNoVolunteerShiftFound(){
 		
 		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
@@ -557,6 +553,223 @@ class GroupControllerTests {
 		assert model.groupInstance != null
 		assert model.activityInstance != null
 		assert view == '/group/editActivity'
+		
+	}
+	
+	void testUpdatingJeanPaymentWithBadVersion(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		
+	params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.amtPaid = 'Yeah right'
+		params.dateOfPayment = donationDate.toDate()
+		params.jeanPaymentId = jeanPayment.id
+		params.jeanPaymentVersion = -1
+		params.id = group.id
+		session["campaign"] = campaign.id
+	
+		controller.updateJeanPayment()
+		
+		assert model.groupInstance != null
+		assert model.jeansPaymentInstance != null
+		assert view == '/group/editJeanPayments'
+		
+	}
+	
+	void testUpdatingJeanPaymentWithDonationDateThatDoesNotFallInAValidCampaign(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		LocalDate depDate = new LocalDate(2014, 6, 12)
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.amtPaid = '100.00'
+		params.dateOfPayment = depDate.toDate()
+		params.jeanPaymentId = jeanPayment.id
+		params.jeanPaymentVersion = jeanPayment.version
+		params.id = group.id
+		session["campaign"] = campaign.id
+		controller.updateJeanPayment()
+	
+		assert model.groupInstance != null
+		assert model.jeansPaymentInstance != null
+		assert view == '/group/editJeanPayments'
+		
+	}
+	
+	void testUpdatingJeanPayment(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+	
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.amtPaid = '100.00'
+		params.dateOfPayment = depDate.toDate()
+		params.jeanPaymentId = jeanPayment.id
+		params.jeanPaymentVersion = jeanPayment.version
+		params.id = group.id
+		session["campaign"] = campaign.id
+		
+		controller.updateJeanPayment()
+		
+		assert response.redirectedUrl == "/group/jeanPayments/$group.id"
+		assert flash.message != null
+		
+	}
+	
+	void testDeleteJeanPaymentWithGroupNotFound(){
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.amtPaid = '100.00'
+		params.dateOfPayment = depDate.toDate()
+		params.jeanPaymentId = jeanPayment.id
+		params.jeanPaymentVersion = jeanPayment.version
+		params.id = null
+		session["campaign"] = campaign.id
+		
+		controller.deleteJeanPayment()
+		assert controller.flash.message == 'default.not.found.message'
+		assert response.redirectedUrl == '/home/home'
+	}
+	
+	void testDeleteJeanPaymentWithNoIdPassedIn(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.amtPaid = '100.00'
+		params.dateOfPayment = depDate.toDate()
+		params.jeanPaymentId = null
+		params.jeanPaymentVersion = jeanPayment.version
+		params.id = group.id 
+		session["campaign"] = campaign.id
+		
+		controller.deleteJeanPayment()
+		assert flash.message != null
+		assert  response.redirectedUrl == '/group/jeanPayments/1'
+	}
+	
+	void testSuccessfullyDeleteJeanPayment(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "barkleyc", firstName : "Charles", lastName : "Barkley", personTitle : "CEO", email : "breesd@gmail.com").save(flush : true)
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save(flush : true)
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save(flush : true)
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save(flush : true)
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save(flush : true)
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save(flush : true)
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save(flush : true)
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		DonationSource donation = new DonationSource(donation: jeanPayment, orgUnit : group).save(flush : true)
+		campaign.addToDonationSources(donation).save(flush : true)
+		
+		session["campaign"] = campaign.id
+		
+		controller.deleteJeanPayment(group.id, jeanPayment.id)
+		assert DonationSource.count() == 0
+		assert JeansPayment.count() == 0
+		assert Group.get(group.id) != null
+		assert campaign.donationSources.size() == 0
+		assert response.redirectedUrl == '/group/jeanPayments/1'
+		
+	}
+	
+	void testUpdatingJeanPaymentWithGroupNotFound(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		LocalDate depDate = new LocalDate(2013, 6, 12)
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.amtPaid = '100.00'
+		params.dateOfPayment = depDate.toDate()
+		params.jeanPaymentId = jeanPayment.id
+		params.jeanPaymentVersion = jeanPayment.version
+		params.id = 0
+		session["campaign"] = campaign.id
+		
+		controller.updateJeanPayment()
+		
+		assert controller.flash.message == 'default.not.found.message'
+		assert response.redirectedUrl == '/home/home'
 		
 	}
 	
@@ -622,6 +835,40 @@ class GroupControllerTests {
 		assert view == '/group/editActivity'
 		
 	}
+	
+	void testUpdatingJeanPaymentWithBadAmount(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+	
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.amtPaid = 'Yeah right'
+		params.dateOfPayment = donationDate.toDate()
+		params.jeanPaymentId = jeanPayment.id
+		params.jeanPaymentVersion = jeanPayment.version
+		params.id = group.id
+		session["campaign"] = campaign.id
+	
+		controller.updateJeanPayment()
+		
+		assert model.groupInstance != null
+		assert model.jeansPaymentInstance != null
+		assert view == '/group/editJeanPayments'
+		
+	}
+	
 	
 	void testUpdatingVolunteerShiftWithBadMealFactor(){
 		
@@ -811,6 +1058,130 @@ class GroupControllerTests {
 		
 	    assert controller.flash.message != null
 		assert response.redirectedUrl == '/group/foodBankShifts/1'
+		
+	}
+	
+	void testSaveActivityWithEverythingFine(){
+	
+			DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+			DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+			DateTime donationDate = new DateTime(2013, 8 , 15, 0, 0)
+	
+			Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+			OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+			OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+			OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+			OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+			OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+			Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+	
+	
+			params.name = 'Chili Cookoff'
+			params.groupId = group.id
+			params.amountCollected = '100.00'
+			params.depositDate = donationDate.toDate()
+	
+	
+			session["campaign"] = campaign.id
+	
+			controller.saveActivity()
+			assert controller.flash.message == 'default.created.message'
+			assert response.redirectedUrl == '/group/activities/1'
+	
+		}
+	
+	void testSaveJeanPayment(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime shiftDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+	
+		params.groupId = group.id
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.payerPhone = '555-5555'
+		params.payerEmail = 'somebody@gmail.com'
+		params.dateOfPayment = shiftDate.toDate()
+		params.amtPaid = '89.00'
+		session["campaign"] = campaign.id
+		
+		controller.saveJeanPayment()
+		
+		assert controller.flash.message != null
+		assert response.redirectedUrl == '/group/jeanPayments/1'
+		
+	}
+	
+	void testSaveJeanPaymentWithBadInput(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime shiftDate = new DateTime(2013, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+	
+		params.groupId = group.id
+		params.employeeUserId = ''
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.payerPhone = '555-5555'
+		params.payerEmail = 'somebody@gmail.com'
+		params.dateOfPayment = shiftDate.toDate()
+		params.amtPaid = '89.00'
+		session["campaign"] = campaign.id
+		
+		controller.saveJeanPayment()
+	
+		assert view == '/group/addJeanPayment'
+		
+	}
+	
+	void testSaveJeanPaymentWithDateNotInCurrentCampaign(){
+		
+		DateTime startDate = new DateTime(2013, 1 , 2, 0, 0)
+		DateTime endDate = new DateTime(2013, 12 , 30, 0, 0)
+		DateTime shiftDate = new DateTime(2014, 8 , 15, 0, 0)
+				 
+		Person person = new Person(userId : "breesd", firstName : "Drew", lastName : "Brees", personTitle : "CEO", email : "breesd@gmail.com").save()
+		OrganizationalUnit company = new Company(name: "ACME", leader : person).save()
+		OrganizationalUnit business = new Business(name : "Marketing", leader : person, charityLeader : person, teamNumber : "1411", company : company).save()
+		OrganizationalUnit office = new Office(name : "Enterprise IT", leader : person, charityCaptain : person, business : business).save()
+		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
+		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
+		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
+		GlobalNumericSetting global = new GlobalNumericSetting(name : 'Executive Shift', effectiveDate : startDate.toDate(), value : new BigDecimal(33), mofbShift : true).save()
+	
+		params.groupId = group.id
+		params.employeeUserId = 'beyerp'
+		params.payerFirstName = 'Paul'
+		params.payerLastName = 'Beyer'
+		params.payerPhone = '555-5555'
+		params.payerEmail = 'somebody@gmail.com'
+		params.dateOfPayment = shiftDate.toDate()
+		params.amtPaid = '89.00'
+		session["campaign"] = campaign.id
+		
+		controller.saveJeanPayment()
+	
+		assert controller.flash.message != null
+		assert view == '/group/addJeanPayment'
 		
 	}
 	

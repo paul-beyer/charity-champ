@@ -24,7 +24,7 @@
 						<div id="groupOverViewActions" class="opFeedManagement">
 							<g:link class="linkButton" controller="group" action="activities" id="${groupInstance.id}"  params="[campaignId : groupInstanceId]" >Activities</g:link>
 							<g:link class="linkButton" controller="group" action="foodBankShifts" id="${groupInstance.id}"  params="[campaignId : groupInstanceId]" >Food Bank Shifts</g:link>
-							<g:actionSubmit class="buttons" value="Jeans" action="Update" />
+							<g:link class="linkButton" controller="group" action="jeanPayments" id="${groupInstance.id}"  params="[campaignId : groupInstanceId]" >Jeans</g:link>
 						</div>
 					
 					</div>
