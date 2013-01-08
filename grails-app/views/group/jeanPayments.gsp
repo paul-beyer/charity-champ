@@ -3,7 +3,7 @@
 <html>
 	<head>
 	
-		<title>Jean Paymenst</title>
+		<title>Jean Payments</title>
 	</head>
 	<body>
 		
@@ -29,6 +29,8 @@
 						<g:sortableColumn property="payerEmail" title="${message(code: 'jeansPayment.payerEmail.label', default: 'Payer Email')}" />
 					
 						<g:sortableColumn property="amtPaid" title="${message(code: 'jeansPayment.amtPaid.label', default: 'Amt Paid')}" />
+						
+						<g:sortableColumn property="donationDate" title="${message(code: 'activity.donation.date.label', default: 'Date Paid')}" />
 					
 						
 					
@@ -49,6 +51,8 @@
 						<td>${fieldValue(bean: jeansPaymentInstance, field: "payerEmail")}</td>
 					
 						<td>${fieldValue(bean: jeansPaymentInstance, field: "amtPaid")}</td>
+						
+						<td><g:formatDate format="yyyy-MM-dd" date="${jeansPaymentInstance?.donationDate}" /></td>
 					
 					</tr>
 				</g:each>

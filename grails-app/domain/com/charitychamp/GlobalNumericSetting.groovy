@@ -30,7 +30,7 @@ class GlobalNumericSetting {
 	
     static constraints = {
 		name blank : false
-		value min : 1 as BigDecimal
+		value min : 1 as BigDecimal, scale : 2
     }
 	
 	@Override

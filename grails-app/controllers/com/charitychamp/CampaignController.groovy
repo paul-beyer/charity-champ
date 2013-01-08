@@ -72,6 +72,9 @@ class CampaignController {
     }
 
     def update(Long id, Long version) {
+		
+		def updateAction = true
+		
         def campaignInstance = Campaign.get(id)
         if (!campaignInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'campaign.label', default: 'Campaign'), id])
@@ -97,10 +100,19 @@ class CampaignController {
 			return
 		}
 			
-		def campaignsOverlap = doCampaignsOverlap(id, params.startDate, params.endDate, true)
+		def campaignsOverlap = doCampaignsOverlap(id, params.startDate, params.endDate, updateAction)
 			
 		if(campaignsOverlap){
 			flash.message = message(code: 'campaign.dates.overlap')
+			render(view: "edit", model: [campaignInstance: campaignInstance])
+			return
+			
+		}
+		
+		def donationsOrphaned = doDonationsDropOutOfCampaign(id, params.startDate, params.endDate)
+		
+		if(donationsOrphaned){
+			flash.message = message(code: 'campaign.donations.are.orphaned')
 			render(view: "edit", model: [campaignInstance: campaignInstance])
 			return
 			
@@ -117,13 +129,19 @@ class CampaignController {
         redirect(action: "show", id: campaignInstance.id)
     }
 
-    def delete(Long id) {
+	def delete(Long id) {
         def campaignInstance = Campaign.get(id)
         if (!campaignInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'campaign.label', default: 'Campaign'), id])
             redirect(action: "list")
             return
         }
+		
+		if(campaignInstance.donationSources?.size() > 0){
+			flash.message = message(code: 'campaign.not.deleted.message', args: [message(code: 'campaign.label', default: 'Campaign'), id])
+            redirect(action: "show", id: id)
+			return
+		}
 
         try {
             campaignInstance.delete(flush: true)
@@ -191,5 +209,30 @@ class CampaignController {
 		}
 	
 		return campaignsOverlap
+	}
+	
+	private doDonationsDropOutOfCampaign(Long id, Date startDate, Date endDate){
+		
+		def donationsBeingOrphaned = false
+		
+		def newCampaignStartJoda = new LocalDate(startDate)
+		def newCampaignEndJoda = new LocalDate(endDate)
+		
+		def foundCampaign = Campaign.get(id)
+		if(foundCampaign){
+			def donations = foundCampaign.donationSources
+			//using for loop so I can break out
+			for(donation in donations){
+				def donationDate = new LocalDate(donation.donation?.donationDate)
+				if(donationDate.isBefore(newCampaignStartJoda) || donationDate.isAfter(newCampaignEndJoda)){
+					donationsBeingOrphaned = true
+					break
+				}
+				
+			}
+			
+		}
+		
+		return donationsBeingOrphaned
 	}
 }

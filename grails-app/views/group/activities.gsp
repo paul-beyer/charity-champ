@@ -36,13 +36,13 @@
 					
 						<td><g:link action="editActivity" id="${activityInstance.id}"  params="[groupId : groupInstance.id]" >${fieldValue(bean: activityInstance, field: "name")}</g:link></td>
 						
-						<td><g:formatNumber number="${fieldValue(bean:activityInstance, field:'amountCollected')?.toString().toFloat()}" type="currency" currencyCode="USD" /></td>
+						<td><g:formatNumber number="${activityInstance?.amountCollected}" type="currency" currencyCode="USD" /></td>
 					
 						<td>${fieldValue(bean: activityInstance, field: "leaderName")}</td>
 					
 						<td>${fieldValue(bean: activityInstance, field: "comments")}</td>
-					
-						<td><g:formatDate date="${activityInstance.donationDate}" /></td>
+				
+						<td><g:formatDate format="yyyy-MM-dd" date="${activityInstance?.donationDate}" /></td>
 					
 					</tr>
 				</g:each>

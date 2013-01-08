@@ -8,7 +8,7 @@ import org.joda.time.DateTime
 import org.junit.*
 
 @TestFor(CampaignController)
-@Mock(Campaign)
+@Mock([Campaign, Company, Activity, DonationSource])
 class CampaignControllerTests {
 
     def populateValidParams(params) {
@@ -286,40 +286,98 @@ class CampaignControllerTests {
 
 	
 	}
-	//TODO finish implementing this code to actually test donations dropping out
+	
 	void testUpdateWithDonationsDroppingOutOfCampaign() {
-		controller.update()
-
-		assert flash.message != null
-		assert response.redirectedUrl == '/campaign/list'
-
-		response.reset()
-
-		populateValidParams(params)
-		def campaign = new Campaign(params)
-
-		assert campaign.save() != null
 		
+		DateTime donationDate = new DateTime(2012, 12 , 28, 0, 0)
+		def orgUnit = new Company(name: "Some Company")
+		def activity = new Activity(name : "Chili Cookoff", amountCollected : new BigDecimal(100), donationDate : donationDate.toDate()).save()
+		def donationSource = new DonationSource(donation : activity, orgUnit : orgUnit).save()
+		
+				
 		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
 		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
 		
 		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
 		assert firstCampaign != null
+		firstCampaign.addToDonationSources(donationSource).save()
+		donationSource.campaign = firstCampaign
+		donationSource.save()
 			
-		DateTime startDate = new DateTime(2012, 12 , 31, 0, 0)
-		DateTime endDate = new DateTime(2013, 12 , 31, 0, 0)
+		DateTime startDate = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDate = new DateTime(2012, 12 , 27, 0, 0)
 		
 	
 		params["startDate"] = startDate.toDate()
 		params["endDate"] = endDate.toDate()
 		
-		params.id = campaign.id
+		params.id = firstCampaign.id
 	
 		controller.update()
 
 		assert view == "/campaign/edit"
 		assert model.campaignInstance != null
-		assert controller.flash.message == 'campaign.dates.overlap'
+		assert controller.flash.message == 'campaign.donations.are.orphaned'
+
+	
+	}
+	
+	void testDeleteWithDonationsDroppingOutOfCampaign() {
+		DateTime donationDate = new DateTime(2012, 12 , 28, 0, 0)
+		def orgUnit = new Company(name: "Some Company")
+		def activity = new Activity(name : "Chili Cookoff", amountCollected : new BigDecimal(100), donationDate : donationDate.toDate()).save()
+		def donationSource = new DonationSource(donation : activity, orgUnit : orgUnit).save()
+		
+				
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		firstCampaign.addToDonationSources(donationSource).save()
+		donationSource.campaign = firstCampaign
+		donationSource.save()
+			
+				
+		params.id = firstCampaign.id
+		
+		controller.delete()
+
+		assert Campaign.count() == 1
+		assert Campaign.get(firstCampaign.id) != null
+	    assert response.redirectedUrl == "/campaign/show/$firstCampaign.id"
+	}
+	
+	void testUpdateWithDonationsNotDroppingOutOfCampaign() {
+		
+		DateTime donationDate = new DateTime(2012, 12 , 20, 0, 0)
+		def orgUnit = new Company(name: "Some Company")
+		def activity = new Activity(name : "Chili Cookoff", amountCollected : new BigDecimal(100), donationDate : donationDate.toDate()).save()
+		def donationSource = new DonationSource(donation : activity, orgUnit : orgUnit).save()
+		
+				
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		firstCampaign.addToDonationSources(donationSource).save()
+		donationSource.campaign = firstCampaign
+		donationSource.save()
+			
+		DateTime startDate = new DateTime(2012, 1, 1, 0, 0)
+		DateTime endDate = new DateTime(2012, 12 , 27, 0, 0)
+		
+	
+		params["startDate"] = startDate.toDate()
+		params["endDate"] = endDate.toDate()
+		
+		params.id = firstCampaign.id
+	
+		controller.update()
+
+		assert response.redirectedUrl == "/campaign/show/$firstCampaign.id"
+        assert flash.message != null
 
 	
 	}

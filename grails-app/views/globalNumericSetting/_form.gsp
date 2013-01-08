@@ -21,7 +21,7 @@
 		<g:message code="globalNumericSetting.value.label" default="Value" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field name="value" value="${fieldValue(bean: globalNumericSettingInstance, field: 'value')}" required=""/>
+	<g:field name="value" class="money" value="${fieldValue(bean: globalNumericSettingInstance, field: 'value')}" required=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: globalNumericSettingInstance, field: 'effectiveDate', 'error')} required">

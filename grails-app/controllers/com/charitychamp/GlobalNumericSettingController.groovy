@@ -81,7 +81,7 @@ class GlobalNumericSettingController {
 			
 				
 		}
-		       
+		  
 		globalNumericSettingInstance.value = value
 		globalNumericSettingInstance.mofbShift = mofbShift
 		
@@ -91,7 +91,7 @@ class GlobalNumericSettingController {
             return
         }
 
-        flash.message = message(code: 'mofb.shift.created.message', args: [globalNumericSettingInstance.id])
+	    flash.message = message(code: 'mofb.shift.created.message', args: [globalNumericSettingInstance.id])
         redirect(action: "mofbShiftValue")
     }
 	

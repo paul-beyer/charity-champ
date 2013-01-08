@@ -36,15 +36,15 @@
 				<g:each in="${foodBankShiftList}" status="i" var="foodBankShiftInstance">
 					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 					
-						<td><g:link action="editFoodBankShift" id="${foodBankShiftInstance.id}"  params="[groupId : groupInstance.id]" >${fieldValue(bean: foodBankShiftInstance, field: "donationDate")}</g:link></td>
+						<td><g:link action="editFoodBankShift" id="${foodBankShiftInstance.id}"  params="[groupId : groupInstance.id]" ><g:formatDate format="yyyy-MM-dd" date="${foodBankShiftInstance?.donationDate}"/></g:link></td>
 						
-						<td><g:formatNumber number="${fieldValue(bean:foodBankShiftInstance, field:'numberOfVolunteers')?.toString().toFloat()}"  /></td>
+						<td><g:formatNumber number="${foodBankShiftInstance?.numberOfVolunteers}" type="number" /></td>
 											
 						<td>${fieldValue(bean: foodBankShiftInstance, field: "comments")}</td>
 						
 						<td>${fieldValue(bean: foodBankShiftInstance, field: "leaderName")}</td>
 					
-						<td><g:formatNumber number="${fieldValue(bean:foodBankShiftInstance.mealFactor, field:'value')?.toString().toFloat()}"  /></td>
+						<td><g:formatNumber number="${foodBankShiftInstance?.mealFactor?.value}"  type="number" maxFractionDigits="2"  /></td>
 					
 					</tr>
 				</g:each>
