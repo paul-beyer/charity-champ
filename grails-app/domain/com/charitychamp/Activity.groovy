@@ -40,4 +40,5 @@ class Activity extends Donation{
 		comments nullable : true
 				
     }
+	
 }
