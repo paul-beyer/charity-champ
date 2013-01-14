@@ -76,11 +76,16 @@ class DonationSourceIntegSpec extends UnitSpec {
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save(flush : true)
 		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush : true)
 		Donation activity2 = new Activity(name: 'Chili Cookoff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush : true)
-		DonationSource donation = new DonationSource(donation: activity, orgUnit : group).save(flush : true)
+		DonationSource donation = new DonationSource()
+		donation.donation = activity
+		donation.orgUnit = group
+		donation.save(flush:true)
 		
 		when:
-		DonationSource donation2 = new DonationSource(donation: activity2, orgUnit : group)
-		
+		DonationSource donation2 = new DonationSource()
+		donation2.donation = activity2
+		donation2.orgUnit = group
+			
 		then:
 		donation2.save(flush:true) != null
 		
@@ -99,10 +104,15 @@ class DonationSourceIntegSpec extends UnitSpec {
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save(flush : true)
 		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush : true)
 		Donation activity2 = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(99.00), donationDate: donationDate.toDate()).save(flush : true)
-		DonationSource donation = new DonationSource(donation: activity, orgUnit : group).save(flush : true)
+		DonationSource donation = new DonationSource()
+		donation.donation = activity
+		donation.orgUnit = group
+		donation.save(flush:true)
 		
 		when:
-		DonationSource donation2 = new DonationSource(donation: activity2, orgUnit : group)
+		DonationSource donation2 = new DonationSource()
+		donation2.donation = activity2
+		donation2.orgUnit = group
 		
 		then:
 		donation2.save(flush:true) != null
@@ -123,10 +133,15 @@ class DonationSourceIntegSpec extends UnitSpec {
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save(flush : true)
 		Donation activity = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate.toDate()).save(flush : true)
 		Donation activity2 = new Activity(name: 'BakeOff', amountCollected : new BigDecimal(100.00), donationDate: donationDate2.toDate()).save(flush : true)
-		DonationSource donation = new DonationSource(donation: activity, orgUnit : group).save(flush : true)
+		DonationSource donation = new DonationSource()
+		donation.donation = activity
+		donation.orgUnit = group
+		donation.save(flush:true)
 		
 		when:
-		DonationSource donation2 = new DonationSource(donation: activity2, orgUnit : group)
+		DonationSource donation2 = new DonationSource()
+		donation2.donation = activity2
+		donation2.orgUnit = group
 		
 		then:
 		donation2.save(flush:true) != null

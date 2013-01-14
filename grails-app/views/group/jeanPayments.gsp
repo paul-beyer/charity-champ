@@ -10,7 +10,7 @@
 		<div id="list-jeanPayments" class="content" role="main">
 			<h2>Jean Payments</h2><br/>
 			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
+				<div class="message" role="status">${flash.message}</div>
 			</g:if>
 		
 			<g:link class="breadCrumbButton" controller="group" action="addJeanPayment" id="${groupInstance.id}" >Add New Jean Payment</g:link><br/><br/>

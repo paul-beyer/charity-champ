@@ -65,6 +65,11 @@ class CharityChampUtils {
 
 	}
 	
+	public static final BigDecimal findNumberOfMealsADollarBuys(Date donationDate){
+		
+		
+	}
+	
 	
 
 }

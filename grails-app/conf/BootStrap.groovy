@@ -1,12 +1,17 @@
 import org.joda.time.DateTime
 
+import com.charitychamp.Activity
 import com.charitychamp.Business
 import com.charitychamp.Campaign
 import com.charitychamp.Company
 import com.charitychamp.Department
+import com.charitychamp.DonationSource
+import com.charitychamp.GlobalNumericSetting
 import com.charitychamp.Group
+import com.charitychamp.JeansPayment
 import com.charitychamp.Office
 import com.charitychamp.Person
+import com.charitychamp.VolunteerShift
 
 class BootStrap {
 	
@@ -80,6 +85,101 @@ class BootStrap {
 		def group6 = new Group(name : "Lab Rats", leader : ceo, department : department3).save(flush:true)
 		def group7 = new Group(name : "Mad Hatters", leader : ceo, department : department4).save(flush:true)
 		def group8 = new Group(name : "Testers", leader : ceo, department : department4).save(flush:true)
+		
+		DateTime dateOne = new DateTime(2013, 1 , 6, 0, 0)
+		def activity1 = new Activity(name : 'Chili Cookoff', amountCollected : new BigDecimal('78.88'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity2 = new Activity(name : 'BakeOff', amountCollected : new BigDecimal('45.67'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity3 = new Activity(name : 'Snack Sales', amountCollected : new BigDecimal('136.44'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity4 = new Activity(name : 'Bake Sale', amountCollected : new BigDecimal('102.33'), donationDate : dateOne.toDate()).save(flush:true)
+		
+		def jeans1 = new JeansPayment(employeeUserId : 'biffleg', payerFirstName : 'Greg', payerLastName : 'Biffle ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		def jeans2 = new JeansPayment(employeeUserId : 'keselowb', payerFirstName : 'Brad', payerLastName : 'Keselowski ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		def jeans3 = new JeansPayment(employeeUserId : 'bowyerc', payerFirstName : 'Clint', payerLastName : 'Bowyer ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		def jeans4 = new JeansPayment(employeeUserId : 'kensethm', payerFirstName : 'Matt', payerLastName : 'Kenseth ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		
+		DateTime effDateOne = new DateTime(2012,1,1,0,0)
+		
+		def regular = new GlobalNumericSetting(name : 'Regular' ,effectiveDate : effDateOne.toDate(),value : new BigDecimal('10'),mofbShift: true).save(flush:true)
+		def exec = new GlobalNumericSetting(name : 'Executive' ,effectiveDate : effDateOne.toDate(),value : new BigDecimal('33'),mofbShift: true).save(flush:true)
+		def special = new GlobalNumericSetting(name : 'Special' ,effectiveDate : effDateOne.toDate(),value : new BigDecimal('25.5'),mofbShift: true).save(flush:true)
+		def shift1 = new VolunteerShift(numberOfVolunteers : 10, donationDate : dateOne.toDate(), mealFactor : regular).save(flush:true)
+		def shift2 = new VolunteerShift(numberOfVolunteers : 12, donationDate : dateOne.toDate(), mealFactor : regular).save(flush:true)
+		def shift3 = new VolunteerShift(numberOfVolunteers : 21, donationDate : dateOne.toDate(), mealFactor : exec).save(flush:true)
+		def shift4 = new VolunteerShift(numberOfVolunteers : 32, donationDate : dateOne.toDate(), mealFactor : special).save(flush:true)
+		
+		def donation1 = new DonationSource()
+		donation1.donation = activity1
+		donation1.orgUnit = group4
+		donation1.save(flush:true, failOnError:true)
+		
+		def donation2 = new DonationSource()
+		donation2.donation = activity2
+		donation2.orgUnit = group4
+		donation2.save(flush:true, failOnError:true)
+		
+		def donation3 = new DonationSource()
+		donation3.donation = activity3
+		donation3.orgUnit = group6
+		donation3.save(flush:true, failOnError:true)
+		
+		def donation4 = new DonationSource()
+		donation4.donation = activity4
+		donation4.orgUnit = group6
+		donation4.save(flush:true, failOnError:true)
+		
+		def donation5 = new DonationSource()
+		donation5.donation = jeans1
+		donation5.orgUnit = group4
+		donation5.save(flush:true, failOnError:true)
+		
+		def donation6 = new DonationSource()
+		donation6.donation = jeans2
+		donation6.orgUnit = group4
+		donation6.save(flush:true, failOnError:true)
+		
+		def donation7 = new DonationSource()
+		donation7.donation = jeans3
+		donation7.orgUnit = group6
+		donation7.save(flush:true, failOnError:true)
+		
+		def donation8 = new DonationSource()
+		donation8.donation = jeans4
+		donation8.orgUnit = group6
+		donation8.save(flush:true, failOnError:true)
+		
+		def donation9 = new DonationSource()
+		donation9.donation = shift1
+		donation9.orgUnit = group4
+		donation9.save(flush:true, failOnError:true)
+		
+		def donation10 = new DonationSource()
+		donation10.donation = shift2
+		donation10.orgUnit = group4
+		donation10.save(flush:true, failOnError:true)
+		
+		def donation11 = new DonationSource()
+		donation11.donation = shift3
+		donation11.orgUnit = group6
+		donation11.save(flush:true, failOnError:true)
+		
+		def donation12 = new DonationSource()
+		donation12.donation = shift4
+		donation12.orgUnit = group6
+		donation12.save(flush:true, failOnError:true)
+		
+		campaign2.addToDonationSources(donation1)
+		campaign2.addToDonationSources(donation2)
+		campaign2.addToDonationSources(donation3)
+		campaign2.addToDonationSources(donation4)
+		campaign2.addToDonationSources(donation5)
+		campaign2.addToDonationSources(donation6)
+		campaign2.addToDonationSources(donation7)
+		campaign2.addToDonationSources(donation8)
+		campaign2.addToDonationSources(donation9)
+		campaign2.addToDonationSources(donation10)
+		campaign2.addToDonationSources(donation11)
+		campaign2.addToDonationSources(donation12)
+		campaign2.save(flush:true)	
 		
 	}
     def destroy = {

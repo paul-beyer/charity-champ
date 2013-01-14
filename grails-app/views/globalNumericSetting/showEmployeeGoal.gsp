@@ -51,7 +51,7 @@
 					<g:form>
 						<fieldset class="buttons">
 							<g:hiddenField name="id" value="${globalNumericSettingInstance?.id}" />
-							<g:link class="edit" action="editEmployeeGoal" id="${globalNumericSettingInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
+						<%-- <g:link class="edit" action="editEmployeeGoal" id="${globalNumericSettingInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link> --%>
 							<g:actionSubmit class="delete" action="deleteEmployeeGoal" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 							<g:actionSubmit class="cancel" action="goalPerEmployee" value="${message(code: 'default.button.cancel.label', default: 'Cancel')}" />
 						</fieldset>

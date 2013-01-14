@@ -19,6 +19,7 @@ package com.charitychamp
 import grails.test.mixin.*
 import grails.test.mixin.support.*
 
+import org.joda.time.DateTime
 import org.junit.*
 
 import spock.lang.Unroll
@@ -51,5 +52,6 @@ class ActivitySpec extends ConstraintUnitSpec{
 		'nullable'             | 'donationDate'      | null
 			
     }
-
+	
+	
 }

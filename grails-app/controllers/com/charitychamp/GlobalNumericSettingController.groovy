@@ -1,11 +1,13 @@
 package com.charitychamp
 
 import java.text.NumberFormat
+import java.util.Date;
 
 import org.springframework.dao.DataIntegrityViolationException
 
 class GlobalNumericSettingController {
 
+	def globalNumericSettingService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -14,7 +16,7 @@ class GlobalNumericSettingController {
 	
 	def goalPerEmployee (){
 		
-		def settings = GlobalNumericSetting.findAllByName("Goal Amount Per Employee")
+		def settings = GlobalNumericSetting.findAllByName('Goal Amount Per Employee')
 		def goals = settings.sort{it.effectiveDate}.reverse()
 		[globalNumericSettingInstanceList: goals, globalNumericSettingInstanceTotal: goals.size()]		
 		
@@ -30,7 +32,7 @@ class GlobalNumericSettingController {
 	
 	def mealsADollarBuys(){
 		
-		def settings = GlobalNumericSetting.findAllByName("Meals a Dollar Buys")
+		def settings = GlobalNumericSetting.findAllByName('Meals a Dollar Buys')
 		def goals = settings.sort{it.effectiveDate}.reverse()
 		[globalNumericSettingInstanceList: goals, globalNumericSettingInstanceTotal: goals.size()]
 	}
@@ -46,7 +48,7 @@ class GlobalNumericSettingController {
 	
 	def createEmployeeGoal() {
 				
-		render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : "Goal Amount Per Employee")])
+		render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : CharityChampConstants.goalPerEmployeeNameValue)])
 	}
 	
 	def createMofbShiftValue() {
@@ -54,7 +56,7 @@ class GlobalNumericSettingController {
 	}
 	
 	def createMealADollarBuys () {
-		render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : "Meals a Dollar Buys")])
+		render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : CharityChampConstants.mealsADollarBuysNameValue)])
 	}
 	
 	
@@ -80,6 +82,14 @@ class GlobalNumericSettingController {
 			}
 			
 				
+		}
+		
+		def valid = globalNumericSettingService.validateFoodBankShift(params.name, params.effectiveDate)
+		
+		if(!valid){
+			flash.message = message(code: 'global.number.mofb.shift.not.valid')
+			render(view: "createMofbShiftValue", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+			return
 		}
 		  
 		globalNumericSettingInstance.value = value
@@ -115,6 +125,14 @@ class GlobalNumericSettingController {
 			}
 			
 			
+		}
+		
+		def dateAlreadyUsed = globalNumericSettingService.determineIfSettingDateHasBeenUsed(params.name, params.effectiveDate)
+		
+		if(dateAlreadyUsed){
+			flash.message = message(code: 'global.numeric.effective.date.in.use')
+			render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+			return
 		}
 			   	
 		globalNumericSettingInstance.value = value
@@ -153,12 +171,21 @@ class GlobalNumericSettingController {
 			
 			
 		}
+
+	
+		def dateAlreadyUsed = globalNumericSettingService.determineIfSettingDateHasBeenUsed(params.name, params.effectiveDate)
+	
+		if(dateAlreadyUsed){
+			flash.message = message(code: 'global.numeric.effective.date.in.use')
+			render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+			return
+		}
+	
 				   
 		globalNumericSettingInstance.value = value
 		globalNumericSettingInstance.mofbShift = mofbShift
 		
 		if (!globalNumericSettingInstance.save(flush: true)) {
-			
 			render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: globalNumericSettingInstance])
 			return
 		}
@@ -265,6 +292,14 @@ class GlobalNumericSettingController {
             }
         }
 		
+		def valid = globalNumericSettingService.validateFoodBankShift(params.name, params.effectiveDate)
+		
+		if(!valid){
+			flash.message = message(code: 'global.number.mofb.shift.not.valid')
+			render(view: "editMofbShiftValue", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+			return
+		}
+		
 		globalNumericSettingInstance.properties = params
 		
 		def value = 0
@@ -348,6 +383,7 @@ class GlobalNumericSettingController {
     }
 	
 	def updateMealsDollarBuys(Long id, Long version) {
+	
         def globalNumericSettingInstance = GlobalNumericSetting.get(id)
         if (!globalNumericSettingInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'globalNumericSetting.label', default: 'GlobalNumericSetting'), id])
@@ -365,6 +401,15 @@ class GlobalNumericSettingController {
             }
         }
 		
+			
+		def dateAlreadyUsed = globalNumericSettingService.determineIfSettingDateHasBeenUsed(params.name, params.effectiveDate)
+		
+		if(dateAlreadyUsed){
+			flash.message = message(code: 'global.numeric.effective.date.in.use')
+			render(view: "editMealsDollarBuys", model: [globalNumericSettingInstance: globalNumericSettingInstance])
+			return
+		}
+		
 		globalNumericSettingInstance.properties = params
 		
 		def value = 0
@@ -372,10 +417,12 @@ class GlobalNumericSettingController {
 		
 		if(params.value){
 			try{
+			
 				def inputValue = NumberFormat.getNumberInstance().parse(params.value)
 				value = inputValue.toBigDecimal()
 				
 			}catch(Exception ex){
+		
 				flash.message = message(code: 'meals.dollar.buys.value.parse.exception')
 				log.error("An error occurred converting input value to bigDecimal", ex)
 				render(view: "editMealsDollarBuys", model: [globalNumericSettingInstance: globalNumericSettingInstance])
@@ -387,7 +434,6 @@ class GlobalNumericSettingController {
 		
 		globalNumericSettingInstance.value = value
 		
-
         if (!globalNumericSettingInstance.save(flush: true)) {
             render(view: "editMealsDollarBuys", model: [globalNumericSettingInstance: globalNumericSettingInstance])
             return
@@ -476,4 +522,5 @@ class GlobalNumericSettingController {
 		
 	}
 	
+		
 }

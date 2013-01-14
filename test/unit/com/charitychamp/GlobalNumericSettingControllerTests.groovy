@@ -2,8 +2,11 @@ package com.charitychamp
 
 
 
-import org.junit.*
 import grails.test.mixin.*
+import groovy.mock.interceptor.MockFor
+
+import org.joda.time.LocalDate
+import org.junit.*
 
 @TestFor(GlobalNumericSettingController)
 @Mock(GlobalNumericSetting)
@@ -57,6 +60,12 @@ class GlobalNumericSettingControllerTests {
 	}
 
     void testSaveMofbShift() {
+		
+		def result = true
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.validateFoodBankShift(1..2) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
         controller.saveMofbShift()
 
         assert model.globalNumericSettingInstance != null
@@ -73,6 +82,13 @@ class GlobalNumericSettingControllerTests {
     }
 	
 	void testSaveMofbShiftWithBadNumericInput(){
+		
+		def result = true
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.validateFoodBankShift(1..2) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
 		controller.saveMofbShift()
 		
 		assert model.globalNumericSettingInstance != null
@@ -91,6 +107,13 @@ class GlobalNumericSettingControllerTests {
 	}
 	
 	void testSaveEmployeeGoal() {
+		
+		def result = false
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.determineIfSettingDateHasBeenUsed(1..2) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
 		controller.saveEmployeeGoal()
 
 		assert model.globalNumericSettingInstance != null
@@ -107,6 +130,13 @@ class GlobalNumericSettingControllerTests {
 	}
 	
 	void testSaveEmployeeGoalWithBadNumericInput(){
+		
+		def result = false
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.determineIfSettingDateHasBeenUsed(1..2) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
 		controller.saveEmployeeGoal()
 		
 		assert model.globalNumericSettingInstance != null
@@ -125,14 +155,15 @@ class GlobalNumericSettingControllerTests {
 	}
 	
 	void testSaveMealsDollarBuys() {
-		controller.saveMealsDollarBuys()
-
-		assert model.globalNumericSettingInstance != null
-		assert view == '/globalNumericSetting/createMealsADollarBuys'
-
-		response.reset()
-
+		
+		def result = false
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.determineIfSettingDateHasBeenUsed(1..1) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
 		populateValidParams(params)
+		params["mofbShift"] = false
 		controller.saveMealsDollarBuys()
 
 		assert response.redirectedUrl == "/globalNumericSetting/mealsADollarBuys"
@@ -140,7 +171,38 @@ class GlobalNumericSettingControllerTests {
 		assert GlobalNumericSetting.count() == 1
 	}
 	
+	void testSaveMealsDollarBuysWithAnotherAlreadySavedWithThatDate() {
+			
+		def result = true
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.determineIfSettingDateHasBeenUsed(1..1) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+	
+		LocalDate firstDate = new LocalDate(2012, 1, 1)
+		def firstMealADollarBuys = new GlobalNumericSetting(name : 'Meals a Dollar Buys', effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
+			
+		
+		populateValidParams(params)
+		params["name"] = 'Meals a Dollar Buys'
+		params["effectiveDate"] = firstDate.toDate()
+		params["mofbShift"] = false
+	
+		controller.saveMealsDollarBuys()
+
+		assert model.globalNumericSettingInstance != null
+		assert view == '/globalNumericSetting/createMealsADollarBuys'
+		assert GlobalNumericSetting.count() == 1	
+	}
+		
 	void testSaveMealsDollarBuysWithBadNumericInput(){
+		
+		def result = false
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.determineIfSettingDateHasBeenUsed(1..2) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
 		controller.saveMealsDollarBuys()
 		
 		assert model.globalNumericSettingInstance != null
@@ -316,7 +378,16 @@ class GlobalNumericSettingControllerTests {
 		assert flash.message != null
 	}
 	
+	
+	
 	void testUpdateMealsDollarBuys() {
+		
+		def result = false
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.determineIfSettingDateHasBeenUsed(1..3) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
 		controller.updateMealsDollarBuys()
 
 		assert flash.message != null
@@ -361,7 +432,36 @@ class GlobalNumericSettingControllerTests {
 		assert flash.message != null
 	}
 	
+	void testUpdateMealsDollarBuysWithAnotherAlreadySavedWithThatDate () {
+		
+		def result = true
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.determineIfSettingDateHasBeenUsed(1..1) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
+		populateValidParams(params)
+		def globalNumericSetting = new GlobalNumericSetting(params)
+
+		assert globalNumericSetting.save() != null
+
+
+		populateValidParams(params)
+		params.id = globalNumericSetting.id
+		controller.updateMealsDollarBuys()
+
+		assert view == "/globalNumericSetting/editMealsDollarBuys"
+		assert model.globalNumericSettingInstance != null
+		assert flash.message != null
+	}
+	
 	void testUpdateMofbShift() {
+		def result = true
+		def mockGlobalsService = mockFor(GlobalNumericSettingService)
+		mockGlobalsService.demand.validateFoodBankShift(1..4) {String name, Date date -> return result }
+		
+		controller.globalNumericSettingService = mockGlobalsService.createMock()
+		
 		controller.updateMofbShift()
 
 		assert flash.message != null

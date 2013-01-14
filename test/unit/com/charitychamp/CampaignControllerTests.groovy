@@ -322,6 +322,144 @@ class CampaignControllerTests {
 	
 	}
 	
+	void testUpdateWithDonationsDroppingOutOfCampaignByOneDayBeforeNewStartDate() {
+		
+		DateTime donationDate = new DateTime(2011, 12 , 31, 0, 0)
+		def orgUnit = new Company(name: "Some Company")
+		def activity = new Activity(name : "Chili Cookoff", amountCollected : new BigDecimal(100), donationDate : donationDate.toDate()).save()
+		def donationSource = new DonationSource(donation : activity, orgUnit : orgUnit).save()
+		
+				
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		firstCampaign.addToDonationSources(donationSource).save()
+		donationSource.campaign = firstCampaign
+		donationSource.save()
+			
+		DateTime startDate = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDate = new DateTime(2012, 12 , 27, 0, 0)
+		
+	
+		params["startDate"] = startDate.toDate()
+		params["endDate"] = endDate.toDate()
+		
+		params.id = firstCampaign.id
+	
+		controller.update()
+
+		assert view == "/campaign/edit"
+		assert model.campaignInstance != null
+		assert controller.flash.message == 'campaign.donations.are.orphaned'
+
+	
+	}
+	
+	void testUpdateWithDonationsDroppingOutOfCampaignByOneDayAfterNewEndDate() {
+		
+		DateTime donationDate = new DateTime(2012, 12 , 28, 0, 0)
+		def orgUnit = new Company(name: "Some Company")
+		def activity = new Activity(name : "Chili Cookoff", amountCollected : new BigDecimal(100), donationDate : donationDate.toDate()).save()
+		def donationSource = new DonationSource(donation : activity, orgUnit : orgUnit).save()
+		
+				
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		firstCampaign.addToDonationSources(donationSource).save()
+		donationSource.campaign = firstCampaign
+		donationSource.save()
+			
+		DateTime startDate = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDate = new DateTime(2012, 12 , 27, 0, 0)
+		
+	
+		params["startDate"] = startDate.toDate()
+		params["endDate"] = endDate.toDate()
+		
+		params.id = firstCampaign.id
+	
+		controller.update()
+
+		assert view == "/campaign/edit"
+		assert model.campaignInstance != null
+		assert controller.flash.message == 'campaign.donations.are.orphaned'
+
+	
+	}
+	
+	void testUpdateWithDonationsNotDroppingOutOfCampaignWithDonationBeingStartDateOfCampaign() {
+		
+		DateTime donationDate = new DateTime(2012, 1 , 1, 0, 0)
+		def orgUnit = new Company(name: "Some Company")
+		def activity = new Activity(name : "Chili Cookoff", amountCollected : new BigDecimal(100), donationDate : donationDate.toDate()).save()
+		def donationSource = new DonationSource(donation : activity, orgUnit : orgUnit).save()
+		
+				
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		firstCampaign.addToDonationSources(donationSource).save()
+		donationSource.campaign = firstCampaign
+		donationSource.save()
+			
+		DateTime startDate = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDate = new DateTime(2012, 12 , 27, 0, 0)
+		
+	
+		params["startDate"] = startDate.toDate()
+		params["endDate"] = endDate.toDate()
+		
+		params.id = firstCampaign.id
+	
+		controller.update()
+
+		assert response.redirectedUrl == "/campaign/show/$firstCampaign.id"
+        assert flash.message != null
+
+	
+	}
+	
+	void testUpdateWithDonationsNotDroppingOutOfCampaignWithDonationBeingEndtDateOfCampaign() {
+		
+		DateTime donationDate = new DateTime(2012, 12 , 27, 0, 0)
+		def orgUnit = new Company(name: "Some Company")
+		def activity = new Activity(name : "Chili Cookoff", amountCollected : new BigDecimal(100), donationDate : donationDate.toDate()).save()
+		def donationSource = new DonationSource(donation : activity, orgUnit : orgUnit).save()
+		
+				
+		DateTime startDateOne = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDateOne = new DateTime(2012, 12 , 31, 0, 0)
+		
+		def firstCampaign = new Campaign(name : "First Campaign", startDate:startDateOne.toDate(), endDate:endDateOne.toDate()).save()
+		assert firstCampaign != null
+		firstCampaign.addToDonationSources(donationSource).save()
+		donationSource.campaign = firstCampaign
+		donationSource.save()
+			
+		DateTime startDate = new DateTime(2012, 1 , 1, 0, 0)
+		DateTime endDate = new DateTime(2012, 12 , 27, 0, 0)
+		
+	
+		params["startDate"] = startDate.toDate()
+		params["endDate"] = endDate.toDate()
+		
+		params.id = firstCampaign.id
+	
+		controller.update()
+
+		assert response.redirectedUrl == "/campaign/show/$firstCampaign.id"
+		assert flash.message != null
+
+	
+	}
+	
 	void testDeleteWithDonationsDroppingOutOfCampaign() {
 		DateTime donationDate = new DateTime(2012, 12 , 28, 0, 0)
 		def orgUnit = new Company(name: "Some Company")
