@@ -223,10 +223,33 @@ class CharityChampUtilsSpec extends UnitSpec {
 		
 	}
 	
-//	def "find the most recent number of meals a dollar buys"(){
-//		
-//		setup:
-//		def 
-//		
-//	}
+	def "find the most recent number of meals a dollar buys"(){
+		
+		when:
+		def date1 = new LocalDate(2011,1,1)
+		def date2 = new LocalDate(2012,1,1)
+		def date3 = new LocalDate(2013,1,1)
+		def donationDate = new LocalDate(2012,10,5)
+		def mealsADollarBuys1 = new GlobalNumericSetting(name : "Meals a Dollar Buys", mofbShift : false, value : new BigDecimal('33.3'), effectiveDate: date1.toDate()).save()
+		def mealsADollarBuys2 = new GlobalNumericSetting(name : "Meals a Dollar Buys", mofbShift : false, value : new BigDecimal('40.0'), effectiveDate: date2.toDate()).save()
+		def mealsADollarBuys3 = new GlobalNumericSetting(name : "Meals a Dollar Buys", mofbShift : false, value : new BigDecimal('50.0'), effectiveDate: date3.toDate()).save()
+		def numOfMealsDollarBuys = CharityChampUtils.findNumberOfMealsADollarBuys(donationDate.toDate())
+		
+		then:
+		numOfMealsDollarBuys.compareTo(new BigDecimal('40.0')) == 0
+		
+	}
+	
+	def "find Number Of Meals A Dollar Buys should return 0 if there are none"(){
+		
+		when:
+		
+		def donationDate = new LocalDate(2009,10,5)
+	
+		def numOfMealsDollarBuys = CharityChampUtils.findNumberOfMealsADollarBuys(donationDate.toDate())
+		
+		then:
+		numOfMealsDollarBuys.compareTo(new BigDecimal('0')) == 0
+		
+	}
 }

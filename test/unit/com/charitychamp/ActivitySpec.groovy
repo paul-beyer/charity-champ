@@ -19,7 +19,7 @@ package com.charitychamp
 import grails.test.mixin.*
 import grails.test.mixin.support.*
 
-import org.joda.time.DateTime
+import org.joda.time.LocalDate
 import org.junit.*
 
 import spock.lang.Unroll
@@ -28,6 +28,7 @@ import spock.lang.Unroll
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
  */
 @TestFor(Activity)
+@Mock([GlobalNumericSetting, Activity])
 class ActivitySpec extends ConstraintUnitSpec{
 
      def setup() {
@@ -52,6 +53,36 @@ class ActivitySpec extends ConstraintUnitSpec{
 		'nullable'             | 'donationDate'      | null
 			
     }
+	
+	def "test getting number of meals from Activity"(){
+		
+		when:
+		def donationDate = new LocalDate(2012,1,1)
+		def mealsADollarBuysDate = new LocalDate(2012,1,1)
+		def activity = new Activity(name : "Some activity", donationDate : donationDate.toDate(), amountCollected : new BigDecimal('56.78'))
+		def mealsADollarBuys = new GlobalNumericSetting(name : "Meals a Dollar Buys", mofbShift : false, value : new BigDecimal('33.3'), effectiveDate: mealsADollarBuysDate.toDate()).save()
+		def numberOfMeals = activity.numberOfMeals
+	
+		then:
+		numberOfMeals.compareTo(new BigDecimal('1890.77')) == 0
+		
+		
+	}
+	
+	def "test getting number of meals from Activity when no dollar multiplier found"(){
+		
+		when:
+		def donationDate = new LocalDate(2011,12, 31)
+		def mealsADollarBuysDate = new LocalDate(2012,1,1)
+		def activity = new Activity(name : "Some activity", donationDate : donationDate.toDate(), amountCollected : new BigDecimal('56.78'))
+		def mealsADollarBuys = new GlobalNumericSetting(name : "Meals a Dollar Buys", mofbShift : false, value : new BigDecimal('33.3'), effectiveDate: mealsADollarBuysDate.toDate()).save()
+		def numberOfMeals = activity.numberOfMeals
+				
+		then:
+		numberOfMeals.compareTo(new BigDecimal('0')) == 0
+		
+		
+	}
 	
 	
 }

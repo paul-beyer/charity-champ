@@ -34,7 +34,7 @@
 					
 						<g:sortableColumn property="payerEmail" title="${message(code: 'jeansPayment.payerEmail.label', default: 'Payer Email')}" />
 					
-						<g:sortableColumn property="amtPaid" title="${message(code: 'jeansPayment.amtPaid.label', default: 'Amt Paid')}" />
+						<g:sortableColumn property="amountCollected" title="${message(code: 'jeansPayment.amtPaid.label', default: 'Amt Paid')}" />
 					
 					</tr>
 				</thead>
@@ -52,7 +52,7 @@
 					
 						<td>${fieldValue(bean: jeansPaymentInstance, field: "payerEmail")}</td>
 					
-						<td>${fieldValue(bean: jeansPaymentInstance, field: "amtPaid")}</td>
+						<td>${fieldValue(bean: jeansPaymentInstance, field: "amountCollected")}</td>
 					
 					</tr>
 				</g:each>

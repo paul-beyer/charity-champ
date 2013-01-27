@@ -4,6 +4,7 @@
 		<li><a href="${createLink(controller: 'globalNumericSetting', action: 'goalPerEmployee')}"><g:img dir="images" file="target.png" /></a>&nbsp;<a href="${createLink(controller: 'globalNumericSetting', action: 'goalPerEmployee')}">Goal Per Employee</a></li><br/>
 		<li><a href="${createLink(controller: 'globalNumericSetting', action: 'mofbShiftValue')}"><g:img dir="images" file="coins.png" /></a>&nbsp;<a href="${createLink(controller: 'globalNumericSetting', action: 'mofbShiftValue')}">MOFB Shift Type</a></li><br/>
 		<li><a href="${createLink(controller: 'globalNumericSetting', action: 'mealsADollarBuys')}"><g:img dir="images" file="money.png" /></a>&nbsp;<a href="${createLink(controller: 'globalNumericSetting', action: 'mealsADollarBuys')}">Meals One Dollar Buys</a></li><br/>
+		<li><a href="${createLink(controller: 'stringList', action: 'list')}"><g:img dir="images" file="sport_soccer.png" /></a>&nbsp;<a href="${createLink(controller: 'stringList', action: 'list')}">Activity Types</a></li><br/>
 		<li><a href="${createLink(controller: 'admin', action: 'setup')}"><g:img dir="images" file="ruler_triangle.png" /></a>&nbsp;<a href="${createLink(controller: 'admin', action: 'setup')}">Go to Setup</a></li><br/>											
 	</ul>
 </div>

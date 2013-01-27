@@ -53,8 +53,8 @@ class JeansPaymentSpec extends ConstraintUnitSpec{
 		'valid'                | 'payerPhone'          | null
 		'valid'                | 'payerEmail'          | null
 		'email'                | 'payerEmail'          | getEmail(false)
-		'min'                  | 'amtPaid'             | 0
-		'nullable'             | 'amtPaid'             | null
+		'min'                  | 'amountCollected'     | 0
+		'nullable'             | 'amountCollected'     | null
 		'nullable'             | 'donationDate'        | null
 		
 			

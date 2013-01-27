@@ -28,9 +28,11 @@
 					
 						<g:sortableColumn property="payerEmail" title="${message(code: 'jeansPayment.payerEmail.label', default: 'Payer Email')}" />
 					
-						<g:sortableColumn property="amtPaid" title="${message(code: 'jeansPayment.amtPaid.label', default: 'Amt Paid')}" />
+						<g:sortableColumn property="amountCollected" title="${message(code: 'jeansPayment.amtPaid.label', default: 'Amt Paid')}" />
 						
 						<g:sortableColumn property="donationDate" title="${message(code: 'activity.donation.date.label', default: 'Date Paid')}" />
+						
+						<g:sortableColumn property="numberOfMeals" title="${message(code: 'activity.number.of.meals.label', default: 'Number Of Meals')}" />
 					
 						
 					
@@ -49,10 +51,12 @@
 						<td>${fieldValue(bean: jeansPaymentInstance, field: "payerPhone")}</td>
 					
 						<td>${fieldValue(bean: jeansPaymentInstance, field: "payerEmail")}</td>
-					
-						<td>${fieldValue(bean: jeansPaymentInstance, field: "amtPaid")}</td>
 						
+						<td><g:formatNumber number="${jeansPaymentInstance?.amountCollected}" type="currency" currencyCode="USD" /></td>
+												
 						<td><g:formatDate format="yyyy-MM-dd" date="${jeansPaymentInstance?.donationDate}" /></td>
+						
+						<td>${fieldValue(bean: jeansPaymentInstance, field: "numberOfMeals")}</td>
 					
 					</tr>
 				</g:each>

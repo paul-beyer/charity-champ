@@ -7,7 +7,7 @@
 		<g:message code="stringList.listName.label" default="List Name" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="listName" required="" value="${stringListInstance?.listName}"/>
+	<g:textField class="nonEditField" name="listName" required="" value="${stringListInstance?.listName}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: stringListInstance, field: 'value', 'error')} required">

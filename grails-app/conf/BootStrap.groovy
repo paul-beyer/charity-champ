@@ -11,6 +11,7 @@ import com.charitychamp.Group
 import com.charitychamp.JeansPayment
 import com.charitychamp.Office
 import com.charitychamp.Person
+import com.charitychamp.StringList
 import com.charitychamp.VolunteerShift
 
 class BootStrap {
@@ -44,6 +45,11 @@ class BootStrap {
 		
 		DateTime startDateThree = new DateTime(2013, 1 , 1, 0, 0)
 		DateTime endDateThree = new DateTime(2013, 12 , 31, 0, 0)
+		
+		def stringListOne = new StringList(listName : "Activity Type" , value : "Chili Cookoff").save(flush :true)
+		def stringListTwo = new StringList(listName : "Activity Type" , value : "BakeOff").save(flush :true)
+		def stringListThree = new StringList(listName : "Activity Type" , value : "Snack Sales").save(flush :true)
+		def stringListFour = new StringList(listName : "Activity Type" , value : "Bake Sale").save(flush :true)
 		
 		def campaign = new Campaign(name : "First Campaign", startDate : startDateOne.toDate(), endDate : endDateOne.toDate()).save(flush:true)
 		def campaign1 = new Campaign(name: 'Second Campaign', startDate : startDateTwo.toDate(), endDate : endDateTwo.toDate()).save()
@@ -92,13 +98,14 @@ class BootStrap {
 		def activity3 = new Activity(name : 'Snack Sales', amountCollected : new BigDecimal('136.44'), donationDate : dateOne.toDate()).save(flush:true)
 		def activity4 = new Activity(name : 'Bake Sale', amountCollected : new BigDecimal('102.33'), donationDate : dateOne.toDate()).save(flush:true)
 		
-		def jeans1 = new JeansPayment(employeeUserId : 'biffleg', payerFirstName : 'Greg', payerLastName : 'Biffle ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
-		def jeans2 = new JeansPayment(employeeUserId : 'keselowb', payerFirstName : 'Brad', payerLastName : 'Keselowski ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
-		def jeans3 = new JeansPayment(employeeUserId : 'bowyerc', payerFirstName : 'Clint', payerLastName : 'Bowyer ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
-		def jeans4 = new JeansPayment(employeeUserId : 'kensethm', payerFirstName : 'Matt', payerLastName : 'Kenseth ',amtPaid : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		def jeans1 = new JeansPayment(employeeUserId : 'biffleg', payerFirstName : 'Greg', payerLastName : 'Biffle ',amountCollected : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		def jeans2 = new JeansPayment(employeeUserId : 'keselowb', payerFirstName : 'Brad', payerLastName : 'Keselowski ',amountCollected : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		def jeans3 = new JeansPayment(employeeUserId : 'bowyerc', payerFirstName : 'Clint', payerLastName : 'Bowyer ',amountCollected : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
+		def jeans4 = new JeansPayment(employeeUserId : 'kensethm', payerFirstName : 'Matt', payerLastName : 'Kenseth ',amountCollected : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
 		
 		DateTime effDateOne = new DateTime(2012,1,1,0,0)
 		
+		def mealsDollarBuys = new GlobalNumericSetting(name : 'Meals a Dollar Buys' ,effectiveDate : startDateOne.toDate(),value : new BigDecimal('3'),mofbShift: false).save(flush:true)
 		def regular = new GlobalNumericSetting(name : 'Regular' ,effectiveDate : effDateOne.toDate(),value : new BigDecimal('10'),mofbShift: true).save(flush:true)
 		def exec = new GlobalNumericSetting(name : 'Executive' ,effectiveDate : effDateOne.toDate(),value : new BigDecimal('33'),mofbShift: true).save(flush:true)
 		def special = new GlobalNumericSetting(name : 'Special' ,effectiveDate : effDateOne.toDate(),value : new BigDecimal('25.5'),mofbShift: true).save(flush:true)

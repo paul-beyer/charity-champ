@@ -7,7 +7,8 @@
 		<g:message code="activity.name.label" default="Name" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:textField name="name" required="" value="${activityInstance?.name}"/>
+	<g:select name="name" from="${activityTypeList}" value="${activityInstance?.name}" class="many-to-one" noSelection="['null': '- select -']"/>
+	
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'amountCollected', 'error')} required">

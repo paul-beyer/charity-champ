@@ -16,7 +16,8 @@ class StringListController {
     }
 
     def create() {
-        [stringListInstance: new StringList(params)]
+		def activityType = new StringList(listName : 'Activity Type')
+        [stringListInstance: activityType]
     }
 
     def save() {
@@ -27,7 +28,7 @@ class StringListController {
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'stringList.label', default: 'StringList'), stringListInstance.id])
-        redirect(action: "show", id: stringListInstance.id)
+		redirect(action: "list")
     }
 
     def show(Long id) {
@@ -78,7 +79,7 @@ class StringListController {
         }
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'stringList.label', default: 'StringList'), stringListInstance.id])
-        redirect(action: "show", id: stringListInstance.id)
+       redirect(action: "list")
     }
 
     def delete(Long id) {

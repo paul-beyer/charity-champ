@@ -12,7 +12,7 @@ import org.joda.time.LocalDate
 import org.junit.*
 
 @TestFor(GroupController)
-@Mock([Group, Campaign, Activity, Company, Business, Office, Department, Person, DonationSource, DonationService, GlobalNumericSetting, VolunteerShift, JeansPayment])
+@Mock([Group, Campaign, Activity, Company, Business, Office, Department, Person, DonationSource, DonationService, GlobalNumericSetting, VolunteerShift, JeansPayment, StringList])
 class GroupControllerTests {
 	
 	
@@ -484,7 +484,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		
 				
 		controller.updateJeanPayment(group.id, 0, jeanPayment.version)
@@ -569,7 +569,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		
 	params.employeeUserId = 'beyerp'
 		params.payerFirstName = 'Paul'
@@ -602,7 +602,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		LocalDate depDate = new LocalDate(2014, 6, 12)
 		params.employeeUserId = 'beyerp'
 		params.payerFirstName = 'Paul'
@@ -635,7 +635,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		LocalDate depDate = new LocalDate(2013, 6, 12)
 		params.employeeUserId = 'beyerp'
 		params.payerFirstName = 'Paul'
@@ -666,7 +666,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		LocalDate depDate = new LocalDate(2013, 6, 12)
 		params.employeeUserId = 'beyerp'
 		params.payerFirstName = 'Paul'
@@ -696,7 +696,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		LocalDate depDate = new LocalDate(2013, 6, 12)
 		params.employeeUserId = 'beyerp'
 		params.payerFirstName = 'Paul'
@@ -726,7 +726,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save(flush : true)
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save(flush : true)
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save(flush : true)
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		DonationSource donation = new DonationSource(donation: jeanPayment, orgUnit : group).save(flush : true)
 		campaign.addToDonationSources(donation).save(flush : true)
 		
@@ -754,7 +754,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 		LocalDate depDate = new LocalDate(2013, 6, 12)
 		params.employeeUserId = 'beyerp'
 		params.payerFirstName = 'Paul'
@@ -849,7 +849,7 @@ class GroupControllerTests {
 		OrganizationalUnit department = new Department(name : "Billing", leader : person, charityLieutenant : person, numberOfEmployees : 145, dateOfEmployeeCount : new Date(), office : office).save()
 		OrganizationalUnit group = new Group(name : 'SOA',  leader : person, department : department).save()
 		Campaign campaign = new Campaign(name: "First", startDate: startDate.toDate(), endDate: endDate.toDate()).save()
-		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amtPaid : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
+		Donation jeanPayment = new JeansPayment(employeeUserId: 'beyerp', payerFirstName : 'Paul', payerLastName: 'Beyer', amountCollected : new BigDecimal(100.00), donationDate : donationDate.toDate()).save()
 	
 		params.employeeUserId = 'beyerp'
 		params.payerFirstName = 'Paul'

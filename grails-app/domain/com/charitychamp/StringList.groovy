@@ -28,6 +28,12 @@ class StringList {
 	
     static constraints = {
 		listName blank : false
-		value blank : false
+		value blank : false, unique: ['listName']
+	
     }
+	
+	@Override
+	String toString(){
+		value
+	}
 }

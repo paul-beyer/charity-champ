@@ -27,6 +27,8 @@
 						<g:sortableColumn property="leaderName" title="${message(code: 'volunteerShift.leaderName.label', default: 'In Charge')}" />
 					
 						<g:sortableColumn property="mealFactor" title="${message(code: 'volunteerShift.mealFactor.label', default: 'Meal Factor')}" />
+						
+						<g:sortableColumn property="numberOfMeals" title="${message(code: 'activity.number.of.meals.label', default: 'Number Of Meals')}" />
 					
 						
 					
@@ -45,6 +47,8 @@
 						<td>${fieldValue(bean: foodBankShiftInstance, field: "leaderName")}</td>
 					
 						<td><g:formatNumber number="${foodBankShiftInstance?.mealFactor?.value}"  type="number" maxFractionDigits="2"  /></td>
+						
+						<td>${fieldValue(bean: foodBankShiftInstance, field: "numberOfMeals")}</td>
 					
 					</tr>
 				</g:each>

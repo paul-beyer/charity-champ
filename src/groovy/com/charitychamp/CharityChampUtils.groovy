@@ -67,7 +67,25 @@ class CharityChampUtils {
 	
 	public static final BigDecimal findNumberOfMealsADollarBuys(Date donationDate){
 		
+		def numberOfMealsADollarBuys = 0
+		if(donationDate){
+			
+			def mealsADollarBuys = GlobalNumericSetting.createCriteria().list {
+				and {
+					eq("name", CharityChampConstants.mealsADollarBuysNameValue)
+					le("effectiveDate", donationDate)
+							
+				}
+				order("effectiveDate", "desc")
+			}
+			
+			if(mealsADollarBuys){
+				numberOfMealsADollarBuys = mealsADollarBuys.get(0).value
+			}
+			
+		}
 		
+		return numberOfMealsADollarBuys
 	}
 	
 	

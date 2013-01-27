@@ -16,6 +16,7 @@
 
 package com.charitychamp
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 class JeansPayment extends Donation{
@@ -27,7 +28,7 @@ class JeansPayment extends Donation{
 	String payerLastName
 	String payerPhone
 	String payerEmail
-	BigDecimal amtPaid
+	BigDecimal amountCollected
 
 	Date dateCreated
 	Date lastUpdated
@@ -38,7 +39,18 @@ class JeansPayment extends Donation{
 		payerLastName blank : false
 		payerPhone nullable : true
 		payerEmail nullable : true, email : true
-		amtPaid min : 1 as BigDecimal
+		amountCollected min : 1 as BigDecimal
 			
     }
+	
+	public BigDecimal getNumberOfMeals(){
+		
+			def numberOfMealsDollarBuys = CharityChampUtils.findNumberOfMealsADollarBuys(super.getDonationDate())
+			return rounded(this.amountCollected.multiply(numberOfMealsDollarBuys))
+					
+	}
+		
+	private BigDecimal rounded(BigDecimal aNumber){
+		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
+	 }
 }

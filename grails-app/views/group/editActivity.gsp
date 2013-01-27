@@ -9,7 +9,9 @@
 	
 	
 		<div id="edit-activity" class="content scaffold-create" role="main">
-		
+			<g:if test="${flash.message}">
+					<div class="message" role="status">${flash.message}</div>
+			</g:if>
 			<g:hasErrors bean="${activityInstance}">
 			<ul class="errors" role="alert">
 				<g:eachError bean="${activityInstance}" var="error">

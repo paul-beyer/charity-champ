@@ -41,4 +41,16 @@ class Activity extends Donation{
 				
     }
 	
+	public BigDecimal getNumberOfMeals(){
+	
+		def numberOfMealsDollarBuys = CharityChampUtils.findNumberOfMealsADollarBuys(super.getDonationDate())
+		return rounded(this.amountCollected.multiply(numberOfMealsDollarBuys))
+	
+				
+	}
+	
+	private BigDecimal rounded(BigDecimal aNumber){
+		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
+	 }
+	
 }

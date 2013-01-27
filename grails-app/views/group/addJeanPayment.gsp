@@ -9,7 +9,9 @@
 	
 	
 		<div id="create-jean-payment" class="content scaffold-create" role="main">
-		
+			<g:if test="${flash.message}">
+					<div class="message" role="status">${flash.message}</div>
+			</g:if>
 			<g:hasErrors bean="${jeansPaymentInstance}">
 			<ul class="errors" role="alert">
 				<g:eachError bean="${jeansPaymentInstance}" var="error">

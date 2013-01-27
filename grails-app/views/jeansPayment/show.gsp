@@ -68,11 +68,11 @@
 				</li>
 				</g:if>
 			
-				<g:if test="${jeansPaymentInstance?.amtPaid}">
+				<g:if test="${jeansPaymentInstance?.amountCollected}">
 				<li class="fieldcontain">
 					<span id="amtPaid-label" class="property-label"><g:message code="jeansPayment.amtPaid.label" default="Amt Paid" /></span>
 					
-						<span class="property-value" aria-labelledby="amtPaid-label"><g:fieldValue bean="${jeansPaymentInstance}" field="amtPaid"/></span>
+						<span class="property-value" aria-labelledby="amtPaid-label"><g:fieldValue bean="${jeansPaymentInstance}" field="amountCollected"/></span>
 					
 				</li>
 				</g:if>

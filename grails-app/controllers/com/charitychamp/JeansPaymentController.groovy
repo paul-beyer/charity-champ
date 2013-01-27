@@ -26,7 +26,7 @@ class JeansPaymentController {
 			amtPaid = params.amtPaid.toBigDecimal()
 		}
         def jeansPaymentInstance = new JeansPayment(params)
-		jeansPaymentInstance.amtPaid = amtPaid
+		jeansPaymentInstance.amountCollected = amtPaid
         if (!jeansPaymentInstance.save(flush: true)) {
             render(view: "create", model: [jeansPaymentInstance: jeansPaymentInstance])
             return
@@ -81,7 +81,7 @@ class JeansPaymentController {
 		if(params.amtPaid){
 			amtPaid = params.amtPaid.toBigDecimal()
 		}
-		jeansPaymentInstance.amtPaid = amtPaid
+		jeansPaymentInstance.amountCollected = amtPaid
         if (!jeansPaymentInstance.save(flush: true)) {
             render(view: "edit", model: [jeansPaymentInstance: jeansPaymentInstance])
             return

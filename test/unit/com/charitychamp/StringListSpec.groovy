@@ -31,7 +31,7 @@ class StringListSpec extends ConstraintUnitSpec{
 
      def setup() {
         
-        mockForConstraintsTests(StringList, [new StringList()])
+        mockForConstraintsTests(StringList, [new StringList(listName : 'Activity Type', value : 'Bake Sale')])
     }
 
     @Unroll("test StringList all constraints #field is #error")
@@ -48,9 +48,21 @@ class StringListSpec extends ConstraintUnitSpec{
         'nullable'             | 'listName'      | null
 		'blank'                | 'value'         | ''
 		'nullable'             | 'value'         | null
-		
+				
 					
     }
+	
+	def "test listName and value combination are unique"(){
+		
+		when:
+		def obj = new StringList(listName : 'Activity Type', value : 'Bake Sale')
+		
+		then:
+		obj.validate() == false
+		obj.errors.getFieldError('value').getCode() == 'unique'
+			
+		
+	}
 
 }
 

@@ -10,4 +10,6 @@ abstract class Donation {
 		donationSource nullable : true
 			
 	}
+	
+	
 }

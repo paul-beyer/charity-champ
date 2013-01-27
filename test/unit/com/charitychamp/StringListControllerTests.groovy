@@ -46,7 +46,7 @@ class StringListControllerTests {
         populateValidParams(params)
         controller.save()
 
-        assert response.redirectedUrl == '/stringList/show/1'
+        assert response.redirectedUrl == '/stringList/list'
         assert controller.flash.message != null
         assert StringList.count() == 1
     }
@@ -114,7 +114,7 @@ class StringListControllerTests {
         populateValidParams(params)
         controller.update()
 
-        assert response.redirectedUrl == "/stringList/show/$stringList.id"
+        assert response.redirectedUrl == "/stringList/list"
         assert flash.message != null
 
         //test outdated version number

@@ -27,6 +27,8 @@
 						<g:sortableColumn property="comments" title="${message(code: 'activity.comments.label', default: 'Comments')}" />
 					
 						<g:sortableColumn property="donationDate" title="${message(code: 'activity.donation.date.label', default: 'Deposit Date')}" />
+						
+						<g:sortableColumn property="numberOfMeals" title="${message(code: 'activity.number.of.meals.label', default: 'Number Of Meals')}" />
 					
 					</tr>
 				</thead>
@@ -43,6 +45,8 @@
 						<td>${fieldValue(bean: activityInstance, field: "comments")}</td>
 				
 						<td><g:formatDate format="yyyy-MM-dd" date="${activityInstance?.donationDate}" /></td>
+						
+						<td>${fieldValue(bean: activityInstance, field: "numberOfMeals")}</td>
 					
 					</tr>
 				</g:each>

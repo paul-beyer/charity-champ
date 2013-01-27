@@ -40,12 +40,12 @@
 	<g:field type="email" name="payerEmail" value="${jeansPaymentInstance?.payerEmail}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: jeansPaymentInstance, field: 'amtPaid', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: jeansPaymentInstance, field: 'amountCollected', 'error')} required">
 	<label for="amtPaid">
 		<g:message code="jeansPayment.amtPaid.label" default="Amt Paid" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:field class="money" name="amtPaid" min="1" required="" value="${fieldValue(bean: jeansPaymentInstance, field: 'amtPaid')}"/>
+	<g:field class="money" name="amtPaid" min="1" required="" value="${fieldValue(bean: jeansPaymentInstance, field: 'amountCollected')}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: jeansPaymentInstance, field: 'dateOfPayment', 'error')} required">

@@ -61,9 +61,22 @@ class GroupController {
 		
 		def campaignId = session["campaign"]
 		def currentCampaign = Campaign.get(campaignId.toLong())
+				
+		def returnObject = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		
-		commonGroupActivityReturnValues(groupInstance, currentCampaign)
-	
+		//get all activities 
+//		def activityList = new ArrayList()
+//		if(currentCampaign){
+//			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.activity)
+//		}
+		
+		//get total by each activity
+//		def activityBreakDownCollection = donationService.activityBreakDown(activityList)
+//		
+//		returnObject.put('groupedActivities', activityBreakDownCollection)
+		
+		return returnObject
+		
 		
 	}
 	
@@ -236,9 +249,13 @@ class GroupController {
 		def campaignId = session["campaign"]
 		def currentCampaign = Campaign.get(campaignId.toLong())
 		
-		commonGroupActivityReturnValues(groupInstance, currentCampaign)
-				
-		
+		def commonReturn = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypeNames = []
+		activityTypes.each{activityTypeNames << it.value }
+		commonReturn.put('activityTypeList', activityTypeNames)
+		return commonReturn
+			
 	}
 	
 	def addFoodBankShift() {
@@ -315,6 +332,7 @@ class GroupController {
 			}
 		
 		}
+		jeanPaymentInstance.amountCollected = depositAmount
 		
 		boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.dateOfPayment)
 		if(!donationDateIsGood){
@@ -347,7 +365,7 @@ class GroupController {
 	}
 
 	def saveActivity(){
-		
+	
 		log.debug("Entering activity save")
 		
 		def activityInstance = new Activity(params)
@@ -365,7 +383,19 @@ class GroupController {
 		def currentCampaign = Campaign.get(campaignId.toLong())
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypeNames = []
+		activityTypes.each{activityTypeNames << it.value }
+		returnModel.put('activityTypeList', activityTypeNames)
 		returnModel.put('activityInstance', activityInstance)
+	
+		// This is needed because if not selected a String null will be passed in
+		if(params.name == 'null'){
+			flash.message = message(code: 'activity.name.not.selected')
+			render(view: "addActivity", model: returnModel)
+			return
+		}
+
 			
 		def depositAmount = 0
 	
@@ -381,6 +411,7 @@ class GroupController {
 			}
 		
 		}
+		activityInstance.amountCollected = depositAmount
 		
 		boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.depositDate)
 		if(!donationDateIsGood){
@@ -389,9 +420,8 @@ class GroupController {
 			return
 			
 		}
-
+		
 	
-
 		if (!activityInstance.save(flush :true)) {
 			render(view: "addActivity", model: returnModel)
 			return
@@ -434,6 +464,10 @@ class GroupController {
 		}
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypeNames = [] 
+		activityTypes.each{activityTypeNames << it.value }
+		returnModel.put('activityTypeList', activityTypeNames)
 		returnModel.put('activityInstance', activityInstance)
 
 		return returnModel
@@ -485,8 +519,12 @@ class GroupController {
 		def currentCampaign = Campaign.get(campaignId.toLong())
 			
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypeNames = []
+		activityTypes.each{activityTypeNames << it.value }
+		returnModel.put('activityTypeList', activityTypeNames)
 		returnModel.put('activityInstance', activityInstance)
-		
+				
 		if (activityVersion) {
 			if (activityInstance.version > activityVersion) {
 			
@@ -500,6 +538,14 @@ class GroupController {
 		
 		activityInstance.properties = params
 		activityInstance.donationDate = params.depositDate
+		
+		// This is needed because if not selected a String null will be passed in
+		if(params.name == 'null'){
+			flash.message = message(code: 'activity.name.not.selected')
+			render(view: "editActivity", model: returnModel)
+			return
+		}
+		
 		def depositAmount = 0
 		
 		if(params.amountCollected){
@@ -632,7 +678,7 @@ class GroupController {
 					render(view: "editJeanPayments", model: returnModel)
 					return
 				}
-				jeanPaymentInstance.amtPaid = depositAmount
+				jeanPaymentInstance.amountCollected = depositAmount
 			}
 			
 			boolean donationDateIsGood = CharityChampUtils.donationOccursWithinValidCampaign(currentCampaign, params.dateOfPayment)

@@ -16,13 +16,14 @@
 
 package com.charitychamp
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 class VolunteerShift extends Donation{
 	
 	static final String type = CharityChampConstants.midOhioFoodBankShift
 	
-	int numberOfVolunteers
+	Integer numberOfVolunteers
 	String comments
 	String leaderName
 	GlobalNumericSetting mealFactor
@@ -36,4 +37,14 @@ class VolunteerShift extends Donation{
 		leaderName nullable : true
 			
     }
+	
+	public BigDecimal getNumberOfMeals(){
+		
+		return rounded(this.mealFactor?.value.multiply(numberOfVolunteers))
+					
+	}
+		
+	private BigDecimal rounded(BigDecimal aNumber){
+		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
+	 }
 }
