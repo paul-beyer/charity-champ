@@ -14,11 +14,12 @@
 		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'charityChamp.css')}" type="text/css">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'dtree.css')}" type="text/css">
+		<link rel="stylesheet" href="${resource(dir: 'css', file: 'jqsimplemenu.css')}" type="text/css">
 		
 		
 		
 		<g:layoutHead/>
-		<r:require modules="application, jquery, dtree, moneyMask, jquery-ui" />
+		<r:require modules="application, jquery, dtree, moneyMask, jquery-ui, jqsimplemenu, home" />
 		<r:layoutResources />
 	</head>
 	<body>
@@ -33,13 +34,13 @@
 <!-- END HEADER -->
 
 <!-- BEGIN NAVIGATION -->		
-			<div id="primaryNav">
-				<ul>
-					<li><a href="${createLink(uri: '/')}">Home</a></li>
-					<li><a href="${createLink(controller: 'admin', action: 'admin')}">Manage</a></li>
+		<div id="primaryNav">
+				<ul id="mainNav" class="jq-menu">
+					<li><a href="${createLink(uri: '/')}">Home</a></li>	
 				
 				</ul>
-			</div>
+				
+		</div>
 <!-- END NAVIGATION -->	
 			
 			<g:layoutBody/>

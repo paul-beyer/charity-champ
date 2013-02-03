@@ -3,7 +3,7 @@
 	<head>
 	  	<title><g:message code="title.homepage"/></title>
 		<meta name="layout" content="main">
-		<r:require modules="home" />
+		
 	</head>
 	<body>
 	 

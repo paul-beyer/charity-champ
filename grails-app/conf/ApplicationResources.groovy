@@ -12,5 +12,8 @@ modules = {
 	moneyMask {
 		resource url:'js/jquery.maskMoney.js'
 	}
+	jqsimplemenu {
+		resource url:'js/jqsimplemenu.js'
+	}
 	
 }
