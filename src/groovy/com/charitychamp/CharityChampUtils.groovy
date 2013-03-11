@@ -67,12 +67,12 @@ class CharityChampUtils {
 	
 	public static final BigDecimal findNumberOfMealsADollarBuys(Date donationDate){
 		
-		def numberOfMealsADollarBuys = 0
+		def numberOfMealsADollarBuys = new BigDecimal('0')
 		if(donationDate){
 			
 			def mealsADollarBuys = GlobalNumericSetting.createCriteria().list {
 				and {
-					eq("name", CharityChampConstants.mealsADollarBuysNameValue)
+					eq("name", CharityChampConstants.MEALS_A_DOLLAR_BUYS_NAME_VALUE)
 					le("effectiveDate", donationDate)
 							
 				}
@@ -86,6 +86,31 @@ class CharityChampUtils {
 		}
 		
 		return numberOfMealsADollarBuys
+	}
+	
+	public static final BigDecimal findCurrentGoalForEmployee(Date currentDate){
+		
+		def goalAmountPerEmployee = new BigDecimal('0')
+		
+		if(currentDate){
+			
+			def goalsPerEmployee = GlobalNumericSetting.createCriteria().list {
+				and {
+					eq("name", CharityChampConstants.GOAL_PER_EMPLOYEE_NAME_VALUE)
+					le("effectiveDate", currentDate)
+							
+				}
+				order("effectiveDate", "desc")
+			}
+			
+			if(goalsPerEmployee){
+				goalAmountPerEmployee = goalsPerEmployee.get(0).value
+			}
+			
+		} 
+		
+		return goalAmountPerEmployee
+		
 	}
 	
 	

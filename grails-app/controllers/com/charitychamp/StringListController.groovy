@@ -16,7 +16,7 @@ class StringListController {
     }
 
     def create() {
-		def activityType = new StringList(listName : 'Activity Type')
+		def activityType = new StringList(listName : CharityChampConstants.ACTIVITY_TYPE)
         [stringListInstance: activityType]
     }
 

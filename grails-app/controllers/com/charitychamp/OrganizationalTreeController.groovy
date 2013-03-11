@@ -24,7 +24,6 @@ class OrganizationalTreeController {
 	
 	def tree(){
 		
-		println "Entering in here"		
 		def foundCompanies = Company.findAll()
 		def sortedCompanies = foundCompanies.sort{it.name}
 		
@@ -120,7 +119,7 @@ class OrganizationalTreeController {
 					
 					}
 					
-					def department = ["name" : it.name, "url" : "", "groups" : groups]
+					def department = ["name" : it.name, "url" : "/charity-champ/department/overview/${it.id}", "groups" : groups]
 					departments << department
 				}
 				

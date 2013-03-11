@@ -21,7 +21,7 @@ import java.util.Date;
 
 class JeansPayment extends Donation{
 	
-	static final String type = CharityChampConstants.jeansPayment
+	static final String type = CharityChampConstants.JEANS_PAYMENT
 	
 	String employeeUserId
 	String payerFirstName

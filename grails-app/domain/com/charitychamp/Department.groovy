@@ -21,7 +21,7 @@ import java.util.Date;
 class Department extends OrganizationalUnit{
 	
 	Person charityLieutenant
-	int numberOfEmployees
+	Integer numberOfEmployees
 	Date dateOfEmployeeCount
 	
 	Date dateCreated

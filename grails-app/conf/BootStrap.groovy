@@ -3,6 +3,7 @@ import org.joda.time.DateTime
 import com.charitychamp.Activity
 import com.charitychamp.Business
 import com.charitychamp.Campaign
+import com.charitychamp.CharityChampConstants
 import com.charitychamp.Company
 import com.charitychamp.Department
 import com.charitychamp.DonationSource
@@ -46,10 +47,10 @@ class BootStrap {
 		DateTime startDateThree = new DateTime(2013, 1 , 1, 0, 0)
 		DateTime endDateThree = new DateTime(2013, 12 , 31, 0, 0)
 		
-		def stringListOne = new StringList(listName : "Activity Type" , value : "Chili Cookoff").save(flush :true)
-		def stringListTwo = new StringList(listName : "Activity Type" , value : "BakeOff").save(flush :true)
-		def stringListThree = new StringList(listName : "Activity Type" , value : "Snack Sales").save(flush :true)
-		def stringListFour = new StringList(listName : "Activity Type" , value : "Bake Sale").save(flush :true)
+		def stringListOne = new StringList(listName : CharityChampConstants.ACTIVITY_TYPE , value : "Chili Cookoff").save(flush :true)
+		def stringListTwo = new StringList(listName : CharityChampConstants.ACTIVITY_TYPE , value : "BakeOff").save(flush :true)
+		def stringListThree = new StringList(listName : CharityChampConstants.ACTIVITY_TYPE , value : "Snack Sales").save(flush :true)
+		def stringListFour = new StringList(listName : CharityChampConstants.ACTIVITY_TYPE , value : "Bake Sale").save(flush :true)
 		
 		def campaign = new Campaign(name : "First Campaign", startDate : startDateOne.toDate(), endDate : endDateOne.toDate()).save(flush:true)
 		def campaign1 = new Campaign(name: 'Second Campaign', startDate : startDateTwo.toDate(), endDate : endDateTwo.toDate()).save()

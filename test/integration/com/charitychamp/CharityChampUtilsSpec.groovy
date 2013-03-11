@@ -252,4 +252,23 @@ class CharityChampUtilsSpec extends UnitSpec {
 		numOfMealsDollarBuys.compareTo(new BigDecimal('0')) == 0
 		
 	}
+	
+	def "find the most recent goal per employee"(){
+		
+		when:
+		def date1 = new LocalDate(2012,7,1)
+		def date2 = new LocalDate(2012,7,15)
+		def date3 = new LocalDate(2012,8,1)
+		def donationDate = new LocalDate(2012,7,20)
+		def goalPerEmployee1 = new GlobalNumericSetting(name : CharityChampConstants.GOAL_PER_EMPLOYEE_NAME_VALUE, mofbShift : false, value : new BigDecimal('33.3'), effectiveDate: date1.toDate()).save(failOnError:true)
+		def goalPerEmployee2 = new GlobalNumericSetting(name : CharityChampConstants.GOAL_PER_EMPLOYEE_NAME_VALUE, mofbShift : false, value : new BigDecimal('56.7'), effectiveDate: date2.toDate()).save()
+		def goalPerEmployee3 = new GlobalNumericSetting(name : CharityChampConstants.GOAL_PER_EMPLOYEE_NAME_VALUE, mofbShift : false, value : new BigDecimal('67.8'), effectiveDate: date3.toDate()).save()
+				
+		def goalPerEmployee = CharityChampUtils.findCurrentGoalForEmployee(donationDate.toDate())
+		
+		then:
+		goalPerEmployee.equals(new BigDecimal('56.70'))
+		
+		
+	}
 }

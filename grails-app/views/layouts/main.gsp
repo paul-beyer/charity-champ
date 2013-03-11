@@ -12,17 +12,15 @@
 		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'boxing_glove.ico')}" type="image/x-icon">
 		<link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
 		<link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'charityChamp.css')}" type="text/css">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'dtree.css')}" type="text/css">
-		<link rel="stylesheet" href="${resource(dir: 'css', file: 'jqsimplemenu.css')}" type="text/css">
 		
 		
 		
 		<g:layoutHead/>
-		<r:require modules="application, jquery, dtree, moneyMask, jquery-ui, jqsimplemenu, home" />
+		<r:require modules="application, jquery, dtree, moneyMask, jquery-ui, jqsimplemenu, home, charityChampCss, dtreeCss, jqsimplemenuCss" />
+	
 		<r:layoutResources />
 	</head>
-	<body>
+	<body id="background">
 			
 		<div id="wrap">
 <!-- BEGIN HEADER -->
@@ -34,13 +32,13 @@
 <!-- END HEADER -->
 
 <!-- BEGIN NAVIGATION -->		
-		<div id="primaryNav">
-				<ul id="mainNav" class="jq-menu">
-					<li><a href="${createLink(uri: '/')}">Home</a></li>	
-				
-				</ul>
-				
-		</div>
+			<div id="primaryNav">
+					<ul id="mainNav" class="jq-menu">
+						<li><a href="${createLink(uri: '/')}">Home</a></li>	
+					
+					</ul>
+					
+			</div>
 <!-- END NAVIGATION -->	
 			
 			<g:layoutBody/>
@@ -48,7 +46,7 @@
 			<div id="primary-foot">
 				<div id="history">
 				
-					<header><h1>Volunteer. Give. Repeat.</h1></header>			
+					<h1>Volunteer. Give. Repeat.</h1>		
 				</div>	
 			</div>
 		</div>

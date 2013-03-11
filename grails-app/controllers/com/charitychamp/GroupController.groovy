@@ -65,15 +65,46 @@ class GroupController {
 		def returnObject = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		
 		//get all activities 
-//		def activityList = new ArrayList()
-//		if(currentCampaign){
-//			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.activity)
-//		}
+		def activityList = []
+		def jeansList = []
+		def shiftList = []
+		if(currentCampaign){
+			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.ACTIVITY)
+			jeansList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.JEANS_PAYMENT)
+			shiftList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.MID_OHIO_FOOD_BANK_SHIFT)
+		}
 		
 		//get total by each activity
-//		def activityBreakDownCollection = donationService.activityBreakDown(activityList)
-//		
-//		returnObject.put('groupedActivities', activityBreakDownCollection)
+		def activitySummaries = donationService.activitySummary(activityList)
+		def jeansSummary = donationService.jeansSummary(jeansList)
+		activitySummaries.add(jeansSummary)
+			
+		
+		//total all the money
+		def totalMoney = new BigDecimal('0')
+		activitySummaries.each {
+			if(it?.amount){
+				totalMoney = totalMoney.add(it?.amount)
+			}
+		}
+		
+		def shiftSummary = donationService.shiftSummary(shiftList)
+		activitySummaries.add(shiftSummary)
+		
+		//total all the meals
+		def totalMeals = new BigDecimal('0')
+		activitySummaries.each {
+			if(it?.mealCount){
+				totalMeals = totalMeals.add(it?.mealCount)
+			}
+		}
+		
+						
+		returnObject.put('activitySummaries', activitySummaries)
+		returnObject.put('totalMoney', totalMoney)
+		returnObject.put('totalMeals', totalMeals)
+		
+		
 		
 		return returnObject
 		
@@ -166,7 +197,7 @@ class GroupController {
 		
 		def activityList = new ArrayList()	
 		if(currentCampaign){
-			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.activity)
+			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.ACTIVITY)
 		}
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
@@ -192,7 +223,7 @@ class GroupController {
 		
 		def foodBankShiftList = new ArrayList()
 		if(currentCampaign){
-			foodBankShiftList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.midOhioFoodBankShift)
+			foodBankShiftList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.MID_OHIO_FOOD_BANK_SHIFT)
 		}
 		
 	
@@ -222,7 +253,7 @@ class GroupController {
 		
 		def jeanPaymentsList = new ArrayList()
 		if(currentCampaign){
-			jeanPaymentsList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.jeansPayment)
+			jeanPaymentsList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.JEANS_PAYMENT)
 		}
 		
 	
@@ -250,7 +281,7 @@ class GroupController {
 		def currentCampaign = Campaign.get(campaignId.toLong())
 		
 		def commonReturn = commonGroupActivityReturnValues(groupInstance, currentCampaign)
-		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypes = StringList.findAll(sort:"value"){listName : CharityChampConstants.ACTIVITY_TYPE}
 		def activityTypeNames = []
 		activityTypes.each{activityTypeNames << it.value }
 		commonReturn.put('activityTypeList', activityTypeNames)
@@ -383,7 +414,7 @@ class GroupController {
 		def currentCampaign = Campaign.get(campaignId.toLong())
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
-		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypes = StringList.findAll(sort:"value"){listName : CharityChampConstants.ACTIVITY_TYPE}
 		def activityTypeNames = []
 		activityTypes.each{activityTypeNames << it.value }
 		returnModel.put('activityTypeList', activityTypeNames)
@@ -464,7 +495,7 @@ class GroupController {
 		}
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
-		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypes = StringList.findAll(sort:"value"){listName : CharityChampConstants.ACTIVITY_TYPE}
 		def activityTypeNames = [] 
 		activityTypes.each{activityTypeNames << it.value }
 		returnModel.put('activityTypeList', activityTypeNames)
@@ -519,7 +550,7 @@ class GroupController {
 		def currentCampaign = Campaign.get(campaignId.toLong())
 			
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
-		def activityTypes = StringList.findAll(sort:"value"){listName : "Activity Type"}
+		def activityTypes = StringList.findAll(sort:"value"){listName : CharityChampConstants.ACTIVITY_TYPE}
 		def activityTypeNames = []
 		activityTypes.each{activityTypeNames << it.value }
 		returnModel.put('activityTypeList', activityTypeNames)
@@ -602,7 +633,7 @@ class GroupController {
 				
 				
 		try {
-			def donationSource = donationService.findDonationSource(currentCampaign, activityInstance.id, CharityChampConstants.activity)
+			def donationSource = donationService.findDonationSource(currentCampaign, activityInstance.id, CharityChampConstants.ACTIVITY)
 		
 			donationSource.donation = null
 			donationSource.orgUnit = null
@@ -721,7 +752,7 @@ class GroupController {
 				
 				
 		try {
-			def donationSource = donationService.findDonationSource(currentCampaign, jeanPaymentInstance.id, CharityChampConstants.jeansPayment)
+			def donationSource = donationService.findDonationSource(currentCampaign, jeanPaymentInstance.id, CharityChampConstants.JEANS_PAYMENT)
 		
 			donationSource.donation = null
 			donationSource.orgUnit = null
@@ -955,7 +986,7 @@ class GroupController {
 				
 				
 		try {
-			def donationSource = donationService.findDonationSource(currentCampaign, shiftInstance.id, CharityChampConstants.midOhioFoodBankShift)
+			def donationSource = donationService.findDonationSource(currentCampaign, shiftInstance.id, CharityChampConstants.MID_OHIO_FOOD_BANK_SHIFT)
 		
 			donationSource.donation = null
 			donationSource.orgUnit = null

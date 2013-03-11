@@ -55,6 +55,7 @@ grails.project.dependency.resolution = {
         compile ':cache:1.0.0'
 		compile ':joda-time:1.4'
 		runtime ':jquery-ui:1.8.24'
+		compile ":jqplot:0.1"
 			
 	
     }

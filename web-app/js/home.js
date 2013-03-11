@@ -1,5 +1,5 @@
 $(function () {
-		
+	
 //	d = new dTree('d');
 //	d1 = new dTree('d');
 //	d.add(0,-1,'Organizational Structure',  '/charity-champ');
@@ -32,8 +32,7 @@ $(function () {
 //			
 //	});	
 	
-	
-	
+
 	$.ajax({
 		url: "/charity-champ/organizationalTree",
 		type: "GET",

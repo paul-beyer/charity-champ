@@ -21,7 +21,7 @@ import java.util.Date;
 
 class VolunteerShift extends Donation{
 	
-	static final String type = CharityChampConstants.midOhioFoodBankShift
+	static final String type = CharityChampConstants.MID_OHIO_FOOD_BANK_SHIFT
 	
 	Integer numberOfVolunteers
 	String comments

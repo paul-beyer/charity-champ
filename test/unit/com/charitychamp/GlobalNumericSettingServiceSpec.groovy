@@ -24,7 +24,7 @@ class GlobalNumericSettingServiceSpec extends UnitSpec{
 		when:
 		def firstDate = new LocalDate(2012,1,1)
 		def service = new GlobalNumericSettingService()
-		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.mealsADollarBuysNameValue, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
+		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.MEALS_A_DOLLAR_BUYS_NAME_VALUE, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
 		def hasBeenUsed = service.determineIfSettingDateHasBeenUsed('Meals a Dollar Buys', firstDate.toDate())
 		
 		then:
@@ -36,7 +36,7 @@ class GlobalNumericSettingServiceSpec extends UnitSpec{
 		when:
 		def firstDate = new LocalDate(2012,1,1)
 		def service = new GlobalNumericSettingService()
-		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.mealsADollarBuysNameValue, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
+		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.MEALS_A_DOLLAR_BUYS_NAME_VALUE, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
 		def hasBeenUsed = service.determineIfSettingDateHasBeenUsed('Some other name', firstDate.toDate())
 		
 		then:
@@ -49,7 +49,7 @@ class GlobalNumericSettingServiceSpec extends UnitSpec{
 		def firstDate = new LocalDate(2012,1,1)
 		def secondDate = new LocalDate(2012,1,2)
 		def service = new GlobalNumericSettingService()
-		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.mealsADollarBuysNameValue, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
+		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.MEALS_A_DOLLAR_BUYS_NAME_VALUE, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
 		def hasBeenUsed = service.determineIfSettingDateHasBeenUsed('Meals a Dollar Buys', secondDate.toDate())
 		
 		then:
@@ -62,7 +62,7 @@ class GlobalNumericSettingServiceSpec extends UnitSpec{
 		def firstDate = new LocalDate(2012,1,1)
 		def secondDate = new LocalDate(2012,1,2)
 		def service = new GlobalNumericSettingService()
-		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.mealsADollarBuysNameValue, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
+		def globalOne = new GlobalNumericSetting(name : CharityChampConstants.MEALS_A_DOLLAR_BUYS_NAME_VALUE, effectiveDate: firstDate.toDate(), value : new BigDecimal('33'), mofbShift : false).save()
 		def hasBeenUsed = service.determineIfSettingDateHasBeenUsed(null, secondDate.toDate())
 		
 		then:
@@ -75,7 +75,7 @@ class GlobalNumericSettingServiceSpec extends UnitSpec{
 		when:
 		def firstDate = new LocalDate(2012,1,1)
 		def service = new GlobalNumericSettingService()
-		def valid = service.validateFoodBankShift(CharityChampConstants.mealsADollarBuysNameValue, firstDate.toDate())
+		def valid = service.validateFoodBankShift(CharityChampConstants.MEALS_A_DOLLAR_BUYS_NAME_VALUE, firstDate.toDate())
 		
 		then:
 		valid == false
@@ -87,7 +87,7 @@ class GlobalNumericSettingServiceSpec extends UnitSpec{
 		when:
 		def firstDate = new LocalDate(2012,1,1)
 		def service = new GlobalNumericSettingService()
-		def valid = service.validateFoodBankShift(CharityChampConstants.goalPerEmployeeNameValue, firstDate.toDate())
+		def valid = service.validateFoodBankShift(CharityChampConstants.GOAL_PER_EMPLOYEE_NAME_VALUE, firstDate.toDate())
 		
 		then:
 		valid == false

@@ -21,7 +21,7 @@ import groovy.transform.EqualsAndHashCode
 @EqualsAndHashCode(includeFields=true, callSuper=true, excludes="donationSource")
 class Activity extends Donation{
 	
-	static final String type = CharityChampConstants.activity
+	static final String type = CharityChampConstants.ACTIVITY
 
 	String name
 	BigDecimal amountCollected

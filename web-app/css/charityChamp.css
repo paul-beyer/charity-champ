@@ -19,14 +19,16 @@ footer, header, hgroup, menu, nav, section {
 display:block;
 }
 
-body {
-	background: url(../images/greenbackground.png) repeat ;
+body{
+	background: url(../images/rsz_11rsz_foodplus42.jpg) repeat;
+		
 }
 
 #wrap {
 	margin: 0 auto;
-	width: 960px;
-	padding: 0;
+	width: 983px;
+	padding: 5px 20px 20px 20px;
+	background: url(../images/greenbackground.png) repeat;
 }
 
 .scaffold-list {
@@ -78,7 +80,32 @@ body {
 	position: relative;
 }
 
+#groupContentArea{
+	
+	width: 100%;
+	
+}
 
+
+
+#groupActivityList{
+	
+	width: 60%;
+	font: 12px "DroidSansBold", Verdana, sans-serif;
+	float: left;
+
+	
+	
+}
+
+#overViewCongrats {
+	
+	width: 30%;
+	float: left;
+	margin: 50px 50px 0 0;
+}
+
+.clear { clear: both;}
 
 #mainArea img{
 	float: left;
@@ -104,6 +131,10 @@ font: bold 20px "DroidSansBold", Verdana,sans-serif;
 color: #006600;
 }
 
+.opFeedManagement {
+	
+	margin-bottom: 20px;
+}
 
 .opFeedManagement input[type="submit"] {
 	
@@ -263,14 +294,16 @@ h1 {
 
 /***** FOOTER *****/
 
-#primary-foot {
-	width: 940px;
-	float: left;
-	margin-top: 20px;
-	padding: 10px;
-	background: #e2e2d7;
-	background: rgba(149, 149, 137, .15);
+#primary-foot  {
+	
+	background: #fafaf6;
+	padding-top: 10px; 
+	padding-bottom: 10px;
 	border: 1px solid #d2d2c4;
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+	text-transform: uppercase;
+	width: 983px;
+	margin-top: 10px;
 }
 
 
@@ -278,9 +311,46 @@ h1 {
 #history h1 {
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
 	text-transform: uppercase;
+	width: 963px;
+	padding: 10px;
 }
 
+.congratsText{
+	
+	color: #ff6600;
+	font: bold 34px "DroidSansBold", Verdana, sans-serif;
+	display:block;
+    width:100px;
+    height: 100%;
+    margin: 0 auto;
+	
+}
+#groupActivityList h3 {
+	padding: 10px;
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+}
 
+.overViewTableHeader, .overviewTotals{
+	
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+}
+
+.groupLeaders{
+	font: 12px "DroidSansBold", Verdana, sans-serif;
+	padding: 10px;
+	width: 40%;
+	margin-top: 10px;
+}
+
+.groupLeaders h3{
+
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+}
+
+.leader{
+	
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+}
 
 #info {
 	float: right;
@@ -728,12 +798,12 @@ a.skip {
 
 }
 
-.overViewTitle h1 {
-	font-size: 2em;
+.overViewTitle h2 {
+	font-size: 1em;
 	padding: 0.2em 0.4em;
-	text-transform: uppercase;
 	font-weight: bold;
 	color: #006600;
+	text-align: center;
 	
 }
 

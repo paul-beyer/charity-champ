@@ -9,7 +9,7 @@ class ActivityService {
 		
 		def activityList = new ArrayList()	
 		if(campaign){
-			activityList = donationService.donationList(campaign, orgUnit, CharityChampConstants.activity)
+			activityList = donationService.donationList(campaign, orgUnit, CharityChampConstants.ACTIVITY)
 		}
 		
 		return activityList

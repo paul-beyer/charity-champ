@@ -48,7 +48,7 @@ class GlobalNumericSettingController {
 	
 	def createEmployeeGoal() {
 				
-		render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : CharityChampConstants.goalPerEmployeeNameValue)])
+		render(view: "createEmployeeGoal", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : CharityChampConstants.GOAL_PER_EMPLOYEE_NAME_VALUE)])
 	}
 	
 	def createMofbShiftValue() {
@@ -56,7 +56,7 @@ class GlobalNumericSettingController {
 	}
 	
 	def createMealADollarBuys () {
-		render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : CharityChampConstants.mealsADollarBuysNameValue)])
+		render(view: "createMealsADollarBuys", model: [globalNumericSettingInstance: new GlobalNumericSetting(name : CharityChampConstants.MEALS_A_DOLLAR_BUYS_NAME_VALUE)])
 	}
 	
 	
