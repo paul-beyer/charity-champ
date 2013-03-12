@@ -18,7 +18,7 @@
    							<li><g:img dir="img" file="resultset_next.png" /></li>
    							<li><g:link class="breadCrumbButton" controller="office" action="show" id="${officeId}">${officeName}</g:link></li>
    							<li><g:img dir="img" file="resultset_next.png" /></li>
-   							<li><g:link class="breadCrumbButton" controller="department" action="show" id="${departmentId}">${departmentName}</g:link></li>
+   							<li><g:link class="breadCrumbButton" controller="department" action="overview" id="${departmentId}">${departmentName}</g:link></li>
    							<li><g:img dir="img" file="resultset_next.png" /></li>
    							<li><g:link class="breadCrumbButton" controller="group" action="overview" id="${groupInstance.id}">${groupInstance.name}</g:link></li>
    						

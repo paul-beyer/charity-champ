@@ -1,7 +1,6 @@
 package com.charitychamp
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.math.RoundingMode
 
 import org.joda.time.LocalDate
 import org.springframework.dao.DataIntegrityViolationException
@@ -40,8 +39,9 @@ class DepartmentController {
 		def currentCampaign = Campaign.get(campaignId.toLong())
 			
 		// 1. get a total of meals and money for each group, make groups clickable
-		def returnObject = commonDepartmentActivityReturnValues(departmentInstance)
-		returnObject.put('groupTotals', donationService.groupTotals(departmentInstance, currentCampaign))
+		def returnObject = commonDepartmentActivityReturnValues(departmentInstance, currentCampaign)
+		def groupTotals = donationService.groupTotals(departmentInstance, currentCampaign)
+		returnObject.put('groupTotals', groupTotals)
 		
 		// 2. Calculate the goal for money
 		def goalPerEmployee = CharityChampUtils.findCurrentGoalForEmployee(new LocalDate().toDate())
@@ -59,53 +59,40 @@ class DepartmentController {
 			departmentMealGoal = rounded(departmentMoneyGoal.multiply(numberOfMealsDollarBuys))
 		}
 		returnObject.put('mealGoal', departmentMealGoal)
-		
-		
+				
 		// 4. Calculate percentage of goals for both
+		def totalMoneyEarned = new BigDecimal('0')
+		def totalMealsEarned = new BigDecimal('0')
+		groupTotals.each{
+			if(it.amount){
+				totalMoneyEarned = totalMoneyEarned.add(it.amount)
+			}
+			if(it.mealCount){
+				totalMealsEarned = totalMealsEarned.add(it.mealCount)
+			}
+		}
+		returnObject.put('totalMoneyEarned', totalMoneyEarned)
+		returnObject.put('totalMealsEarned', totalMealsEarned)
+		
+		BigDecimal percentageMoneyGoal = BigDecimal.ZERO
+		if(departmentMoneyGoal.compareTo(BigDecimal.ZERO) > 0){
+			BigDecimal decimalMoneyGoal = totalMoneyEarned.divide(departmentMoneyGoal,5,BigDecimal.ROUND_HALF_EVEN)
+			percentageMoneyGoal = rounded(decimalMoneyGoal.multiply(CharityChampConstants.PERCENTAGE))
+		}
+		
+		returnObject.put('percentageMoneyGoal', percentageMoneyGoal)
+		
+		BigDecimal percentageMealGoal = BigDecimal.ZERO
+		if(departmentMealGoal.compareTo(BigDecimal.ZERO) > 0){
+			BigDecimal decimalMealGoal = totalMealsEarned.divide(departmentMealGoal,5,BigDecimal.ROUND_HALF_EVEN)
+			percentageMealGoal = rounded(decimalMealGoal.multiply(CharityChampConstants.PERCENTAGE))
+		}
+		
+		returnObject.put('percentageMealGoal', percentageMealGoal)
+	
 		// 5. Show team number
 		// 6. Show variance and change color based on positive or negative
-		
-//		//get all activities
-//		def activityList = []
-//		def jeansList = []
-//		def shiftList = []
-//		if(currentCampaign){
-//			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.ACTIVITY)
-//			jeansList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.JEANS_PAYMENT)
-//			shiftList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.MID_OHIO_FOOD_BANK_SHIFT)
-//		}
-//		
-//		//get total by each activity
-//		def activitySummaries = donationService.activitySummary(activityList)
-//		def jeansSummary = donationService.jeansSummary(jeansList)
-//		activitySummaries.add(jeansSummary)
-//			
-//		
-//		//total all the money
-//		def totalMoney = new BigDecimal('0')
-//		activitySummaries.each {
-//			if(it?.amount){
-//				totalMoney = totalMoney.add(it?.amount)
-//			}
-//		}
-//		
-//		def shiftSummary = donationService.shiftSummary(shiftList)
-//		activitySummaries.add(shiftSummary)
-//		
-//		//total all the meals
-//		def totalMeals = new BigDecimal('0')
-//		activitySummaries.each {
-//			if(it?.mealCount){
-//				totalMeals = totalMeals.add(it?.mealCount)
-//			}
-//		}
-//		
-//						
-//		returnObject.put('activitySummaries', activitySummaries)
-//		returnObject.put('totalMoney', totalMoney)
-//		returnObject.put('totalMeals', totalMeals)
-		
-		
+	
 		
 		return returnObject
 		
