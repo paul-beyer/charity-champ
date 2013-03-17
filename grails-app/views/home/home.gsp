@@ -11,7 +11,7 @@
   
     <div>
    	
-        <p>This be my home page</p>
+        <h2>You have not configured the system yet. Select Manage and setup your environment.</h2>
     </div>
     </body>
   </html>

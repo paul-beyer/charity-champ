@@ -12,11 +12,11 @@
 			<div id="departmentBreadCrumbs" class="breadCrumbs">
    						<ul>
    							<li><g:img dir="images" file="chart_organisation.png" /></li>
-   							<li><g:link class="breadCrumbButton" controller="company" action="show" id="${companyId}">${companyName}</g:link></li>
+   							<li><g:link class="breadCrumbButton" controller="company" action="overview" id="${companyId}">${companyName}</g:link></li>
    							<li><g:img dir="img" file="resultset_next.png" /></li>
-   							<li><g:link class="breadCrumbButton" controller="business" action="show" id="${businessId}">${businessName}</g:link></li>
+   							<li><g:link class="breadCrumbButton" controller="business" action="overview" id="${businessId}">${businessName}</g:link></li>
    							<li><g:img dir="img" file="resultset_next.png" /></li>
-   							<li><g:link class="breadCrumbButton" controller="office" action="show" id="${officeId}">${officeName}</g:link></li>
+   							<li><g:link class="breadCrumbButton" controller="office" action="overview" id="${officeId}">${officeName}</g:link></li>
    							<li><g:img dir="img" file="resultset_next.png" /></li>
    							<li><g:link class="breadCrumbButton" controller="department" action="overview" id="${departmentId}">${departmentName}</g:link></li>
    						   						
@@ -31,7 +31,7 @@
 						
 						<div class="overViewTitle">
 							<br/>
-							<h2>${departmentInstance.name} - ${currentCampaign}</h2>
+							<h2>Team: ${departmentInstance?.office?.business?.teamNumber} <br/>Department: ${departmentInstance.name}</h2> <br/> <h3>${currentCampaign}</h3>
 													
 						</div>	
 						

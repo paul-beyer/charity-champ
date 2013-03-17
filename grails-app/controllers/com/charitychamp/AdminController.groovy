@@ -13,7 +13,7 @@ class AdminController {
 	def changeCampaign() { 
 		
 		def sessionCampaignId = session["campaign"]
-		def campaign = Campaign.get(sessionCampaignId.toLong())
+		def campaign = Campaign.get(sessionCampaignId?.toLong())
 		[currentCampaignId : campaign.id]
 //		if(!sessionCampaignId){
 //			def dateToday = dateHandlerService.todaysDate()

@@ -36,7 +36,7 @@ class DepartmentController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 			
 		// 1. get a total of meals and money for each group, make groups clickable
 		def returnObject = commonDepartmentActivityReturnValues(departmentInstance, currentCampaign)
@@ -47,8 +47,9 @@ class DepartmentController {
 		def goalPerEmployee = CharityChampUtils.findCurrentGoalForEmployee(new LocalDate().toDate())
 		def departmentMoneyGoal = new BigDecimal('0')
 		if(departmentInstance.numberOfEmployees.value > 0){
-			departmentMoneyGoal = rounded(goalPerEmployee.multiply(departmentInstance.numberOfEmployees))
+			departmentMoneyGoal = CharityChampUtils.rounded(goalPerEmployee.multiply(departmentInstance.numberOfEmployees))
 		}
+		returnObject.put("goalPerEmployee", goalPerEmployee)
 		returnObject.put('moneyGoal', departmentMoneyGoal)
 		
 		// 3. Calculate the goal for meals
@@ -56,9 +57,9 @@ class DepartmentController {
 	
 		def departmentMealGoal = new BigDecimal('0')
 		if(departmentMoneyGoal.compareTo(BigDecimal.ZERO) > 0){
-			departmentMealGoal = rounded(departmentMoneyGoal.multiply(numberOfMealsDollarBuys))
+			departmentMealGoal = CharityChampUtils.rounded(departmentMoneyGoal.multiply(numberOfMealsDollarBuys))
 		}
-		returnObject.put('mealGoal', departmentMealGoal)
+		returnObject.put('mealGoal', CharityChampConstants.formatter.format(departmentMealGoal))
 				
 		// 4. Calculate percentage of goals for both
 		def totalMoneyEarned = new BigDecimal('0')
@@ -72,27 +73,31 @@ class DepartmentController {
 			}
 		}
 		returnObject.put('totalMoneyEarned', totalMoneyEarned)
-		returnObject.put('totalMealsEarned', totalMealsEarned)
+		returnObject.put('totalMealsEarned', CharityChampConstants.formatter.format(totalMealsEarned))
 		
 		BigDecimal percentageMoneyGoal = BigDecimal.ZERO
 		if(departmentMoneyGoal.compareTo(BigDecimal.ZERO) > 0){
 			BigDecimal decimalMoneyGoal = totalMoneyEarned.divide(departmentMoneyGoal,5,BigDecimal.ROUND_HALF_EVEN)
-			percentageMoneyGoal = rounded(decimalMoneyGoal.multiply(CharityChampConstants.PERCENTAGE))
+			percentageMoneyGoal = CharityChampUtils.rounded(decimalMoneyGoal.multiply(CharityChampConstants.PERCENTAGE))
 		}
 		
-		returnObject.put('percentageMoneyGoal', percentageMoneyGoal)
+		returnObject.put('percentageMoneyGoal', CharityChampConstants.formatter.format(percentageMoneyGoal))
 		
 		BigDecimal percentageMealGoal = BigDecimal.ZERO
 		if(departmentMealGoal.compareTo(BigDecimal.ZERO) > 0){
 			BigDecimal decimalMealGoal = totalMealsEarned.divide(departmentMealGoal,5,BigDecimal.ROUND_HALF_EVEN)
-			percentageMealGoal = rounded(decimalMealGoal.multiply(CharityChampConstants.PERCENTAGE))
+			percentageMealGoal = CharityChampUtils.rounded(decimalMealGoal.multiply(CharityChampConstants.PERCENTAGE))
 		}
 		
-		returnObject.put('percentageMealGoal', percentageMealGoal)
-	
-		// 5. Show team number
+		returnObject.put('percentageMealGoal', CharityChampConstants.formatter.format(percentageMealGoal))
+			
 		// 6. Show variance and change color based on positive or negative
+				
+		BigDecimal moneyVariant = totalMoneyEarned.subtract(departmentMoneyGoal)
+		BigDecimal mealVariant = totalMealsEarned.subtract(departmentMealGoal)
 	
+		returnObject.put('moneyVariant', moneyVariant)
+		returnObject.put('mealVariant', mealVariant)
 		
 		return returnObject
 		
@@ -192,8 +197,5 @@ class DepartmentController {
     }
 	
 		
-	private BigDecimal rounded(BigDecimal aNumber){
-		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
-	}
-
+	
 }

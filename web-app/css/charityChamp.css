@@ -86,16 +86,100 @@ body{
 	
 }
 
-
+#departmentContentArea{
+	
+	width: 100%;
+	
+}
 
 #groupActivityList{
 	
-	width: 60%;
+	width: 50%;
 	font: 12px "DroidSansBold", Verdana, sans-serif;
 	float: left;
 
 	
 	
+}
+
+.summaryOverview{
+	
+		
+	width: 50%;
+	float: left;
+	
+	
+}
+
+.orgSummary{
+	
+	width: 50%;
+	font: 12px "DroidSansBold", Verdana, sans-serif;
+	float: left;
+
+	
+	
+}
+
+.groupLeaders{
+	width: 50%;
+	float: left;
+	font: 12px "DroidSansBold", Verdana, sans-serif;
+	padding: 10px;
+	width: 40%;
+	margin-top: 10px;
+	
+}
+
+.groupLevelOpFeedLeaders{
+	
+	font: 12px "DroidSansBold", Verdana, sans-serif;
+	padding: 10px;
+	width: 40%;
+	margin-top: 10px;
+	
+}
+.variantSummary{
+	margin-top: 25px;
+	margin-left: 25px;
+	font: 16px "DroidSansBold", Verdana,sans-serif;
+	width: 50%;
+	float: left;
+	
+}
+
+.summaryLabel{
+	
+	font: bold 22px "DroidSansBold", Verdana,sans-serif;
+	color: #006600;
+   
+    padding: 0.2em 0.4em;
+   
+	
+}
+
+.summaryTableLabel{
+	
+	 text-align: right;
+}
+
+.summaryTableValue{
+	text-align: left;
+}
+
+
+.summaryValue{
+	font: 22px "DroidSansBold", Verdana,sans-serif;
+	
+	text-align: left;
+}
+
+.redAmount{
+	color: red;
+}
+
+.goldAmount{
+	color: blue;
 }
 
 #overViewCongrats {
@@ -104,6 +188,8 @@ body{
 	float: left;
 	margin: 50px 50px 0 0;
 }
+
+
 
 .clear { clear: both;}
 
@@ -318,7 +404,7 @@ h1 {
 .congratsText{
 	
 	color: #ff6600;
-	font: bold 34px "DroidSansBold", Verdana, sans-serif;
+	font: bold 24px "DroidSansBold", Verdana, sans-serif;
 	display:block;
     width:100px;
     height: 100%;
@@ -335,14 +421,14 @@ h1 {
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
 }
 
-.groupLeaders{
-	font: 12px "DroidSansBold", Verdana, sans-serif;
-	padding: 10px;
-	width: 40%;
-	margin-top: 10px;
-}
+
 
 .groupLeaders h3{
+
+	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+}
+
+.groupLevelOpFeedLeaders h3{
 
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
 }
@@ -799,11 +885,20 @@ a.skip {
 }
 
 .overViewTitle h2 {
-	font-size: 1em;
-	padding: 0.2em 0.4em;
+	font-size: 1.5em;
+	padding: 0.2em;
 	font-weight: bold;
 	color: #006600;
 	text-align: center;
+	
+}
+
+.overViewTitle h3 {
+	font: bold 16px "DroidSansBold", Verdana, sans-serif;
+	color: #006600;
+	text-align: center;
+	margin-top: -15px;
+	
 	
 }
 
@@ -866,5 +961,12 @@ a.breadCrumbButton:hover {
 	 background-color: #EEEEEE;
     color: #ff6600;
       font: bold 12px Arial;
+}
+
+   
+#switchCompany{
+	margin-top: -145px;
+	padding-right: 20px;
+	float: right;
 }
 

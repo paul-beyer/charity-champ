@@ -7,7 +7,7 @@
 	</head>
    			<body>
    					
-						<div class="groupLeaders">
+						<div class="groupLevelOpFeedLeaders">
 							<h3>Your Operation Feed Leaders are:</h3> <br/>
 							<span class="leader">Leader - </span>${groupInstance.department?.office?.business?.charityLeader} (${groupInstance.department?.office?.business?.charityLeader?.userId}) - ${groupInstance.department?.office?.business?.charityLeader?.email}
 							<br/>

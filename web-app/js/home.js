@@ -32,7 +32,6 @@ $(function () {
 //			
 //	});	
 	
-
 	$.ajax({
 		url: "/charity-champ/organizationalTree",
 		type: "GET",
@@ -112,9 +111,16 @@ $(function () {
 			 $(".jq-menu").jqsimplemenu();
 				
 		},
+		
 		statusCode: {
 			401: function() {					
-				alert("401 error occurred.")
+				alert("401 error occurred.");
+			},
+			500: function(val, option) {					
+				var items = '';
+				items += '<li><a href=' + '"/charity-champ/admin/admin">Manage</a></li>';
+				
+				 $('#mainNav').append( items);
 			}
 		}
 		

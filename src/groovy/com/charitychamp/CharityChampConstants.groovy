@@ -1,5 +1,7 @@
 package com.charitychamp
 
+import java.text.NumberFormat
+
 class CharityChampConstants {
 
 	public static final String ACTIVITY = "activity"
@@ -12,5 +14,6 @@ class CharityChampConstants {
 	public static final int PERCENTAGE = new BigDecimal('100')
 	public static final int DECIMALS = 2;
 	public static final String ACTIVITY_TYPE = "Activity Type"
+	public static final NumberFormat formatter = NumberFormat.getInstance(new Locale("en_US"));
 	
 }

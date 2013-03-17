@@ -66,7 +66,7 @@ class OrganizationalTreeControllerSpec extends UnitSpec{
 	   then:
 	 
 	   response.status == 500
-	   response.contentAsString == '["error","No organizational structure could be returned"]'
+	
 								   
    
    }

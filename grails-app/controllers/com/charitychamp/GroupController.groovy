@@ -60,7 +60,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 				
 		def returnObject = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		
@@ -102,7 +102,7 @@ class GroupController {
 						
 		returnObject.put('activitySummaries', activitySummaries)
 		returnObject.put('totalMoney', totalMoney)
-		returnObject.put('totalMeals', totalMeals)
+		returnObject.put('totalMeals', CharityChampConstants.formatter.format(totalMeals))
 		
 		
 		
@@ -193,7 +193,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def activityList = new ArrayList()	
 		if(currentCampaign){
@@ -219,7 +219,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def foodBankShiftList = new ArrayList()
 		if(currentCampaign){
@@ -249,7 +249,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def jeanPaymentsList = new ArrayList()
 		if(currentCampaign){
@@ -278,7 +278,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def commonReturn = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		def activityTypes = StringList.findAll(sort:"value"){listName : CharityChampConstants.ACTIVITY_TYPE}
@@ -300,7 +300,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		def mealFactors = getShiftList()
 				
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
@@ -321,7 +321,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		commonGroupActivityReturnValues(groupInstance, currentCampaign)
 				
@@ -344,7 +344,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		returnModel.put('jeansPaymentInstance', jeanPaymentInstance)
@@ -411,7 +411,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		def activityTypes = StringList.findAll(sort:"value"){listName : CharityChampConstants.ACTIVITY_TYPE}
@@ -485,7 +485,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def activityInstance = Activity.get(id)
 		if (!activityInstance) {
@@ -515,7 +515,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def jeanPaymentInstance = JeansPayment.get(id)
 		if (!jeanPaymentInstance) {
@@ -547,7 +547,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 			
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		def activityTypes = StringList.findAll(sort:"value"){listName : CharityChampConstants.ACTIVITY_TYPE}
@@ -629,7 +629,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 				
 				
 		try {
@@ -679,7 +679,7 @@ class GroupController {
 			}
 			
 			def campaignId = session["campaign"]
-			def currentCampaign = Campaign.get(campaignId.toLong())
+			def currentCampaign = Campaign.get(campaignId?.toLong())
 				
 			def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 			returnModel.put('jeansPaymentInstance', jeanPaymentInstance)
@@ -748,7 +748,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 				
 				
 		try {
@@ -796,7 +796,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 		returnModel.put('volunteerShiftInstance', shiftInstance)
@@ -856,7 +856,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 		
 		def shiftInstance = VolunteerShift.get(id)
 		if (!shiftInstance) {
@@ -884,7 +884,7 @@ class GroupController {
 //		}
 //		
 //		def campaignId = session["campaign"]
-//		def currentCampaign = Campaign.get(campaignId.toLong())
+//		def currentCampaign = Campaign.get(campaignId?.toLong())
 //		
 //		def jeanPayment = JeansPayment.get(id)
 //		if (!jeanPayment) {
@@ -916,7 +916,7 @@ class GroupController {
 			}
 			
 			def campaignId = session["campaign"]
-			def currentCampaign = Campaign.get(campaignId.toLong())
+			def currentCampaign = Campaign.get(campaignId?.toLong())
 				
 			def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 			returnModel.put('volunteerShiftInstance', shiftInstance)
@@ -982,7 +982,7 @@ class GroupController {
 		}
 		
 		def campaignId = session["campaign"]
-		def currentCampaign = Campaign.get(campaignId.toLong())
+		def currentCampaign = Campaign.get(campaignId?.toLong())
 				
 				
 		try {

@@ -23,7 +23,7 @@ class OrganizationalTreeController {
 	}
 	
 	def tree(){
-		
+	
 		def foundCompanies = Company.findAll()
 		def sortedCompanies = foundCompanies.sort{it.name}
 		
@@ -123,15 +123,15 @@ class OrganizationalTreeController {
 					departments << department
 				}
 				
-				def office = ["name" : it.name, "url" : "", "departments" : departments]
+				def office = ["name" : it.name, "url" : "/charity-champ/office/overview/${it.id}", "departments" : departments]
 				offices << office
 			}
 			
-			def business = ["name" : it.name, "url" : "", "offices" : offices]
+			def business = ["name" : it.name, "url" : "/charity-champ/business/overview/${it.id}", "offices" : offices]
 			businesses << business
 		}
 		
-		def company = ["name" : it.name, "url" : "", "businesses" : businesses]
+		def company = ["name" : it.name, "url" : "/charity-champ/company/overview/${it.id}", "businesses" : businesses]
 		companyList << company
 	}	
 	
@@ -143,7 +143,8 @@ class OrganizationalTreeController {
 	def returnValue = orgMap
 	if(companyList.size() == 0){
 		status = 500
-		returnValue = ['error', 'No organizational structure could be returned']
+		def errorMessage = ['error', 'No organizational structure could be returned']
+		orgMap = errorMessage
 	}
 	
 	response.status = status

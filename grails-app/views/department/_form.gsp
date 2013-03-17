@@ -39,7 +39,7 @@
 		<g:message code="department.departmentHead.label" default="Department Head" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="departmentHead" name="departmentHead.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.leader?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
+	<g:select id="departmentHead" name="leader.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${departmentInstance?.leader?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: departmentInstance, field: 'office', 'error')} required">

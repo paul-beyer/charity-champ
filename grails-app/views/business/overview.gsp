@@ -1,25 +1,21 @@
 <%@page import="com.charitychamp.ActivitySummary"%>
-<%@page import="com.charitychamp.Department" %>
-<g:applyLayout name="departmentLayout">
+<%@page import="com.charitychamp.Business" %>
+<g:applyLayout name="businessLayout">
 <html>
 	<head>
 		
 	</head>
    			<body>
-   					<div id=departmentHeader>
+   					<div id="businessHeader">
 	   					<div class="groupLeaders">
 							<h3>Your Operation Feed Leaders are:</h3> <br/>
-							<span class="leader">Leader: </span>${departmentInstance?.office?.business?.charityLeader} (${departmentInstance?.office?.business?.charityLeader?.userId}) - ${departmentInstance?.office?.business?.charityLeader?.email}
+							<span class="leader">Leader: </span>${businessInstance?.charityLeader} (${businessInstance?.charityLeader?.userId}) - ${businessInstance?.charityLeader?.email}
 							<br/>
 									
-							<span class="leader">Captain: </span> ${departmentInstance?.office?.charityCaptain} (${departmentInstance?.office?.charityCaptain?.userId}) - ${departmentInstance?.office?.charityCaptain?.email}
-							<br/>
-							
-							<span class="leader">Lieutenant: </span>${departmentInstance?.charityLieutenant} (${departmentInstance?.charityLieutenant?.userId}) - ${departmentInstance?.charityLieutenant?.email}
-						
+														
 						</div>
 						<div class="variantSummary">
-							<g:img dir="images" file="group.png" /> ${departmentInstance?.name} has <g:formatNumber number="${departmentInstance?.numberOfEmployees}" type="number" maxFractionDigits="2" /> employees.<br/><br/>
+							<g:img dir="images" file="group.png" /> ${businessInstance?.name} has <g:formatNumber number="${employeeCount}" type="number" maxFractionDigits="2" /> employees.<br/><br/>
 							<g:img dir="images" file="target.png" /> The goal amount per employee is <span class="goldAmount"><g:formatNumber number="${goalPerEmployee}" type="currency" currencyCode="USD" /></span><br/><br/>
 							<g:if test="${moneyVariant > 0}">
      								<g:img dir="images" file="award_star_gold.png" /> Congrats! You've exceeded your goal by <span class="goldAmount"><g:formatNumber number="${moneyVariant}" type="currency" currencyCode="USD" /></span>
@@ -46,7 +42,7 @@
    					</div>
 					
 				<br/>
-					<div id="departmentContentArea">	
+					<div id="businessContentArea">	
 						
 						<div class="summaryOverview">
 							<table>
@@ -111,7 +107,7 @@
 									<thead class="overViewTableHeader">
 										<tr>
 										
-											<td>Group</td>
+											<td>Office</td>
 											
 											<td>Amount</td>
 										
@@ -121,14 +117,14 @@
 										</tr>
 									</thead>
 									<tbody>
-										<g:each in="${groupTotals}" status="i" var="groupTotal">
+										<g:each in="${officeTotals}" status="i" var="officeTotal">
 											<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
 												
-												<td><g:link controller="group" action="overview" id="${groupTotal.orgUnitId}">${fieldValue(bean: groupTotal, field: "name")}</g:link></td>
+												<td><g:link controller="office" action="overview" id="${officeTotal.orgUnitId}">${fieldValue(bean: officeTotal, field: "name")}</g:link></td>
 											
-												<td><g:formatNumber number="${groupTotal?.amount}" type="currency" currencyCode="USD" /></td>
+												<td><g:formatNumber number="${officeTotal?.amount}" type="currency" currencyCode="USD" /></td>
 											
-												<td>${fieldValue(bean: groupTotal, field: "mealCount")}</td>
+												<td>${fieldValue(bean: officeTotal, field: "mealCount")}</td>
 											
 												
 											</tr>

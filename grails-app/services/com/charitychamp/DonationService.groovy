@@ -7,7 +7,7 @@ class DonationService {
     def List donationList(Campaign campaign, OrganizationalUnit orgUnit, String type) {
 		
 		log.trace("Entering donationsList")
-		def donationSources = campaign.donationSources
+		def donationSources = campaign?.donationSources
 		def foundDonations = new ArrayList()
 		if(donationSources){
 			donationSources.each {
@@ -30,7 +30,7 @@ class DonationService {
 	
 		def foundDonation = null
 		
-		def donationSources = campaign.donationSources
+		def donationSources = campaign?.donationSources
 		if(donationSources){
 			donationSources.each {
 			
@@ -205,17 +205,160 @@ class DonationService {
 		
 	}
 	
+	def List departmentTotals(OrganizationalUnit officeInstance, Campaign currentCampaign){
+		
+		def summaryList = []
+		def departments = officeInstance.departments
+		if(departments){
+			departments.each{
+				def summary = departmentSummary(it, currentCampaign)
+				summaryList << summary
+					
+			}
+				
+		}
+					
+
+		def sortedSummaryList = summaryList.sort{it.name}
+		
+		return sortedSummaryList
+		
+		
+	}
+	
+	private SummaryItem departmentSummary(OrganizationalUnit department, Campaign currentCampaign){
+		
+		def summaryItem = new SummaryItem(orgUnitId : department.id, name: department.name)
+		
+		def groupSummaryList = []
+		def groups = department.groups
+		if(groups){
+			groups.each{
+				def summary = groupSummary(it, currentCampaign)
+				groupSummaryList << summary
+			}
+		}
+		def deptMoneyTotal = new BigDecimal('0')
+		def deptMealTotal = new BigDecimal('0')
+		
+		groupSummaryList.each{
+			deptMoneyTotal = deptMoneyTotal.add(it.amount)
+			deptMealTotal = deptMealTotal.add(it.mealCount)
+		}
+		
+		summaryItem.amount = deptMoneyTotal
+		summaryItem.mealCount = deptMealTotal
+				
+		return summaryItem
+		
+		
+	}
+	
+	def List officeTotals(OrganizationalUnit businessInstance, Campaign currentCampaign){
+		
+		def summaryList = []
+		def offices = businessInstance.offices
+		if(offices){
+			offices.each{
+				def summary = officeSummary(it, currentCampaign)
+				summaryList << summary
+					
+			}
+				
+		}
+					
+
+		def sortedSummaryList = summaryList.sort{it.name}
+		
+		return sortedSummaryList
+		
+		
+	}
+	
+	private SummaryItem officeSummary(OrganizationalUnit office, Campaign currentCampaign){
+		
+		def summaryItem = new SummaryItem(orgUnitId : office.id, name: office.name)
+		
+		def departmentSummaryList = []
+		def departments = office.departments
+		if(departments){
+			departments.each{
+				def summary = departmentSummary(it, currentCampaign)
+				departmentSummaryList << summary
+			}
+		}
+		def officeMoneyTotal = new BigDecimal('0')
+		def officeMealTotal = new BigDecimal('0')
+		
+		departmentSummaryList.each{
+			officeMoneyTotal = officeMoneyTotal.add(it.amount)
+			officeMealTotal = officeMealTotal.add(it.mealCount)
+		}
+		
+		summaryItem.amount = officeMoneyTotal
+		summaryItem.mealCount = officeMealTotal
+				
+		return summaryItem
+		
+		
+	}
+	
+	def List businessTotals(OrganizationalUnit companyInstance, Campaign currentCampaign){
+		
+		def summaryList = []
+		def businesses = companyInstance.businesses
+		if(businesses){
+			businesses.each{
+				def summary = businessSummary(it, currentCampaign)
+				summaryList << summary
+					
+			}
+				
+		}
+					
+
+		def sortedSummaryList = summaryList.sort{it.name}
+		
+		return sortedSummaryList
+		
+		
+	}
+	
+	private SummaryItem businessSummary(OrganizationalUnit business, Campaign currentCampaign){
+		
+		def summaryItem = new SummaryItem(orgUnitId : business.id, name: business.name)
+		
+		def officeSummaryList = []
+		def offices = business.offices
+		if(offices){
+			offices.each{
+				def summary = officeSummary(it, currentCampaign)
+				officeSummaryList << summary
+			}
+		}
+		def businessMoneyTotal = new BigDecimal('0')
+		def businessMealTotal = new BigDecimal('0')
+		
+		officeSummaryList.each{
+			businessMoneyTotal = businessMoneyTotal.add(it.amount)
+			businessMealTotal = businessMealTotal.add(it.mealCount)
+		}
+		
+		summaryItem.amount = businessMoneyTotal
+		summaryItem.mealCount = businessMealTotal
+				
+		return summaryItem
+		
+		
+	}
+	
 	private BigDecimal totalMealsActivityBuys(BigDecimal amount, Date donationDate){
 				
 		def numberOfMealsDollarBuys = CharityChampUtils.findNumberOfMealsADollarBuys(donationDate)
-		return rounded(amount.multiply(numberOfMealsDollarBuys))
+		return CharityChampUtils.rounded(amount.multiply(numberOfMealsDollarBuys))
 			
 	}
 	
-	private BigDecimal rounded(BigDecimal aNumber){
-		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
-	 }
 	
-
 	
 }

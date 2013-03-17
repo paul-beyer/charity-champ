@@ -1,5 +1,7 @@
 package com.charitychamp
 
+import java.math.BigDecimal;
+
 import org.joda.time.DateTime
 import org.joda.time.LocalDate
 
@@ -111,6 +113,10 @@ class CharityChampUtils {
 		
 		return goalAmountPerEmployee
 		
+	}
+	
+	public static final BigDecimal rounded(BigDecimal aNumber){
+		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
 	}
 	
 	

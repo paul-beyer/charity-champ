@@ -31,6 +31,6 @@
 		<g:message code="office.officer.label" default="Officer" />
 		<span class="required-indicator">*</span>
 	</label>
-	<g:select id="officer" name="officer.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${officeInstance?.leader?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
+	<g:select id="officer" name="leader.id" from="${com.charitychamp.Person.list()}" optionKey="id" required="" value="${officeInstance?.leader?.id}" noSelection="['':'-Choose-']" class="many-to-one"/>
 </div>
 
