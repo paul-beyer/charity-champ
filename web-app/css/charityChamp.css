@@ -28,7 +28,8 @@ body{
 	margin: 0 auto;
 	width: 983px;
 	padding: 5px 20px 20px 20px;
-	background: url(../images/greenbackground.png) repeat;
+	background: url(../images/greenbackground.png) repeat; 
+
 }
 
 .scaffold-list {
@@ -143,14 +144,14 @@ body{
 	margin-top: 25px;
 	margin-left: 25px;
 	font: 16px "DroidSansBold", Verdana,sans-serif;
-	width: 50%;
-	float: left;
+	width: 100%;
+	text-align: center;
 	
 }
 
 .summaryLabel{
 	
-	font: bold 22px "DroidSansBold", Verdana,sans-serif;
+	font: bold 18px "DroidSansBold", Verdana,sans-serif;
 	color: #006600;
    
     padding: 0.2em 0.4em;
@@ -343,14 +344,14 @@ color: #006600;
 h1 {
 	text-transform: lowercase;
 	font-style: italic;
-	font: normal 20px "LeagueGothicRegular", Georgia, serif;
+	font: normal 18px "DroidSansBold", Verdana, sans-serif;
 	letter-spacing: 0;
 }
 
 #adminInstruction ul { 
 	list-style: url(../images/note.png);
 	font-style: italic;
-	font: normal 15px "LeagueGothicRegular", Georgia, serif;
+	font: 15px "DroidSansBold", Verdana, sans-serif;
 	letter-spacing: 0;
 	width: 500px;
 	padding-left: 50px;
@@ -360,7 +361,7 @@ h1 {
 #setupInstruction ul { 
 	list-style: url(../images/note.png);
 	font-style: italic;
-	font: normal 15px "LeagueGothicRegular", Georgia, serif;
+	font: normal 15px "DroidSansBold", Verdana, sans-serif;
 	letter-spacing: 0;
 	width: 500px;
 	padding-left: 50px;
@@ -370,7 +371,7 @@ h1 {
 #configureInstruction ul { 
 	list-style: url(../images/note.png);
 	font-style: italic;
-	font: normal 15px "LeagueGothicRegular", Georgia, serif;
+	font: normal 15px "DroidSansBold", Verdana, sans-serif;
 	letter-spacing: 0;
 	width: 500px;
 	padding-left: 50px;
@@ -411,6 +412,17 @@ h1 {
     margin: 0 auto;
 	
 }
+
+.detailReportHeading{
+	
+	color: #ff6600;
+	font: bold 20px "DroidSansBold", Verdana, sans-serif;
+	width:100px;
+    height: 100%;
+    margin: 0 auto;
+	
+}
+
 #groupActivityList h3 {
 	padding: 10px;
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
@@ -426,16 +438,19 @@ h1 {
 .groupLeaders h3{
 
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+	color: #ff6600;
 }
 
 .groupLevelOpFeedLeaders h3{
 
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+	color: #006600;
 }
 
 .leader{
 	
 	font: bold 12px "DroidSansBold", Verdana, sans-serif;
+	color: #006600;
 }
 
 #info {
@@ -466,6 +481,7 @@ h1 {
 }
 
 .linkPanel {
+	font: 12px "DroidSansBold", Verdana, sans-serif;
 	float: left;
 	width: 20%;
 }
@@ -950,6 +966,10 @@ a.breadCrumbButton {
     border-bottom: 1px solid #333333;
     border-left: 1px solid #CCCCCC;
    }
+   
+.manageDonations{
+	float: right;
+}
    
 a.breadCrumbButton:hover {
 	-webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, .4); 

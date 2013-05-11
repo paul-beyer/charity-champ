@@ -8,33 +8,33 @@
 	<body>
 		
 		<div id="list-jeanPayments" class="content" role="main">
-			<h2>Jean Payments</h2><br/>
+			<span class="detailReportHeading">Jean Payments</span>
 			<g:if test="${flash.message}">
 				<div class="message" role="status">${flash.message}</div>
 			</g:if>
 		
-			<g:link class="breadCrumbButton" controller="group" action="addJeanPayment" id="${groupInstance.id}" >Add New Jean Payment</g:link><br/><br/>
+			<g:link class="breadCrumbButton manageDonations" controller="group" action="addJeanPayment" id="${groupInstance.id}" >Add New Jean Payment</g:link><br/><br/>
 			<table>
 				<thead>
 					<tr>
 					
-						<g:sortableColumn property="employeeUserId" title="${message(code: 'jeansPayment.employeeUserId.label', default: 'Employee User Id')}" />
-					
-						<g:sortableColumn property="payerFirstName" title="${message(code: 'jeansPayment.payerFirstName.label', default: 'Payer First Name')}" />
-					
-						<g:sortableColumn property="payerLastName" title="${message(code: 'jeansPayment.payerLastName.label', default: 'Payer Last Name')}" />
-					
-						<g:sortableColumn property="payerPhone" title="${message(code: 'jeansPayment.payerPhone.label', default: 'Payer Phone')}" />
-					
-						<g:sortableColumn property="payerEmail" title="${message(code: 'jeansPayment.payerEmail.label', default: 'Payer Email')}" />
-					
-						<g:sortableColumn property="amountCollected" title="${message(code: 'jeansPayment.amtPaid.label', default: 'Amt Paid')}" />
+						<th><g:message code="jeansPayment.employeeUserId.label" default="Employee User Id" /></th>
 						
-						<g:sortableColumn property="donationDate" title="${message(code: 'activity.donation.date.label', default: 'Date Paid')}" />
-						
-						<g:sortableColumn property="numberOfMeals" title="${message(code: 'activity.number.of.meals.label', default: 'Number Of Meals')}" />
+						<th><g:message code="jeansPayment.payerFirstName.label" default="Payer First Name" /></th>
 					
+						<th><g:message code="jeansPayment.payerLastName.label" default="Payer Last Name" /></th>
+					
+						<th><g:message code="jeansPayment.payerPhone.label" default="Payer Phone" /></th>
+					
+						<th><g:message code="jeansPayment.payerEmail.label" default="Payer Email" /></th>
+					
+						<th><g:message code="jeansPayment.amtPaid.label" default="Amt Paid" /></th>
+					
+						<th><g:message code="activity.donation.date.label" default="Date Paid" /></th>
 						
+						<th><g:message code="activity.number.of.meals.label" default="Number Of Meals" /></th>
+						
+									
 					
 					</tr>
 				</thead>
@@ -62,9 +62,7 @@
 				</g:each>
 				</tbody>
 			</table>
-			<div class="pagination">
-				<g:paginate total="${jeanPaymentsListTotal}" />
-			</div>
+			
 		</div>
 			
 	</body>

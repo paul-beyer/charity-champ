@@ -26,7 +26,7 @@ environments {
     test {
         dataSource {
             dbCreate = ""
-            url = "jdbc:h2:file:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
 			driverClassName = "org.h2.Driver"
 			username = "sa"
 			password = ""

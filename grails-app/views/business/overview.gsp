@@ -1,4 +1,3 @@
-<%@page import="com.charitychamp.ActivitySummary"%>
 <%@page import="com.charitychamp.Business" %>
 <g:applyLayout name="businessLayout">
 <html>
@@ -14,6 +13,7 @@
 									
 														
 						</div>
+						<div class="clear"></div>	
 						<div class="variantSummary">
 							<g:img dir="images" file="group.png" /> ${businessInstance?.name} has <g:formatNumber number="${employeeCount}" type="number" maxFractionDigits="2" /> employees.<br/><br/>
 							<g:img dir="images" file="target.png" /> The goal amount per employee is <span class="goldAmount"><g:formatNumber number="${goalPerEmployee}" type="currency" currencyCode="USD" /></span><br/><br/>
@@ -49,7 +49,7 @@
 								<tbody>
 									<tr>
 										<td class="summaryTableLabel">
-											<span class="summaryLabel">Meal Goal:</span>
+											<span class="summaryLabel">${businessInstance?.name}'s Meal Goal:</span>
 										</td>
 										<td class="summaryTableValue">
 											<span class="summaryValue">${mealGoal}</span>
@@ -57,7 +57,7 @@
 									</tr>
 									<tr>
 										<td class="summaryTableLabel">
-											<span class="summaryLabel">Money Goal:</span>
+											<span class="summaryLabel">${businessInstance?.name}'s Money Goal:</span>
 										</td>
 										<td class="summaryTableValue">
 											<span class="summaryValue"><g:formatNumber number="${moneyGoal}" type="currency" currencyCode="USD" /></span>

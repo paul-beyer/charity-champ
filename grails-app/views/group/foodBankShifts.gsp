@@ -8,29 +8,29 @@
 	<body>
 		
 		<div id="list-volunteerSHift" class="content" role="main">
-			<h2>Food Bank Shifts</h2><br/>
+			<span class="detailReportHeading">Food Bank Shifts</span>
 			<g:if test="${flash.message}">
 			<div class="message" role="status">${flash.message}</div>
 			</g:if>
 		
-			<g:link class="breadCrumbButton" controller="group" action="addFoodBankShift" id="${groupInstance.id}" >Add New Shift</g:link><br/><br/>
+			<g:link class="breadCrumbButton manageDonations" controller="group" action="addFoodBankShift" id="${groupInstance.id}" >Add New Shift</g:link><br/><br/>
 			<table>
 				<thead>
 					<tr>
 					
-						<g:sortableColumn property="donationDate" title="${message(code: 'volunteerShift.donation.date.label', default: 'Shift Date')}" />
-					
-						<g:sortableColumn property="numberOfVolunteers" title="${message(code: 'volunteerShift.numberOfVolunteers.label', default: 'Number Of Volunteers')}" />
-					
-						<g:sortableColumn property="comments" title="${message(code: 'volunteerShift.comments.label', default: 'Comments')}" />
-					
-						<g:sortableColumn property="leaderName" title="${message(code: 'volunteerShift.leaderName.label', default: 'In Charge')}" />
-					
-						<g:sortableColumn property="mealFactor" title="${message(code: 'volunteerShift.mealFactor.label', default: 'Meal Factor')}" />
+						<th><g:message code="volunteerShift.donation.date.label" default="Shift Date" /></th>
 						
-						<g:sortableColumn property="numberOfMeals" title="${message(code: 'activity.number.of.meals.label', default: 'Number Of Meals')}" />
+						<th><g:message code="volunteerShift.numberOfVolunteers.label" default="Number Of Volunteers" /></th>
 					
+						<th><g:message code="volunteerShift.comments.label" default="Comments" /></th>
+					
+						<th><g:message code="volunteerShift.leaderName.label" default="In Charge" /></th>
+					
+						<th><g:message code="volunteerShift.mealFactor.label" default="Meal Factor" /></th>
+					
+						<th><g:message code="activity.number.of.meals.label" default="Number Of Meals" /></th>
 						
+											
 					
 					</tr>
 				</thead>
@@ -54,9 +54,7 @@
 				</g:each>
 				</tbody>
 			</table>
-			<div class="pagination">
-				<g:paginate total="${foodBankShiftListTotal}" />
-			</div>
+		
 		</div>
 			
 	</body>

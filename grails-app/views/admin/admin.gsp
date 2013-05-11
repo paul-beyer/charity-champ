@@ -1,4 +1,4 @@
-<%@ page import="com.charitychamp.Activity" %>
+	<%@ page import="com.charitychamp.Activity" %>
 <!doctype html>
 <html>
 	<head>

@@ -53,4 +53,9 @@ class JeansPayment extends Donation{
 	private BigDecimal rounded(BigDecimal aNumber){
 		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
 	 }
+	
+	public BigDecimal getProfit(){
+		return amountCollected
+	}
+	
 }

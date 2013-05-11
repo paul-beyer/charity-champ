@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 
 class SummaryItem {
 	
-	Integer orgUnitId 
+	Long orgUnitId
+	Long donationId 
 	String name
 	BigDecimal amount
 	BigDecimal mealCount

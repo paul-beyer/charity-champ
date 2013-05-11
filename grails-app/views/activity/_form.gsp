@@ -18,6 +18,14 @@
 	<g:field type="number" name="amountCollected" min="1" required="" value="${fieldValue(bean: activityInstance, field: 'amountCollected')}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'amountSpent', 'error')} required">
+	<label for="amountSpent">
+		<g:message code="activity.amountSpent.label" default="Amount Spent" />
+	
+	</label>
+	<g:field type="number" name="amountSpent" min="0" required="" value="${fieldValue(bean: activityInstance, field: 'amountSpent')}"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: activityInstance, field: 'leaderName', 'error')} ">
 	<label for="leaderName">
 		<g:message code="activity.leaderName.label" default="Leader Name" />

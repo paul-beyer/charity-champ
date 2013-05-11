@@ -20,7 +20,7 @@
 						<ul>
 							<li>
 								<p>
-									This areas allows you to configure global settings for your organization.
+									This area allows you to configure global settings for your organization.
 								</p>
 							</li>
 							

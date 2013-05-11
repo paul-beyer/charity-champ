@@ -1,4 +1,3 @@
-<%@page import="com.charitychamp.ActivitySummary"%>
 <%@page import="com.charitychamp.Company" %>
 <g:applyLayout name="companyLayout">
 <html>
@@ -16,7 +15,7 @@
 					
 					</g:form>
    					</div>
-   					<div id="businessHeader">
+   					<div id="companyHeader">
 	   					
 						<div class="variantSummary">
 							<g:img dir="images" file="group.png" /> ${companyInstance?.name} has <g:formatNumber number="${employeeCount}" type="number" maxFractionDigits="2" /> employees.<br/><br/>
@@ -53,7 +52,7 @@
 								<tbody>
 									<tr>
 										<td class="summaryTableLabel">
-											<span class="summaryLabel">Meal Goal:</span>
+											<span class="summaryLabel">${companyInstance?.name}'s Meal Goal:</span>
 										</td>
 										<td class="summaryTableValue">
 											<span class="summaryValue">${mealGoal}</span>
@@ -61,7 +60,7 @@
 									</tr>
 									<tr>
 										<td class="summaryTableLabel">
-											<span class="summaryLabel">Money Goal:</span>
+											<span class="summaryLabel">${companyInstance?.name}'s Money Goal:</span>
 										</td>
 										<td class="summaryTableValue">
 											<span class="summaryValue"><g:formatNumber number="${moneyGoal}" type="currency" currencyCode="USD" /></span>

@@ -25,6 +25,7 @@ class Activity extends Donation{
 
 	String name
 	BigDecimal amountCollected
+	BigDecimal amountSpent
 	String leaderName
 	String comments
 	
@@ -36,6 +37,7 @@ class Activity extends Donation{
     static constraints = {
 		name blank:false
 		amountCollected min : 1 as BigDecimal
+		amountSpent nullable : true
 		leaderName nullable : true
 		comments nullable : true
 				
@@ -52,5 +54,15 @@ class Activity extends Donation{
 	private BigDecimal rounded(BigDecimal aNumber){
 		return aNumber.setScale(CharityChampConstants.DECIMALS, CharityChampConstants.ROUNDING_MODE);
 	 }
+	
+	public BigDecimal getProfit(){
+		
+		BigDecimal profit = amountCollected
+		if(amountSpent > 0){
+			profit = amountCollected.subtract(amountSpent)
+		}
+		return profit
+		
+	}
 	
 }

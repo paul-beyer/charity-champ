@@ -98,6 +98,16 @@ class BootStrap {
 		def activity2 = new Activity(name : 'BakeOff', amountCollected : new BigDecimal('45.67'), donationDate : dateOne.toDate()).save(flush:true)
 		def activity3 = new Activity(name : 'Snack Sales', amountCollected : new BigDecimal('136.44'), donationDate : dateOne.toDate()).save(flush:true)
 		def activity4 = new Activity(name : 'Bake Sale', amountCollected : new BigDecimal('102.33'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity5 = new Activity(name : 'Chili Cookoff', amountCollected : new BigDecimal('78.88'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity6 = new Activity(name : 'BakeOff', amountCollected : new BigDecimal('45.67'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity7 = new Activity(name : 'Snack Sales', amountCollected : new BigDecimal('136.44'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity8 = new Activity(name : 'Bake Sale', amountCollected : new BigDecimal('102.33'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity9 = new Activity(name : 'Chili Cookoff', amountCollected : new BigDecimal('78.88'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity10 = new Activity(name : 'BakeOff', amountCollected : new BigDecimal('45.67'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity11 = new Activity(name : 'Snack Sales', amountCollected : new BigDecimal('136.44'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity12 = new Activity(name : 'Bake Sale', amountCollected : new BigDecimal('102.33'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity13 = new Activity(name : 'Snack Sales', amountCollected : new BigDecimal('136.44'), donationDate : dateOne.toDate()).save(flush:true)
+		def activity14 = new Activity(name : 'Bake Sale', amountCollected : new BigDecimal('102.33'), donationDate : dateOne.toDate()).save(flush:true)
 		
 		def jeans1 = new JeansPayment(employeeUserId : 'biffleg', payerFirstName : 'Greg', payerLastName : 'Biffle ',amountCollected : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
 		def jeans2 = new JeansPayment(employeeUserId : 'keselowb', payerFirstName : 'Brad', payerLastName : 'Keselowski ',amountCollected : new BigDecimal('85.00'),donationDate : dateOne.toDate()).save(flush:true)
@@ -115,6 +125,8 @@ class BootStrap {
 		def shift3 = new VolunteerShift(numberOfVolunteers : 21, donationDate : dateOne.toDate(), mealFactor : exec).save(flush:true)
 		def shift4 = new VolunteerShift(numberOfVolunteers : 32, donationDate : dateOne.toDate(), mealFactor : special).save(flush:true)
 		
+		
+		
 		def donation1 = new DonationSource()
 		donation1.donation = activity1
 		donation1.orgUnit = group4
@@ -127,12 +139,12 @@ class BootStrap {
 		
 		def donation3 = new DonationSource()
 		donation3.donation = activity3
-		donation3.orgUnit = group6
+		donation3.orgUnit = group4
 		donation3.save(flush:true, failOnError:true)
 		
 		def donation4 = new DonationSource()
 		donation4.donation = activity4
-		donation4.orgUnit = group6
+		donation4.orgUnit = group4
 		donation4.save(flush:true, failOnError:true)
 		
 		def donation5 = new DonationSource()
@@ -175,6 +187,56 @@ class BootStrap {
 		donation12.orgUnit = group6
 		donation12.save(flush:true, failOnError:true)
 		
+		def donation13 = new DonationSource()
+		donation13.donation = activity5
+		donation13.orgUnit = group4
+		donation13.save(flush:true, failOnError:true)
+		
+		def donation14 = new DonationSource()
+		donation14.donation = activity6
+		donation14.orgUnit = group4
+		donation14.save(flush:true, failOnError:true)
+		
+		def donation15 = new DonationSource()
+		donation15.donation = activity7
+		donation15.orgUnit = group4
+		donation15.save(flush:true, failOnError:true)
+		
+		def donation16 = new DonationSource()
+		donation16.donation = activity8
+		donation16.orgUnit = group4
+		donation16.save(flush:true, failOnError:true)
+		
+		def donation17 = new DonationSource()
+		donation17.donation = activity9
+		donation17.orgUnit = group4
+		donation17.save(flush:true, failOnError:true)
+		
+		def donation18 = new DonationSource()
+		donation18.donation = activity10
+		donation18.orgUnit = group4
+		donation18.save(flush:true, failOnError:true)
+		
+		def donation19 = new DonationSource()
+		donation19.donation = activity11
+		donation19.orgUnit = group4
+		donation19.save(flush:true, failOnError:true)
+		
+		def donation20 = new DonationSource()
+		donation20.donation = activity12
+		donation20.orgUnit = group4
+		donation20.save(flush:true, failOnError:true)
+		
+		def donation21 = new DonationSource()
+		donation21.donation = activity13
+		donation21.orgUnit = group4
+		donation21.save(flush:true, failOnError:true)
+		
+		def donation22 = new DonationSource()
+		donation22.donation = activity14
+		donation22.orgUnit = group4
+		donation22.save(flush:true, failOnError:true)
+		
 		campaign2.addToDonationSources(donation1)
 		campaign2.addToDonationSources(donation2)
 		campaign2.addToDonationSources(donation3)
@@ -187,6 +249,14 @@ class BootStrap {
 		campaign2.addToDonationSources(donation10)
 		campaign2.addToDonationSources(donation11)
 		campaign2.addToDonationSources(donation12)
+		campaign2.addToDonationSources(donation13)
+		campaign2.addToDonationSources(donation14)
+		campaign2.addToDonationSources(donation15)
+		campaign2.addToDonationSources(donation16)
+		campaign2.addToDonationSources(donation17)
+		campaign2.addToDonationSources(donation18)
+		campaign2.addToDonationSources(donation19)
+		campaign2.addToDonationSources(donation20)
 		campaign2.save(flush:true)	
 		
 	}

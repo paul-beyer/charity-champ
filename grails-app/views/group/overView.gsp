@@ -1,4 +1,3 @@
-<%@page import="com.charitychamp.ActivitySummary"%>
 <%@ page import="com.charitychamp.Group" %>
 <g:applyLayout name="groupLayout">
 <html>
@@ -9,13 +8,13 @@
    					
 						<div class="groupLevelOpFeedLeaders">
 							<h3>Your Operation Feed Leaders are:</h3> <br/>
-							<span class="leader">Leader - </span>${groupInstance.department?.office?.business?.charityLeader} (${groupInstance.department?.office?.business?.charityLeader?.userId}) - ${groupInstance.department?.office?.business?.charityLeader?.email}
+							<span class="leader">Leader: </span>${groupInstance.department?.office?.business?.charityLeader} (${groupInstance.department?.office?.business?.charityLeader?.userId}) - ${groupInstance.department?.office?.business?.charityLeader?.email}
 							<br/>
 									
-							<span class="leader">Captain - </span> ${groupInstance.department?.office?.charityCaptain} (${groupInstance.department?.office?.charityCaptain?.userId}) - ${groupInstance.department?.office?.charityCaptain?.email}
+							<span class="leader">Captain: </span> ${groupInstance.department?.office?.charityCaptain} (${groupInstance.department?.office?.charityCaptain?.userId}) - ${groupInstance.department?.office?.charityCaptain?.email}
 							<br/>
 							
-							<span class="leader">Lieutenant - </span>${groupInstance.department?.charityLieutenant} (${groupInstance.department?.charityLieutenant?.userId}) - ${groupInstance.department?.charityLieutenant?.email}
+							<span class="leader">Lieutenant: </span>${groupInstance.department?.charityLieutenant} (${groupInstance.department?.charityLieutenant?.userId}) - ${groupInstance.department?.charityLieutenant?.email}
 						
 						</div>
 						
@@ -73,6 +72,7 @@
 						<g:link class="linkButton" controller="group" action="activities" id="${groupInstance.id}"  params="[campaignId : groupInstanceId]" >Activities</g:link>
 						<g:link class="linkButton" controller="group" action="foodBankShifts" id="${groupInstance.id}"  params="[campaignId : groupInstanceId]" >Food Bank Shifts</g:link>
 						<g:link class="linkButton" controller="group" action="jeanPayments" id="${groupInstance.id}"  params="[campaignId : groupInstanceId]" >Jeans</g:link>
+						<g:link class="linkButton" controller="group" action="summaryReport" id="${groupInstance.id}"  params="[campaignId : groupInstanceId]" >Detail Report</g:link>
 					</div>
 						
 				

@@ -35,7 +35,7 @@
 									We've attempted to make the setting up of organizations generic enough so that it 
 									will work for most companies.  You may need to create dummy entries if this organizational
 									hierarchy does not exactly match your companies needs.  For example, if your company does not
-									have the concept of Office, then simple create a dummy office under a business and then create
+									have the concept of Office, then simply create a dummy office under a business and then create
 									the departments under that.
 								</p> 
 							</li>

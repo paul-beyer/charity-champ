@@ -18,7 +18,8 @@ class GroupController {
     }
 
     def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+		
+		params.max = Math.min(max ?: 10, 100)
         [groupInstanceList: Group.list(params), groupInstanceTotal: Group.count()]
     }
 
@@ -53,6 +54,7 @@ class GroupController {
 		log.debug("Entering overview")
 
 		def groupInstance = Group.get(id)
+		
 		if (!groupInstance) {
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), id])
 			redirect(controller: "home", action: "home")
@@ -181,8 +183,66 @@ class GroupController {
         }
     }
 	
-	def activities() {
+	def summaryReport(){
+		
+		def groupId = params.id.toLong()
+		def groupInstance = Group.get(groupId)
+		if (!groupInstance) {
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'group.label', default: 'Group'), groupId])
+			redirect(controller: "home", action: "home")
+			return
+		
+		}
+			
+		def campaignId = session["campaign"]
+		def currentCampaign = Campaign.get(campaignId?.toLong())
+		
+		def activityList = new ArrayList()
+		if(currentCampaign){
+			activityList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.ACTIVITY)
+		}
+						
+		def jeanPaymentsList = new ArrayList()
+		if(currentCampaign){
+			jeanPaymentsList = donationService.donationList(currentCampaign, groupInstance, CharityChampConstants.JEANS_PAYMENT)
+		}
+		
+		//totals
+		def totalIncome = new BigDecimal('0')
+		def totalExpense = new BigDecimal('0')
+		def totalProfit = new BigDecimal('0')
+		
+		activityList.each {
+			if(it?.amountCollected){
+				totalIncome = totalIncome.add(it?.amountCollected)
+			}
+			if(it?.amountSpent){
+				totalExpense = totalExpense.add(it?.amountSpent)
+			}
+			totalProfit = totalProfit.add(it?.profit)
+		}
+		
+		jeanPaymentsList.each {
+			if(it?.amountCollected){
+				totalIncome = totalIncome.add(it?.amountCollected)
+			}
+			totalProfit = totalProfit.add(it?.profit)
+		}
+		
+		
+		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
 	
+		returnModel.put('activityList', activityList)
+		returnModel.put('jeanPaymentsList', jeanPaymentsList)
+		returnModel.put('totalIncome', totalIncome)
+		returnModel.put('totalExpense', totalExpense)
+		returnModel.put('totalProfit', totalProfit)
+		return returnModel
+				
+	}
+	
+	def activities() {
+		
 		def groupId = params.id.toLong()
 		def groupInstance = Group.get(groupId)
 		if (!groupInstance) {
@@ -201,6 +261,7 @@ class GroupController {
 		}
 		
 		def returnModel = commonGroupActivityReturnValues(groupInstance, currentCampaign)
+	
 		returnModel.put('activityInstanceList', activityList)
 		returnModel.put('activityInstanceTotal', activityList.size())
 		

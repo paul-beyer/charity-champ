@@ -33,7 +33,7 @@
 						
 						<div class="overViewTitle">
 							<br/>
-							<h2>${groupInstance.name} - ${currentCampaign}</h2>
+							<h2>${groupInstance.name} - ${currentCampaign}</h2><br/>
 													
 						</div>	
 						
