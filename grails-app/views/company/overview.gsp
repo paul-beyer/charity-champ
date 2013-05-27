@@ -16,92 +16,56 @@
 					</g:form>
    					</div>
    					<div id="companyHeader">
-	   					
-						<div class="variantSummary">
-							<g:img dir="images" file="group.png" /> ${companyInstance?.name} has <g:formatNumber number="${employeeCount}" type="number" maxFractionDigits="2" /> employees.<br/><br/>
-							<g:img dir="images" file="target.png" /> The goal amount per employee is <span class="goldAmount"><g:formatNumber number="${goalPerEmployee}" type="currency" currencyCode="USD" /></span><br/><br/>
-							<g:if test="${moneyVariant > 0}">
-     								<g:img dir="images" file="award_star_gold.png" /> Congrats! You've exceeded your goal by <span class="goldAmount"><g:formatNumber number="${moneyVariant}" type="currency" currencyCode="USD" /></span>
+	   					<div class="awardStatus">
+	   						<g:if test="${moneyVariant > 0}">
+     								<g:img dir="images" file="rsz_1awards_cover.jpg" /> 
 							</g:if>
 							<g:elseif test="${moneyVariant < 0}">
-     								<g:img dir="images" file="exclamation.png" /> You need to raise <span class="redAmount"><g:formatNumber number="${moneyVariant}" type="currency" currencyCode="USD" /></span> to meet your goal.
+     								<g:img dir="images" file="rsz_keep-going1.jpg" />
 							</g:elseif>
 							<g:elseif test="${moneyVariant == 0}">
-     								<g:img dir="images" file="award_star_gold.png" /> Congrats! You've achieved your goal of <span class="goldAmount"><g:formatNumber number="${moneyVariant}" type="currency" currencyCode="USD" />.</span>
+     								<g:img dir="images" file="rsz_1awards_cover.jpg" />
 							</g:elseif>
-							<br/><br/>
-							<g:if test="${mealVariant > 0}">
-     								<g:img dir="images" file="award_star_gold.png" /> Congrats! You've exceeded meal goal by <span class="goldAmount"><g:formatNumber number="${mealVariant}" type="number" maxFractionDigits="2" /></span> meals.
-							</g:if>
-							<g:elseif test="${mealVariant < 0}">
-     								<g:img dir="images" file="exclamation.png" /> Keep going, you're <span class="redAmount"><g:formatNumber number="${mealVariant}" type="number" maxFractionDigits="2" /></span> meals short.
-							</g:elseif>
-							<g:elseif test="${mealVariant == 0}">
-     								<g:img dir="images" file="award_star_gold.png" /> Congrats! You've achieved your goal of <span class="goldAmount"><g:formatNumber number="${mealVariant}" type="number" maxFractionDigits="2" /></span> meals.
-							</g:elseif>
+							
+						</div>
+						<div class="variantSummaryHome">
+							<span class="summaryLabel">Meals earned:</span>&nbsp;<span class="summaryValue">${totalMealsEarned}</span><br/><br/>
+							<span class="summaryLabel">Money earned:</span>&nbsp;<span class="summaryValue"><g:formatNumber number="${totalMoneyEarned}" type="currency" currencyCode="USD" /></span><br/><br/>
+							<span class="summaryLabel">${companyInstance?.name}'s Meal Goal:</span>&nbsp;<span class="summaryValue">${mealGoal}</span><br/><br/>
+							<span class="summaryLabel">${companyInstance?.name}'s Money Goal:</span>&nbsp;<span class="summaryValue"><g:formatNumber number="${moneyGoal}" type="currency" currencyCode="USD" /></span><br/><br/>
+							<span class="summaryLabel">Meal Percent:</span>&nbsp;<span class="summaryValue">${percentageMealGoal}%</span><br/><br/>
+							<span class="summaryLabel">Money Percent:</span>&nbsp;<span class="summaryValue">${percentageMoneyGoal}%</span><br/><br/>
+							
 				
 						</div>
 						<div class="clear"></div>		
    					</div>
 					
 				<br/>
-					<div id="businessContentArea">	
+					<div id="businessContentArea" class="specifyRollUp">	
 						
 						<div class="summaryOverview">
-							<table>
-								<tbody>
-									<tr>
-										<td class="summaryTableLabel">
-											<span class="summaryLabel">${companyInstance?.name}'s Meal Goal:</span>
-										</td>
-										<td class="summaryTableValue">
-											<span class="summaryValue">${mealGoal}</span>
-										</td>
-									</tr>
-									<tr>
-										<td class="summaryTableLabel">
-											<span class="summaryLabel">${companyInstance?.name}'s Money Goal:</span>
-										</td>
-										<td class="summaryTableValue">
-											<span class="summaryValue"><g:formatNumber number="${moneyGoal}" type="currency" currencyCode="USD" /></span>
-										</td>
-									</tr>
-									<tr>
-										<td class="summaryTableLabel">
-											<span class="summaryLabel">Meals earned:</span>
-										</td>
-										<td class="summaryTableValue">
-											<span class="summaryValue">${totalMealsEarned}</span>
-										</td>
-									</tr>
-									<tr>
-										<td class="summaryTableLabel">
-											<span class="summaryLabel">Money earned:</span>
-										</td>
-										<td class="summaryTableValue">
-											<span class="summaryValue"><g:formatNumber number="${totalMoneyEarned}" type="currency" currencyCode="USD" /></span>
-										</td>
-									</tr>
-									<tr>
-										<td class="summaryTableLabel">
-											<span class="summaryLabel">Meal Percent:</span>
-										</td>
-										<td class="summaryTableValue">
-											<span class="summaryValue">${percentageMealGoal}%</span>
-										</td>
-									</tr>
-									<tr>
-										<td class="summaryTableLabel">
-											<span class="summaryLabel">Money Percent:</span>
-										</td>
-										<td class="summaryTableValue">
-											<span class="summaryValue">${percentageMoneyGoal}%</span>
-										</td>
-									</tr>
-								
-								</tbody>
-							
-							</table>
+							<g:img dir="images" file="group.png" /> ${companyInstance?.name} has <g:formatNumber number="${employeeCount}" type="number" maxFractionDigits="2" /> employees.<br/><br/>
+							<g:img dir="images" file="target.png" /> The goal amount per employee is <span class="goldAmount"><g:formatNumber number="${goalPerEmployee}" type="currency" currencyCode="USD" /></span><br/><br/>
+							<g:if test="${moneyVariant > 0}">
+     								<g:img dir="images" file="award_star_gold.png" /> You've exceeded your goal by <span class="goldAmount"><g:formatNumber number="${moneyVariant}" type="currency" currencyCode="USD" /></span>
+							</g:if>
+							<g:elseif test="${moneyVariant < 0}">
+     								<g:img dir="images" file="exclamation.png" /> You need to raise <span class="redAmount"><g:formatNumber number="${moneyVariant}" type="currency" currencyCode="USD" /></span> to meet your goal.
+							</g:elseif>
+							<g:elseif test="${moneyVariant == 0}">
+     								<g:img dir="images" file="award_star_gold.png" /> You've achieved your goal of <span class="goldAmount"><g:formatNumber number="${moneyVariant}" type="currency" currencyCode="USD" />.</span>
+							</g:elseif>
+							<br/><br/>
+							<g:if test="${mealVariant > 0}">
+     								<g:img dir="images" file="award_star_gold.png" /> You've exceeded meal goal by <span class="goldAmount"><g:formatNumber number="${mealVariant}" type="number" maxFractionDigits="2" /></span> meals.
+							</g:if>
+							<g:elseif test="${mealVariant < 0}">
+     								<g:img dir="images" file="exclamation.png" /> Keep going, you're <span class="redAmount"><g:formatNumber number="${mealVariant}" type="number" maxFractionDigits="2" /></span> meals short.
+							</g:elseif>
+							<g:elseif test="${mealVariant == 0}">
+     								<g:img dir="images" file="award_star_gold.png" /> You've achieved your goal of <span class="goldAmount"><g:formatNumber number="${mealVariant}" type="number" maxFractionDigits="2" /></span> meals.
+							</g:elseif>
 						</div>
 					
 						<div class="orgSummary">

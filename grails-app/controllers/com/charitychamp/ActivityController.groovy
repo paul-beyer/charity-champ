@@ -23,8 +23,7 @@ class ActivityController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-		//just at test commit
-        redirect(action: "list", params: params)
+		redirect(action: "list", params: params)
     }
 
     def list(Integer max) {

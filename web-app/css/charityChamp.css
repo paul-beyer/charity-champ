@@ -103,18 +103,27 @@ body{
 	
 }
 
-.summaryOverview{
-	
-		
+.awardStatus {
+	padding: 10px;
 	width: 50%;
 	float: left;
+	
+}
+
+.summaryOverview{
+	
+	padding: 20px;
+	width: 50%;
+	float: left;
+	font: 16px "DroidSansBold", Verdana,sans-serif;
 	
 	
 }
 
 .orgSummary{
 	
-	width: 50%;
+	padding: 20px;
+	width: 40%;
 	font: 12px "DroidSansBold", Verdana, sans-serif;
 	float: left;
 
@@ -140,12 +149,24 @@ body{
 	margin-top: 10px;
 	
 }
-.variantSummary{
-	margin-top: 25px;
+.variantSummaryHome{
+	margin-top: 50px;
 	margin-left: 25px;
 	font: 16px "DroidSansBold", Verdana,sans-serif;
 	width: 100%;
+	text-align: left;
+	
+}
+
+.variantSummary{
+	padding: 20px;
+	margin-top: 50px;
+	margin-left: 20px;
+	font: 16px "DroidSansBold", Verdana,sans-serif;
+	width: 90%;
 	text-align: center;
+	background-color: #fafaf6;
+	
 	
 }
 
@@ -241,6 +262,10 @@ color: #006600;
 	-o-border-radius: 8px; 
 	border-radius: 8px;
 	cursor: pointer;
+}
+
+.specifyRollUp{
+	background-color: #fafaf6;
 }
 
 #leftNavPane{
