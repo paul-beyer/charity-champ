@@ -114,24 +114,24 @@ class OrganizationalTreeController {
 					def groups = []
 					def sortedGroups = it.groups?.sort{it.name}
 					sortedGroups.each{
-						def group = ["name" : it.name, "url" : "/charity-champ/group/overview/${it.id}"]
+						def group = ["name" : it.name, "url" : "../../group/overview/${it.id}"]
 						groups << group
 					
 					}
 					
-					def department = ["name" : it.name, "url" : "/charity-champ/department/overview/${it.id}", "groups" : groups]
+					def department = ["name" : it.name, "url" : "../../department/overview/${it.id}", "groups" : groups]
 					departments << department
 				}
 				
-				def office = ["name" : it.name, "url" : "/charity-champ/office/overview/${it.id}", "departments" : departments]
+				def office = ["name" : it.name, "url" : "../../office/overview/${it.id}", "departments" : departments]
 				offices << office
 			}
 			
-			def business = ["name" : it.name, "url" : "/charity-champ/business/overview/${it.id}", "offices" : offices]
+			def business = ["name" : it.name, "url" : "../../business/overview/${it.id}", "offices" : offices]
 			businesses << business
 		}
 		
-		def company = ["name" : it.name, "url" : "/charity-champ/company/overview/${it.id}", "businesses" : businesses]
+		def company = ["name" : it.name, "url" : "../../company/overview/${it.id}", "businesses" : businesses]
 		companyList << company
 	}	
 	

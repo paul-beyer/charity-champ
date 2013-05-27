@@ -33,7 +33,7 @@ $(function () {
 //	});	
 	
 	$.ajax({
-		url: "/charity-champ/organizationalTree",
+		url: "../../organizationalTree",
 		type: "GET",
 		cache: false,
 		success: function(result) {
@@ -105,7 +105,7 @@ $(function () {
 				items += '</li>'; // close the main Business unit if no companies
 			}
 			
-			items += '<li><a href=' + '"/charity-champ/admin/admin">Manage</a></li>';
+			items += '<li><a href=' + '"../../admin/admin">Manage</a></li>';
 		
 			 $('#mainNav').append( items);
 			 $(".jq-menu").jqsimplemenu();
@@ -118,7 +118,7 @@ $(function () {
 			},
 			500: function(val, option) {					
 				var items = '';
-				items += '<li><a href=' + '"/charity-champ/admin/admin">Manage</a></li>';
+				items += '<li><a href=' + '"../../admin/admin">Manage</a></li>';
 				
 				 $('#mainNav').append( items);
 			}

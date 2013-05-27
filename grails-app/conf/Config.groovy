@@ -96,3 +96,7 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 }
+
+grails.plugin.cloudfoundry.username = 'plbeyer70@gmail.com'
+grails.plugin.cloudfoundry.password = 'Hyperion13'
+grails.plugin.cloudfoundry.appname = 'op-feed'

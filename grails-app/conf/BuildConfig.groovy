@@ -30,6 +30,7 @@ grails.project.dependency.resolution = {
 //        mavenRepo "http://repository.codehaus.org"
 //        mavenRepo "http://download.java.net/maven/2/"
 //        mavenRepo "http://repository.jboss.com/maven2/"
+	      mavenRepo "https://repo.springsource.org/repo"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -56,11 +57,14 @@ grails.project.dependency.resolution = {
 		compile ':joda-time:1.4'
 		runtime ':jquery-ui:1.8.24'
 		compile ":jqplot:0.1"
+		compile ':cloud-foundry:1.2.3'
+		compile ':webxml:1.4.1'
 			
 	
     }
+	
 }
 
-cloudbees.account='beyerp'
-cloudbees.api.key='8538DBB67B3C50D0'
-cloudbees.api.secret='WAXAZJ9VOVGY0SRZH6WSSJVDHJ7OC/PUISOWR5TVL54='
+//cloudbees.account='beyerp'
+//cloudbees.api.key='8538DBB67B3C50D0'
+//cloudbees.api.secret='WAXAZJ9VOVGY0SRZH6WSSJVDHJ7OC/PUISOWR5TVL54='

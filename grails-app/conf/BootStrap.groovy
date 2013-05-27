@@ -30,7 +30,7 @@ class BootStrap {
 			
 			}
 			production {
-				
+				loadBootStrapData()		
 			}
 		}
 	
